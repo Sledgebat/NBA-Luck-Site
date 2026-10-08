@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BucketWeights Style Guide</title>
+<!-- Mock-up only: the real site self-hosts these fonts (Fontsource), like HockeyWeights. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&family=Bowlby+One+SC&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   BucketWeights — "Newsprint" (light) and "Blacktop" (dark) editions.
+   Every colour is a token; components only use tokens.
+   ===================================================================== */
+:root {
+  color-scheme: light;
+  --paper: #F5F0E1;          /* newsprint page */
+  --paper-2: #FFFDF6;        /* glossy insert / cards */
+  --paper-3: #E9E1CB;        /* sunken */
+  --ink: #111111;
+  --ink-2: #5A5246;          /* muted text, 6.8:1 on paper */
+  --red: #C8102E;            /* brand red: fills + text (5.2:1 on paper) */
+  --yellow: #FFE600;         /* highlighter: fills only, ink text on it */
+  --blue: #0047FF;           /* electric blue: fills, white text on it */
+  --pink: #FF2E93;           /* sticker pink: fills, ink text on it */
+  --on-red: #FFFFFF;
+  --on-blue: #FFFFFF;
+  --hot: #E8410C;            /* chart mark: hotter than his true level */
+  --cold: #0A6FD6;           /* chart mark: colder than his true level */
+  --hot-ink: #B33200;        /* hot as small text, 5.5:1 */
+  --cold-ink: #0A5BB0;       /* cold as small text, 5.9:1 */
+  --rule: #111111;
+  --halftone: rgba(17,17,17,.22);
+  --grain-opacity: .16;
+  --shadow: #111111;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #141414; --paper-2: #1F1F1F; --paper-3: #0B0B0B;
+    --ink: #F5F0E1; --ink-2: #B9B0A0;
+    --red: #FF4A5E; --yellow: #FFE600; --blue: #2A55E8; --pink: #FF2E93;
+    --on-red: #111111; --on-blue: #FFFFFF;
+    --hot: #F2541B; --cold: #2A9BE8; --hot-ink: #FF7A45; --cold-ink: #5CB8FF;
+    --rule: #F5F0E1; --halftone: rgba(245,240,225,.16); --grain-opacity: .10; --shadow: #000000;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #141414; --paper-2: #1F1F1F; --paper-3: #0B0B0B;
+  --ink: #F5F0E1; --ink-2: #B9B0A0;
+  --red: #FF4A5E; --yellow: #FFE600; --blue: #2A55E8; --pink: #FF2E93;
+  --on-red: #111111; --on-blue: #FFFFFF;
+  --hot: #F2541B; --cold: #2A9BE8; --hot-ink: #FF7A45; --cold-ink: #5CB8FF;
+  --rule: #F5F0E1; --halftone: rgba(245,240,225,.16); --grain-opacity: .10; --shadow: #000000;
+}
+
+/* ---------- base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: "Archivo", system-ui, sans-serif; font-size: 1rem; line-height: 1.45;
+  overflow-x: hidden;
+}
+/* newsprint grain over everything */
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  mix-blend-mode: multiply;
+}
+:root[data-theme="dark"] body::after { mix-blend-mode: screen; }
+:root[data-theme="dark"] .tape { mix-blend-mode: normal; opacity: .85; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body::after { mix-blend-mode: screen; } :root:not([data-theme="light"]) .tape { mix-blend-mode: normal; opacity: .85; } }
+a { color: inherit; }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+.tab { font-variant-numeric: tabular-nums; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* ---------- type roles ---------- */
+.t-logo   { font-family: "Bowlby One SC", "Anton", sans-serif; letter-spacing: -.01em; line-height: .86; }
+.t-head   { font-family: "Anton", sans-serif; text-transform: uppercase; line-height: .9; letter-spacing: .005em; }
+.t-kicker { font-family: "Archivo", sans-serif; font-weight: 900; font-stretch: 112%; text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; }
+.t-marker { font-family: "Permanent Marker", cursive; line-height: 1.1; }
+.t-label  { font-family: "Archivo", sans-serif; font-weight: 800; font-stretch: 75%; text-transform: uppercase; letter-spacing: .06em; font-size: .78rem; }
+.t-num    { font-family: "Anton", sans-serif; font-variant-numeric: tabular-nums; line-height: .9; }
+.outline  { color: transparent; -webkit-text-stroke: 2px var(--ink); paint-order: stroke fill; }
+
+/* ---------- graphic kit ---------- */
+.halftone { background-image: radial-gradient(var(--halftone) 1.4px, transparent 1.6px); background-size: 9px 9px; }
+.halftone-lg { background-image: radial-gradient(rgba(0,0,0,.28) 2.6px, transparent 2.9px); background-size: 14px 14px; }
+.hard { box-shadow: 6px 6px 0 var(--shadow); border: 3px solid var(--ink); }
+.tape {
+  position: absolute; width: 110px; height: 30px; background: rgba(255,230,0,.72);
+  border-left: 2px dashed rgba(0,0,0,.12); border-right: 2px dashed rgba(0,0,0,.12);
+  transform: rotate(-6deg); z-index: 3; mix-blend-mode: multiply;
+}
+.torn-top { position: relative; }
+.torn-top::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -13px; height: 14px; background: inherit;
+  clip-path: polygon(0 100%,0 60%,3% 20%,6% 70%,9% 30%,13% 80%,17% 25%,21% 65%,25% 15%,29% 70%,33% 35%,37% 85%,41% 30%,45% 60%,49% 10%,53% 70%,57% 30%,61% 75%,65% 20%,69% 65%,73% 35%,77% 80%,81% 25%,85% 70%,89% 30%,93% 75%,97% 25%,100% 55%,100% 100%);
+}
+.sticker {
+  display: inline-block; padding: .35rem .7rem .3rem; border: 3px solid var(--ink); background: var(--yellow); color: #111;
+  font-family: "Bowlby One SC", sans-serif; font-size: 1rem; line-height: 1; transform: rotate(-3deg); box-shadow: 4px 4px 0 var(--shadow);
+}
+.sticker.pink { background: var(--pink); }
+.sticker.blue { background: var(--blue); color: var(--on-blue); }
+.stamp {
+  display: inline-block; font-family: "Bowlby One SC", sans-serif; color: var(--red); border: 4px solid var(--red);
+  padding: .2rem .55rem .1rem; font-size: 1.55rem; line-height: 1; transform: rotate(-9deg); letter-spacing: .02em;
+  border-radius: 4px; opacity: .92;
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60'><filter id='r'><feTurbulence baseFrequency='.55' numOctaves='2'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.7'/></filter><rect width='120' height='60' filter='url(%23r)'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60'><filter id='r'><feTurbulence baseFrequency='.55' numOctaves='2'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.7'/></filter><rect width='120' height='60' filter='url(%23r)'/></svg>");
+}
+.stamp.earned { color: var(--ink); border-color: var(--ink); transform: rotate(5deg); }
+.stamp.toss { color: var(--blue); border-color: var(--blue); transform: rotate(-4deg); }
+:root[data-theme="dark"] .stamp.toss { color: #8FA8FF; border-color: #8FA8FF; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .stamp.toss { color: #8FA8FF; border-color: #8FA8FF; } }
+.burst { position: relative; display: grid; place-items: center; width: 150px; aspect-ratio: 1; }
+.burst svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.burst span { position: relative; text-align: center; color: #111; transform: rotate(-8deg); }
+.badge {
+  display: inline-block; min-width: 2.9em; text-align: center; padding: .12rem .3rem .05rem; background: var(--ink); color: var(--paper);
+  font-family: "Archivo", sans-serif; font-weight: 900; font-stretch: 80%; font-size: .72rem; letter-spacing: .05em; line-height: 1.25;
+}
+.pill { display: inline-block; padding: .05rem .45rem; font-weight: 900; font-stretch: 85%; border: 2px solid currentColor; border-radius: 99px; font-size: .82rem; }
+.hot-t { color: var(--hot-ink); } .cold-t { color: var(--cold-ink); }
+.scrawl { font-family: "Permanent Marker", cursive; color: var(--red); font-size: 1.15rem; transform: rotate(-4deg); display: inline-block; }
+
+/* ---------- ticker ---------- */
+.ticker { background: var(--red); color: var(--on-red); border-bottom: 3px solid var(--ink); overflow: hidden; white-space: nowrap; }
+.ticker-track { display: inline-flex; gap: 2.5rem; padding: .45rem 0; animation: tick 38s linear infinite; }
+.ticker-track span { font-weight: 900; font-stretch: 110%; text-transform: uppercase; letter-spacing: .06em; font-size: .82rem; }
+.ticker-track b { color: var(--yellow); }
+:root[data-theme="dark"] .ticker-track b { color: #111; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ticker-track b { color: #111; } }
+@keyframes tick { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
+
+/* ---------- masthead ---------- */
+.mast { position: relative; padding: 18px 0 0; }
+.mast-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.logo { display: flex; align-items: center; gap: .1em; font-size: clamp(2.6rem, 9.5vw, 7.4rem); text-decoration: none; transform: rotate(-2deg); transform-origin: left bottom; }
+.logo .bucket { color: var(--yellow); -webkit-text-stroke: .045em #111; paint-order: stroke fill; text-shadow: .06em .06em 0 var(--red); }
+.logo .weights { background: var(--ink); color: var(--paper); padding: .06em .14em .02em; transform: skew(-8deg); font-size: .62em; margin-left: .08em; box-shadow: .07em .07em 0 var(--red); }
+.logo .ball { width: .62em; height: .62em; margin-left: .06em; animation: spin 9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .logo .ball { animation: none; } }
+.issue { text-align: right; }
+.issue .t-kicker { display: block; }
+.tagline { font-size: clamp(1.1rem, 2.6vw, 1.6rem); color: var(--red); margin: .3rem 0 0 .2rem; transform: rotate(-2deg); display: inline-block; }
+.nav { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0 0; padding: 12px 0; border-top: 6px solid var(--rule); border-bottom: 2px solid var(--rule); }
+.nav a { text-decoration: none; font-family: "Anton", sans-serif; text-transform: uppercase; font-size: 1.25rem; padding: .1rem .7rem; border: 3px solid transparent; }
+.nav a[aria-current] { background: var(--yellow); color: #111; border-color: var(--ink); transform: rotate(-2deg); box-shadow: 3px 3px 0 var(--shadow); }
+.nav a:hover { border-color: var(--ink); }
+.theme-btn { margin-left: auto; font: 800 .78rem/1 "Archivo", sans-serif; font-stretch: 80%; text-transform: uppercase; letter-spacing: .08em; background: var(--paper-2); color: var(--ink); border: 3px solid var(--ink); padding: .5rem .7rem; cursor: pointer; box-shadow: 3px 3px 0 var(--shadow); }
+
+/* ---------- cover story ---------- */
+.cover { position: relative; display: grid; grid-template-columns: 1.25fr 1fr; gap: 28px; margin: 28px 0 10px; }
+.cover-main { position: relative; background: var(--blue); color: var(--on-blue); padding: 28px 26px 30px; overflow: hidden; border: 3px solid var(--ink); box-shadow: 8px 8px 0 var(--shadow); }
+.cover-main .court { position: absolute; right: -90px; bottom: -110px; width: 430px; opacity: .3; }
+.cover-main .halftone-lg { position: absolute; inset: 0; opacity: .5; mask-image: linear-gradient(115deg, transparent 35%, #000 95%); -webkit-mask-image: linear-gradient(115deg, transparent 35%, #000 95%); }
+.cover-main > * { position: relative; }
+.cover .kick { display: inline-block; background: var(--yellow); color: #111; padding: .25rem .55rem; transform: rotate(-2deg); }
+.cover h1 { font-size: clamp(3.3rem, 11vw, 8.6rem); margin: .2em 0 .06em; }
+.cover h1 .line2 { display: block; color: var(--yellow); -webkit-text-stroke: 0; text-shadow: 5px 5px 0 #111; }
+.cover .who { font-family: "Anton", sans-serif; font-size: clamp(1.7rem, 4.6vw, 3rem); text-transform: uppercase; line-height: .95; }
+.cover .who em { font-style: normal; color: var(--yellow); }
+.cover .dek { font-size: 1.08rem; max-width: 34em; margin: .6rem 0 0; font-weight: 500; }
+.cover .dek b { background: var(--yellow); color: #111; padding: 0 .2em; }
+.cover .burst { position: absolute; right: 18px; top: 18px; width: 158px; }
+.cover .sample { margin-top: 1.1rem; font-size: .8rem; opacity: .9; font-style: italic; }
+
+/* the meter */
+.panel { background: var(--paper-2); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--shadow); padding: 20px 20px 18px; position: relative; }
+.panel h2 { font-size: 2.1rem; margin: 0 0 .1em; }
+.meter { width: 100%; height: auto; display: block; margin: 8px 0 4px; overflow: visible; }
+.meter text { font-family: "Archivo", sans-serif; font-weight: 700; font-stretch: 80%; font-size: 13px; fill: var(--ink-2); }
+.meter .lab { font-weight: 900; fill: var(--ink); font-size: 14px; }
+.meter .lab-hot { fill: var(--cold-ink); font-weight: 900; font-size: 14px; }
+.meter .range { fill: var(--yellow); stroke: var(--ink); stroke-width: 2; }
+.meter .axis { stroke: var(--ink); stroke-width: 2; }
+.meter .tick { stroke: var(--ink-2); stroke-width: 1.5; }
+.meter .mark-hit { fill: transparent; cursor: help; }
+.legend-row { display: flex; gap: 14px; flex-wrap: wrap; font-size: .82rem; color: var(--ink-2); font-weight: 600; }
+.legend-row i { display: inline-block; width: 14px; height: 14px; vertical-align: -2px; margin-right: 5px; border: 2px solid var(--ink); }
+.big-swap { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 10px; margin: 14px 0 6px; }
+.big-swap .t-num { font-size: clamp(3rem, 8vw, 4.6rem); }
+.big-swap .arrow { font-family: "Permanent Marker"; font-size: 2.4rem; color: var(--red); padding-bottom: .4rem; }
+.big-swap small { display: block; font-size: .72rem; font-weight: 800; font-stretch: 80%; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+.fine { font-size: .8rem; color: var(--ink-2); }
+.adds { margin-top: 14px; border-top: 3px solid var(--ink); padding-top: 10px; }
+.add-ln { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px solid var(--paper-3); font-size: .9rem; font-weight: 600; }
+.add-ln b { font-family: "Anton"; font-weight: 400; font-size: 1.25rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.add-ln.tot { border-bottom: 0; font-weight: 900; }
+.tip { position: fixed; z-index: 50; pointer-events: none; background: var(--ink); color: var(--paper); padding: .4rem .55rem; font-size: .8rem; font-weight: 600; max-width: 240px; display: none; box-shadow: 3px 3px 0 var(--red); }
+
+/* ---------- section heads ---------- */
+.sec { margin: 54px 0 0; }
+.sec-head { display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; border-bottom: 6px solid var(--rule); padding-bottom: 8px; margin-bottom: 22px; }
+.sec-head h2 { font-size: clamp(2.6rem, 7vw, 4.6rem); margin: 0; }
+.sec-head .scrawl { margin-bottom: .5rem; }
+.sec-head .page { margin-left: auto; font-family: "Anton"; font-size: 1.1rem; }
+
+/* ---------- verdict cards ---------- */
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+.vcard { position: relative; background: var(--paper-2); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--shadow); padding: 18px 16px 16px; }
+.vcard:nth-child(2) { transform: rotate(.8deg); } .vcard:nth-child(3) { transform: rotate(-.6deg); }
+.vcard .tape { top: -14px; left: 38%; }
+.vcard .date { color: var(--ink-2); }
+.score { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 6px 10px; margin: 8px 0 4px; }
+.score .t-num { font-size: 2.6rem; }
+.score .tm { font-family: "Anton"; font-size: 1.35rem; text-transform: uppercase; }
+.score .w { color: var(--ink); } .score .l { color: var(--ink-2); }
+.score .won::after { content: " ◀"; font-size: .9rem; color: var(--red); }
+.vtop { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.vcard .stamp { font-size: 1.2rem; margin-right: 4px; }
+.chance { display: flex; align-items: baseline; gap: 8px; margin: 6px 0 10px; }
+.chance .t-num { font-size: 3.4rem; color: var(--red); }
+.chance span { font-weight: 800; font-stretch: 85%; line-height: 1.1; }
+.shoot { width: 100%; border-collapse: collapse; font-size: .86rem; margin: 6px 0 10px; }
+.shoot th { text-align: left; font-weight: 800; font-stretch: 80%; text-transform: uppercase; letter-spacing: .05em; font-size: .72rem; color: var(--ink-2); border-bottom: 2px solid var(--ink); padding: 3px 4px; }
+.shoot td { padding: 4px; border-bottom: 1px solid var(--paper-3); }
+.shoot td.n { text-align: right; font-variant-numeric: tabular-nums; }
+.swing { background: var(--paper-3); padding: 8px 10px; font-size: .9rem; border-left: 6px solid var(--red); }
+.swing b { font-weight: 900; }
+
+/* ---------- heat / ice lists ---------- */
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+.list { border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--shadow); background: var(--paper-2); }
+.list-head { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #111; border-bottom: 3px solid var(--ink); }
+.list-head.hot { background: linear-gradient(100deg, #FFE600 0%, #FF8A00 55%, #E8410C 100%); }
+.list-head.cold { background: linear-gradient(100deg, #E6F7FF 0%, #7FD3FF 50%, #0A6FD6 100%); }
+.list-head h3 { font-family: "Anton"; text-transform: uppercase; font-size: 2.3rem; margin: 0; line-height: .9; }
+.list-head p { margin: 0; font-weight: 800; font-stretch: 85%; font-size: .85rem; }
+.list-head svg { width: 46px; height: 46px; flex: none; }
+.row { display: grid; grid-template-columns: 52px 1fr auto; gap: 4px 12px; align-items: center; padding: 12px 16px; border-bottom: 2px solid var(--paper-3); }
+.row:last-child { border-bottom: 0; }
+.row .rk { font-family: "Anton"; font-size: 2.6rem; line-height: .8; -webkit-text-stroke: 2px var(--ink); color: transparent; }
+.row .nm { font-family: "Anton"; font-size: 1.45rem; text-transform: uppercase; line-height: 1; }
+.row .sub { grid-column: 2; font-size: .82rem; color: var(--ink-2); font-weight: 600; }
+.row .pp { grid-row: 1 / span 2; grid-column: 3; text-align: right; }
+.row .pp .t-num { font-size: 1.9rem; }
+.row .pp small { display: block; font-size: .72rem; font-weight: 800; font-stretch: 80%; text-transform: uppercase; color: var(--ink-2); }
+.spark { display: inline-block; vertical-align: middle; }
+
+/* ---------- receipts ---------- */
+.receipts { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: start; }
+.receipt { background: var(--paper-2); color: var(--ink); font-family: "Archivo"; font-stretch: 70%; font-weight: 600; padding: 22px 22px 30px; border: 2px dashed var(--ink); position: relative; transform: rotate(-1deg);
+  -webkit-mask: radial-gradient(circle 7px at 50% 100%, transparent 98%, #000) 0 0 / 18px 100%;
+          mask: radial-gradient(circle 7px at 50% 100%, transparent 98%, #000) 0 0 / 18px 100%; }
+.receipt h3 { font-family: "Bowlby One SC"; font-size: 1.6rem; margin: 0 0 .3rem; text-align: center; }
+.receipt .ln { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px dotted var(--ink-2); padding: 6px 0; font-size: .95rem; }
+.receipt .ln span:last-child { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.receipt .tot { font-family: "Anton"; font-size: 1.5rem; text-transform: uppercase; border-top: 3px double var(--ink); margin-top: 8px; padding-top: 8px; display: flex; justify-content: space-between; }
+.hit { color: var(--cold-ink); font-weight: 900; } .miss { color: var(--red); font-weight: 900; }
+.trash { background: var(--pink); color: #111; border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--shadow); padding: 20px; transform: rotate(.8deg); }
+.trash h3 { font-family: "Anton"; text-transform: uppercase; font-size: 2.6rem; margin: 0; line-height: .9; }
+.trash .q { font-family: "Permanent Marker"; font-size: 1.2rem; margin: 1rem 0 .3rem; }
+.trash .a { margin: 0; font-weight: 600; }
+
+/* ---------- style guide ---------- */
+.guide { margin-top: 70px; padding: 30px 0 60px; background: var(--paper-3); border-top: 6px solid var(--rule); }
+.guide h2 { font-size: clamp(2.4rem, 6vw, 4rem); margin: 0 0 .2em; }
+.guide h3 { font-family: "Anton"; text-transform: uppercase; font-size: 1.8rem; margin: 34px 0 10px; }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.sw { border: 3px solid var(--ink); background: var(--paper-2); }
+.sw div { height: 70px; border-bottom: 3px solid var(--ink); }
+.sw p { margin: 0; padding: 6px 8px; font-size: .8rem; line-height: 1.3; }
+.sw p b { display: block; font-size: .9rem; }
+.specimens { display: grid; gap: 14px; }
+.spec { display: grid; grid-template-columns: 170px 1fr; gap: 14px; align-items: baseline; background: var(--paper-2); border: 2px solid var(--ink); padding: 12px 14px; }
+.spec .t-label { color: var(--ink-2); }
+.spec > * { min-width: 0; overflow-wrap: anywhere; }
+.cover > *, .duo > *, .receipts > *, .cards > * { min-width: 0; }
+.kit { display: flex; flex-wrap: wrap; gap: 26px; align-items: center; background: var(--paper-2); border: 2px solid var(--ink); padding: 24px; }
+.rules { columns: 2 320px; column-gap: 34px; padding-left: 1.2rem; }
+.rules li { margin: 0 0 .6rem; break-inside: avoid; }
+.rules b { font-weight: 900; }
+.vocab { width: 100%; border-collapse: collapse; background: var(--paper-2); border: 2px solid var(--ink); font-size: .92rem; }
+.vocab th, .vocab td { padding: 8px 10px; border-bottom: 1px solid var(--paper-3); text-align: left; vertical-align: top; }
+.vocab th { font-weight: 900; font-stretch: 80%; text-transform: uppercase; font-size: .75rem; letter-spacing: .06em; border-bottom: 3px solid var(--ink); }
+footer { padding: 26px 0 40px; font-size: .8rem; color: var(--ink-2); border-top: 2px solid var(--rule); }
+
+/* ---------- phone ---------- */
+@media (max-width: 900px) {
+  .cover, .duo, .receipts { grid-template-columns: 1fr; }
+  .cards { grid-template-columns: 1fr; }
+  .vcard:nth-child(n) { transform: none; }
+}
+@media (max-width: 560px) {
+  .cover-main { padding: 22px 16px 24px; }
+  .cover .burst { position: relative; right: auto; top: auto; width: 128px; margin: -6px 0 6px auto; }
+  .issue { text-align: left; }
+  .nav a { font-size: 1.05rem; padding: .1rem .45rem; }
+  .theme-btn { margin-left: 0; }
+  .spec { grid-template-columns: 1fr; }
+  .row { grid-template-columns: 40px 1fr auto; padding: 10px 12px; }
+  .row .rk { font-size: 2rem; }
+  .row .nm { font-size: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ======= TICKER ======= -->
+<div class="ticker" aria-label="Last night's verdicts">
+  <div class="ticker-track" aria-hidden="true">
+    <span>Last night →</span><span>MIA 89 ORL 88 · <b>Robbery</b> · winner had 1%</span><span>ORL 108 CLE 103 · <b>Robbery</b> · 4%</span><span>UTAH 126 DET 119 · <b>Robbery</b> · 4%</span><span>Heat check: Jokić 52.5% from 3 won't last</span><span>Defrost: Paul George is better than 32%</span>
+    <span>Last night →</span><span>MIA 89 ORL 88 · <b>Robbery</b> · winner had 1%</span><span>ORL 108 CLE 103 · <b>Robbery</b> · 4%</span><span>UTAH 126 DET 119 · <b>Robbery</b> · 4%</span><span>Heat check: Jokić 52.5% from 3 won't last</span><span>Defrost: Paul George is better than 32%</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- ======= MASTHEAD ======= -->
+  <header class="mast">
+    <div class="mast-row">
+      <div>
+        <a class="logo t-logo" href="#" aria-label="BucketWeights home">
+          <span class="bucket">BUCKET</span><span class="weights">WEIGHTS</span>
+          <svg class="ball" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#FF7A1A" stroke="#111" stroke-width="7"/><path d="M50 4v92M4 50h92M18 16c18 18 18 50 0 68M82 16c-18 18-18 50 0 68" fill="none" stroke="#111" stroke-width="6"/></svg>
+        </a>
+        <div class="tagline t-marker">Shooting luck, weighed nightly.</div>
+      </div>
+      <div class="issue">
+        <span class="t-kicker">Vol. 1 · No. 1</span>
+        <span class="t-kicker">Updated every night</span>
+        <span class="sticker pink" style="margin-top:8px">No paywall!</span>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Sections">
+      <a href="#" aria-current="page">Home</a><a href="#">Players</a><a href="#">Games</a><a href="#">Teams</a><a href="#">About the model</a>
+      <button class="theme-btn" id="themeBtn" type="button">Blacktop edition</button>
+    </nav>
+  </header>
+
+  <!-- ======= COVER STORY ======= -->
+  <section class="cover" aria-labelledby="cover-h">
+    <div class="cover-main">
+      <div class="halftone-lg"></div>
+      <svg class="court" viewBox="0 0 400 400" aria-hidden="true" fill="none" stroke="#fff" stroke-width="6"><rect x="140" y="250" width="120" height="150"/><circle cx="200" cy="250" r="60"/><path d="M40 400V300a160 160 0 0 1 320 0v100"/><circle cx="200" cy="372" r="9"/></svg>
+      <div class="burst" aria-hidden="true">
+        <svg viewBox="0 0 100 100"><polygon fill="#FFE600" stroke="#111" stroke-width="3" points="50,2 58,20 76,8 74,29 95,28 82,44 98,58 77,62 84,82 64,76 58,97 47,80 32,95 30,74 9,78 20,60 3,46 22,38 12,18 33,22 40,3"/></svg>
+        <span><span class="t-num" style="font-size:2.3rem;display:block">+1.5</span><span class="t-label" style="font-size:.8rem">PPG on the way</span></span>
+      </div>
+      <span class="kick t-kicker">Cover story · Defrost</span>
+      <h1 id="cover-h" class="t-head">Cold,<span class="line2">not broke.</span></h1>
+      <div class="who">Paul George <em>shoots better than this.</em></div>
+      <p class="dek">He's averaging <b>15.4</b> a night on <b>32.0%</b> from three. His true level is <b>38.5%</b>. Hit that on the same shots and minutes and he's scoring <b>16.9</b>.</p>
+      <p class="sample">Mock-up with real numbers: the Philadelphia 76ers' Paul George as of 1 January 2025.</p>
+    </div>
+
+    <aside class="panel" aria-labelledby="meter-h">
+      <span class="tape" style="top:-14px;right:30px"></span>
+      <span class="t-kicker" style="color:var(--red)">The meter</span>
+      <h2 id="meter-h" class="t-head">3-point shooting</h2>
+      <div class="big-swap">
+        <div><small>This season</small><span class="t-num cold-t">32.0%</span></div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div><small>True level</small><span class="t-num">38.5%</span></div>
+      </div>
+      <svg class="meter" viewBox="0 0 420 120" role="img" aria-label="Paul George 3-point percentage: this season 32.0 percent on 122 attempts; true level 38.5 percent, likely between 36.6 and 40.3 percent; league average 37.3 percent.">
+        <!-- scale 28% to 44% across x 20..400 -->
+        <line class="axis" x1="20" y1="70" x2="400" y2="70"/>
+        <g class="tick"><line x1="20" y1="64" x2="20" y2="76"/><line x1="115" y1="64" x2="115" y2="76"/><line x1="210" y1="64" x2="210" y2="76"/><line x1="305" y1="64" x2="305" y2="76"/><line x1="400" y1="64" x2="400" y2="76"/></g>
+        <text x="20" y="96" text-anchor="middle">28%</text><text x="115" y="96" text-anchor="middle">32%</text><text x="210" y="96" text-anchor="middle">36%</text><text x="305" y="96" text-anchor="middle">40%</text><text x="400" y="96" text-anchor="middle">44%</text>
+        <!-- true-level range 36.6–40.3 → x 224.3..312.1 -->
+        <rect class="range" x="224.3" y="56" width="87.8" height="28" rx="4"/>
+        <line x1="263.6" y1="50" x2="263.6" y2="90" stroke="var(--ink)" stroke-width="4"/>
+        <text class="lab" x="263.6" y="40" text-anchor="middle">TRUE 38.5%</text>
+        <!-- league 37.3 → x 240.9 -->
+        <line x1="240.9" y1="102" x2="240.9" y2="108" stroke="var(--ink-2)" stroke-width="2"/>
+        <text x="240.9" y="120" text-anchor="middle" style="font-size:11px">league 37.3%</text>
+        <!-- actual 32.0 → x 114.9 -->
+        <circle cx="114.9" cy="70" r="10" fill="var(--cold)" stroke="var(--paper-2)" stroke-width="3"/>
+        <text class="lab-hot" x="114.9" y="40" text-anchor="middle">NOW 32.0%</text>
+        <circle class="mark-hit" cx="114.9" cy="70" r="22" data-tip="This season: 39 of 122 from three (32.0%)"/>
+        <rect class="mark-hit" x="224.3" y="50" width="87.8" height="40" data-tip="True level 38.5%. 80% likely between 36.6% and 40.3%. Built from his last three seasons and this one, pulled toward the league."/>
+      </svg>
+      <div class="legend-row"><span><i style="background:var(--cold);border-radius:50%"></i>This season</span><span><i style="background:var(--yellow)"></i>True level, 80% range</span></div>
+      <div class="adds">
+        <div class="t-kicker" style="margin-bottom:6px">How +1.5 adds up</div>
+        <div class="add-ln"><span>Threes · 6.1 a game · 32.0% → 38.5%</span><b class="cold-t">+1.2</b></div>
+        <div class="add-ln"><span>Free throws · 3.1 a game · 78.7% → his level</span><b class="cold-t">+0.3</b></div>
+        <div class="add-ln tot"><span>Points a game, same shots &amp; minutes</span><b>15.4 → 16.9</b></div>
+      </div>
+      <p class="fine" style="margin:.8rem 0 0">Not "due". Nobody is owed makes. A cold stretch says little about his next shot, which goes in about 38.5% of the time.</p>
+    </aside>
+  </section>
+
+  <!-- ======= LAST NIGHT ======= -->
+  <section class="sec" aria-labelledby="ln-h">
+    <div class="sec-head"><h2 id="ln-h" class="t-head">Last night</h2><span class="scrawl">who earned it, who got lucky</span><span class="page">P. 2</span></div>
+    <div class="cards">
+      <article class="vcard">
+        <span class="tape"></span>
+        <div class="vtop"><div class="t-kicker date">Thu 26 Dec 2024 · sample</div><span class="stamp">Robbery</span></div>
+        <div class="score">
+          <span class="badge">MIA</span><span class="tm w won">Heat</span><span class="t-num w">89</span>
+          <span class="badge">ORL</span><span class="tm l">Magic</span><span class="t-num l">88</span>
+        </div>
+        <div class="chance"><span class="t-num">1%</span><span>Miami's chance of winning at true shooting</span></div>
+        <table class="shoot"><thead><tr><th>From three</th><th class="n">Made</th><th class="n">Expected</th></tr></thead>
+          <tbody><tr><td>Heat</td><td class="n">15 / 30</td><td class="n">11.4</td></tr><tr><td>Magic</td><td class="n">5 / 29</td><td class="n">10.5</td></tr></tbody></table>
+        <div class="swing">Swung it: <b>Alec Burks</b> 3-for-3 from deep (<span class="hot-t"><b>+5.7 pts</b></span>). <b>Jalen Suggs</b> 2-for-11 (<span class="cold-t"><b>−5.0</b></span>).</div>
+      </article>
+      <article class="vcard">
+        <span class="tape" style="left:20%;transform:rotate(5deg)"></span>
+        <div class="vtop"><div class="t-kicker date">Sun 16 Mar 2025 · sample</div><span class="stamp">Robbery</span></div>
+        <div class="score">
+          <span class="badge">ORL</span><span class="tm w won">Magic</span><span class="t-num w">108</span>
+          <span class="badge">CLE</span><span class="tm l">Cavaliers</span><span class="t-num l">103</span>
+        </div>
+        <div class="chance"><span class="t-num">4%</span><span>Orlando's chance of winning at true shooting</span></div>
+        <table class="shoot"><thead><tr><th>From three</th><th class="n">Made</th><th class="n">Expected</th></tr></thead>
+          <tbody><tr><td>Magic</td><td class="n">13 / 31</td><td class="n">10.7</td></tr><tr><td>Cavaliers</td><td class="n">10 / 40</td><td class="n">15.3</td></tr></tbody></table>
+        <div class="swing">Swung it: <b>Donovan Mitchell</b> 3-for-14 (<span class="cold-t"><b>−6.6 pts</b></span>). <b>Anthony Black</b> 3-for-3 (<span class="hot-t"><b>+5.3</b></span>).</div>
+      </article>
+      <article class="vcard">
+        <span class="tape" style="left:55%;transform:rotate(-9deg)"></span>
+        <div class="vtop"><div class="t-kicker date">Thu 19 Dec 2024 · sample</div><span class="stamp">Robbery</span></div>
+        <div class="score">
+          <span class="badge">UTAH</span><span class="tm w won">Jazz</span><span class="t-num w">126</span>
+          <span class="badge">DET</span><span class="tm l">Pistons</span><span class="t-num l">119</span>
+        </div>
+        <div class="chance"><span class="t-num">4%</span><span>Utah's chance of winning at true shooting</span></div>
+        <table class="shoot"><thead><tr><th>From three</th><th class="n">Made</th><th class="n">Expected</th></tr></thead>
+          <tbody><tr><td>Jazz</td><td class="n">20 / 40</td><td class="n">14.7</td></tr><tr><td>Pistons</td><td class="n">13 / 47</td><td class="n">17.6</td></tr></tbody></table>
+        <div class="swing">Swung it: <b>Keyonte George</b> 7-for-13 (<span class="hot-t"><b>+7.4 pts</b></span>). <b>Collin Sexton</b> 5-for-7 (<span class="hot-t"><b>+6.2</b></span>).</div>
+      </article>
+    </div>
+    <p class="fine" style="margin-top:22px">Verdicts: <span class="stamp" style="font-size:.85rem;transform:none;border-width:2px">Robbery</span> winner under 35% · <span class="stamp toss" style="font-size:.85rem;transform:none;border-width:2px">Coin flip</span> 35–65% · <span class="stamp earned" style="font-size:.85rem;transform:none;border-width:2px">Earned it</span> 65%+. Thresholds are set in the methodology, and every probability has been checked against past seasons.</p>
+  </section>
+
+  <!-- ======= HEAT CHECK / DEFROST ======= -->
+  <section class="sec" aria-labelledby="hc-h">
+    <div class="sec-head"><h2 id="hc-h" class="t-head">Heat check <span class="outline">/</span> Defrost</h2><span class="scrawl">at the same shots &amp; minutes</span><span class="page">P. 3</span></div>
+    <div class="duo">
+      <div class="list">
+        <div class="list-head hot">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 4c4 12 18 18 18 34a18 18 0 0 1-36 0c0-9 5-14 9-19 0 7 3 11 7 12-3-9 0-19 2-27z" fill="#FFE600" stroke="#111" stroke-width="4" stroke-linejoin="round"/><path d="M32 34c3 5 8 7 8 13a8 8 0 0 1-16 0c0-4 3-6 4-8 1 3 2 4 4 4-1-3-1-6 0-9z" fill="#E8410C" stroke="#111" stroke-width="3"/></svg>
+          <div><h3>Heat check</h3><p>Shooting above their true level: expect a cool-off</p></div>
+        </div>
+        <div class="row"><span class="rk">1</span><span class="nm">Nikola Jokić <span class="badge">DEN</span></span><span class="sub">3P 52.5% now · true 39.5%</span><span class="pp"><span class="t-num">30.9 → <span class="hot-t">29.3</span></span><small>PPG now → at true</small></span></div>
+        <div class="row"><span class="rk">2</span><span class="nm">De'Andre Hunter <span class="badge">ATL</span></span><span class="sub">3P 45.5% now · true 38.7%</span><span class="pp"><span class="t-num">20.6 → <span class="hot-t">19.2</span></span><small>PPG now → at true</small></span></div>
+        <div class="row"><span class="rk">3</span><span class="nm">Nikola Vučević <span class="badge">CHI</span></span><span class="sub">3P 45.3% now · true 35.6%</span><span class="pp"><span class="t-num">20.6 → <span class="hot-t">19.2</span></span><small>PPG now → at true</small></span></div>
+        <div class="row"><span class="rk">4</span><span class="nm">Zach LaVine <span class="badge">CHI</span></span><span class="sub">3P 44.7% now · true 38.9%</span><span class="pp"><span class="t-num">22.0 → <span class="hot-t">20.8</span></span><small>PPG now → at true</small></span></div>
+        <div class="row"><span class="rk">5</span><span class="nm">Anthony Edwards <span class="badge">MIN</span></span><span class="sub">3P 41.7% now · true 38.2%</span><span class="pp"><span class="t-num">24.8 → <span class="hot-t">23.7</span></span><small>PPG now → at true</small></span></div>
+      </div>
+      <div class="list" style="transform:rotate(.5deg)">
+        <div class="list-head cold">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><g stroke="#111" stroke-width="5" stroke-linecap="round"><path d="M32 6v52M9.5 19l45 26M9.5 45l45-26"/></g><g stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M32 6v52M9.5 19l45 26M9.5 45l45-26"/></g><circle cx="32" cy="32" r="7" fill="#0A6FD6" stroke="#111" stroke-width="3"/></svg>
+          <div><h3>Defrost</h3><p>Shooting below their true level: expect a bounce-back</p></div>
+        </div>
+        <div class="row"><span class="rk">1</span><span class="nm">Paul George <span class="badge">PHI</span></span><span class="sub">3P 32.0% now · true 38.5%</span><span class="pp"><span class="t-num">15.4 → <span class="cold-t">16.9</span></span><small>PPG now → at true</small></span></div>
+        <div class="row"><span class="rk">2</span><span class="nm">CJ McCollum <span class="badge">NO</span></span><span class="sub">3P 34.8% now · true 39.9%</span><span class="pp"><span class="t-num">21.4 → <span class="cold-t">22.8</span></span><small>PPG now → at true</small></span></div>
+        <div class="row"><span class="rk">3</span><span class="nm">Tyrese Maxey <span class="badge">PHI</span></span><span class="sub">3P 34.4% now · true 38.6%</span><span class="pp"><span class="t-num">25.9 → <span class="cold-t">27.2</span></span><small>PPG now → at true</small></span></div>
+        <div class="row"><span class="rk">4</span><span class="nm">Dejounte Murray <span class="badge">NO</span></span><span class="sub">3P 27.1% now · true 35.5%</span><span class="pp"><span class="t-num">16.0 → <span class="cold-t">17.3</span></span><small>PPG now → at true</small></span></div>
+        <div class="row"><span class="rk">5</span><span class="nm">Keegan Murray <span class="badge">SAC</span></span><span class="sub">3P 28.6% now · true 36.4%</span><span class="pp"><span class="t-num">11.6 → <span class="cold-t">12.9</span></span><small>PPG now → at true</small></span></div>
+      </div>
+    </div>
+    <p class="fine" style="margin-top:18px">Sample: the real lists as of 1 January 2025. "At true" keeps each player's shots and minutes as they are and resets only his makes to his true level.</p>
+  </section>
+
+  <!-- ======= RECEIPTS + TRASH TALK ======= -->
+  <section class="sec" aria-labelledby="rc-h">
+    <div class="sec-head"><h2 id="rc-h" class="t-head">The receipts</h2><span class="scrawl">we keep score on ourselves</span><span class="page">P. 4</span></div>
+    <div class="receipts">
+      <div class="receipt">
+        <h3>BucketWeights</h3>
+        <div class="fine" style="text-align:center;margin-bottom:10px">1 Jan 2025 calls · what happened next</div>
+        <div class="ln"><span>Jokić: 52.5% from 3 won't last</span><span class="hit">38.7% after ✓</span></div>
+        <div class="ln"><span>Paul George: better than 32%</span><span class="hit">39.9% after ✓</span></div>
+        <div class="ln"><span>Vučević: 45.3% won't last</span><span class="hit">35.9% after ✓</span></div>
+        <div class="ln"><span>Keegan Murray: better than 28.6%</span><span class="hit">38.2% after ✓</span></div>
+        <div class="ln"><span>Zach LaVine: 44.7% won't last</span><span class="miss">44.5% after ✗</span></div>
+        <div class="ln"><span>Tyrese Maxey: better than 34.4%</span><span class="miss">33.5% after ✗</span></div>
+        <div class="tot"><span>Big calls, 7 seasons</span><span>3 in 4 right</span></div>
+        <p class="fine" style="margin:.6rem 0 0">Tested on 1,031 player-seasons across seven seasons between 2016-17 and 2024-25: calls of 1.5+ points a game went the right way 74% of the time. We show the misses too.</p>
+      </div>
+      <div class="trash">
+        <h3>Trash talk</h3>
+        <p class="t-kicker">Letters to the editor (ok, questions we expect)</p>
+        <p class="q">"So he's DUE?"</p>
+        <p class="a">Nope. Nobody is owed buckets. His next three goes in at his true rate, about 38.5%, however cold he's been. The bounce-back is that rate catching up, not a make-up call.</p>
+        <p class="q">"Where's 'true level' from?"</p>
+        <p class="a">His last three seasons and this one, recent games counting more, pulled toward the league average until he's shot enough to trust. For threes that takes about 300 attempts; for free throws, about 25.</p>
+        <p class="q">"Can you see how open the shots were?"</p>
+        <p class="a">No. Public data doesn't track defenders. If a player's shots get harder (new team, bigger role) we'll call it luck when it isn't. We say so on every page.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ======================= STYLE GUIDE ======================= -->
+<section class="guide" aria-labelledby="g-h">
+  <div class="wrap">
+    <span class="sticker blue">Behind the scenes</span>
+    <h2 id="g-h" class="t-head" style="margin-top:14px">Style guide</h2>
+    <p style="max-width:44em">The look is a 1990s basketball magazine: newsprint, loud colour, cut-and-paste layouts, stickers and stamps, a marker in the margins. Everything above is built from the tokens and pieces below. Toggle the <b>Blacktop edition</b> at the top for dark mode.</p>
+
+    <h3>Colour</h3>
+    <div class="swatches">
+      <div class="sw"><div style="background:var(--paper)"></div><p><b>Newsprint</b>page · #F5F0E1 / #141414</p></div>
+      <div class="sw"><div style="background:var(--ink)"></div><p><b>Ink</b>text, rules, shadows</p></div>
+      <div class="sw"><div style="background:var(--red)"></div><p><b>Bucket red</b>brand, stamps, scrawls · text OK</p></div>
+      <div class="sw"><div style="background:var(--yellow)"></div><p><b>Highlighter</b>fills only, ink on top</p></div>
+      <div class="sw"><div style="background:var(--blue)"></div><p><b>Electric blue</b>cover panels, white on top</p></div>
+      <div class="sw"><div style="background:var(--pink)"></div><p><b>Sticker pink</b>stickers, Trash Talk</p></div>
+      <div class="sw"><div style="background:var(--hot)"></div><p><b>Hot</b>above true level · text: hot-ink</p></div>
+      <div class="sw"><div style="background:var(--cold)"></div><p><b>Cold</b>below true level · text: cold-ink</p></div>
+    </div>
+    <p class="fine">Hot and cold replace green and red: shooting luck isn't good or bad, it's above or below a player's level. Checked: every text pair passes WCAG AA (ink 16.6:1, red 5.2:1, hot-ink 5.5:1, cold-ink 5.9:1 on newsprint), and hot vs cold stays distinct under every colour-blindness type, in both editions.</p>
+
+    <h3>Type</h3>
+    <div class="specimens">
+      <div class="spec"><span class="t-label">Logo · Bowlby One SC</span><span class="t-logo" style="font-size:clamp(1.5rem,7vw,2.6rem)">BUCKETWEIGHTS</span></div>
+      <div class="spec"><span class="t-label">Headlines · Anton</span><span class="t-head" style="font-size:2.6rem">Cold, not broke.</span></div>
+      <div class="spec"><span class="t-label">Big numbers · Anton</span><span class="t-num" style="font-size:2.6rem">15.4 → 16.9</span></div>
+      <div class="spec"><span class="t-label">Kickers · Archivo Black, wide</span><span class="t-kicker">Cover story · Heat check · P. 3</span></div>
+      <div class="spec"><span class="t-label">Margin notes · Permanent Marker</span><span class="t-marker" style="font-size:1.5rem;color:var(--red)">at the same shots &amp; minutes</span></div>
+      <div class="spec"><span class="t-label">Body &amp; tables · Archivo</span><span>Archivo has a width axis: wide for kickers, condensed (75%) for labels and tables, normal for reading. <span class="tab">Tabular figures 0123456789.</span></span></div>
+    </div>
+
+    <h3>The kit</h3>
+    <div class="kit">
+      <span class="sticker">Sticker</span>
+      <span class="sticker pink">Hot take</span>
+      <span class="stamp">Robbery</span>
+      <span class="stamp toss">Coin flip</span>
+      <span class="stamp earned">Earned it</span>
+      <span class="badge">BOS</span>
+      <span class="pill hot-t">+1.6 hot</span>
+      <span class="pill cold-t">−1.5 cold</span>
+      <span class="t-num outline" style="font-size:3.6rem">23</span>
+      <span class="scrawl">margin scrawl</span>
+      <div class="burst" style="width:120px"><svg viewBox="0 0 100 100" aria-hidden="true"><polygon fill="#FFE600" stroke="#111" stroke-width="3" points="50,2 58,20 76,8 74,29 95,28 82,44 98,58 77,62 84,82 64,76 58,97 47,80 32,95 30,74 9,78 20,60 3,46 22,38 12,18 33,22 40,3"/></svg><span class="t-label">Starburst</span></div>
+      <div class="halftone" style="width:120px;height:80px;border:3px solid var(--ink)"></div>
+      <div style="position:relative;width:150px;height:70px;background:var(--paper);border:2px solid var(--ink)"><span class="tape" style="left:18px;top:-12px"></span><span class="fine" style="position:absolute;bottom:6px;left:8px">tape strip</span></div>
+    </div>
+
+    <h3>Rules</h3>
+    <ol class="rules">
+      <li><b>Cover loud, tables calm.</b> Stickers, stamps, bursts and tilts are for the cover story, section heads and one thing per card. Tables and numbers stay straight, on paper, in ink.</li>
+      <li><b>Hard shadows, square corners.</b> 3px ink borders and a 6px offset shadow. No soft shadows, no gradients except the heat/ice list heads.</li>
+      <li><b>Hot and cold, not green and red.</b> Above a player's true level is hot; below is cold. Colour is never the only signal: there's always a word, sign or icon.</li>
+      <li><b>Every projection says what it holds fixed</b> ("at the same shots and minutes") and has a range or sample size close by.</li>
+      <li><b>Never "due".</b> See the vocabulary below. The voice is loud; the stats are honest.</li>
+      <li><b>No logos, no photos.</b> Teams are ink abbreviation badges; players are big type. The halftone, court lines and graphics carry the visuals.</li>
+      <li><b>One spin, one scroll.</b> The ticker and the logo ball move; both stop for reduced-motion settings. Nothing else animates.</li>
+      <li><b>Phone first.</b> Every layout stacks to one column at 375px with a 16px gutter; tilts drop to zero on cards when stacked.</li>
+    </ol>
+
+    <h3>Vocabulary</h3>
+    <table class="vocab">
+      <thead><tr><th>Say</th><th>Don't say</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Defrost · bounce-back · better than this</td><td>Due · owed · bound to</td><td>A cold shooter isn't owed makes; his rate just catches up.</td></tr>
+        <tr><td>Heat check · cool-off · won't last</td><td>Fluke · fraud</td><td>Some of a hot streak is real; we only take off the part we expect to fade.</td></tr>
+        <tr><td>True level · his level</td><td>True talent (on the site)</td><td>Same idea, plainer words.</td></tr>
+        <tr><td>Robbery · coin flip · earned it</td><td>Rigged · deserved to lose</td><td>It's about shooting luck, not effort or refs.</td></tr>
+        <tr><td>At the same shots and minutes</td><td>Will score</td><td>Minutes and role move scoring more than shooting does.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer>BucketWeights is an independent fan site, not affiliated with the NBA or its teams. Data from ESPN's public feeds. Mock-up, October 2026: every number is real, from the 2024-25 season.</footer>
+</div>
+
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+  // theme toggle: system default, remembered per viewer
+  (function () {
+    const root = document.documentElement, btn = document.getElementById("themeBtn");
+    let saved = null;
+    try { saved = localStorage.getItem("bw-theme"); } catch (e) {}
+    if (saved) root.dataset.theme = saved;
+    const isDark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    const label = () => { btn.textContent = isDark() ? "Newsprint edition" : "Blacktop edition"; };
+    label();
+    btn.addEventListener("click", () => {
+      root.dataset.theme = isDark() ? "light" : "dark";
+      try { localStorage.setItem("bw-theme", root.dataset.theme); } catch (e) {}
+      label();
+    });
+  })();
+  // hover / tap tooltips on chart marks
+  (function () {
+    const tip = document.getElementById("tip");
+    document.querySelectorAll("[data-tip]").forEach((el) => {
+      const show = (e) => { tip.textContent = el.dataset.tip; tip.style.display = "block"; tip.style.left = Math.min(e.clientX + 14, innerWidth - 250) + "px"; tip.style.top = e.clientY + 14 + "px"; };
+      el.addEventListener("mousemove", show);
+      el.addEventListener("click", show);
+      el.addEventListener("mouseleave", () => (tip.style.display = "none"));
+    });
+  })();
+</script>
+</body>
+</html>
