@@ -1,0 +1,29 @@
+Prior weight k (attempts): {'2': 87, '3': 292, 'FT': 23}
+
+1031 player-seasons (≥15 games each side of 1 Jan, ≥8 FGA a game before it)
+method                            PPG RMSE  PPG MAE  pts/chance RMSE  slope   big swings: direction right, predicted vs actual change
+naive                                2.655    2.049           0.0816    nan   
+usual %, 3s+FTs                      2.653    2.047           0.0739   0.74   n= 38  68%  1.77 vs 1.36
+usual %, all shots                   2.684    2.073           0.0739   0.63   n=138  64%  1.97 vs 0.64
+true %, 3s+FTs                       2.610    2.011           0.0703   1.03   n=  5  80%  1.67 vs 1.85
+true %, all shots                    2.606    2.000           0.0647   0.91   n= 50  74%  1.79 vs 1.43
+
+2024-25 bounce back (3s+FTs, true talent):
+  Paul George: 15.4 PPG to 1 Jan, projected 16.9 (3P 32.0% vs true 38.5%); actual after: 17.0 (3P 39.9%)
+  CJ McCollum: 21.4 PPG to 1 Jan, projected 22.8 (3P 34.8% vs true 39.9%); actual after: 21.0 (3P 38.6%)
+  Tyrese Maxey: 25.9 PPG to 1 Jan, projected 27.2 (3P 34.4% vs true 38.6%); actual after: 26.7 (3P 33.5%)
+  Dejounte Murray: 16.0 PPG to 1 Jan, projected 17.3 (3P 27.1% vs true 35.5%); actual after: 19.1 (3P 32.6%)
+  Keegan Murray: 11.6 PPG to 1 Jan, projected 12.9 (3P 28.6% vs true 36.4%); actual after: 13.0 (3P 38.2%)
+  Scottie Barnes: 19.8 PPG to 1 Jan, projected 20.9 (3P 27.2% vs true 33.6%); actual after: 19.0 (3P 28.0%)
+  Miles Bridges: 17.9 PPG to 1 Jan, projected 19.1 (3P 27.9% vs true 34.8%); actual after: 21.3 (3P 33.4%)
+  Fred VanVleet: 15.3 PPG to 1 Jan, projected 16.4 (3P 32.9% vs true 37.2%); actual after: 12.8 (3P 37.5%)
+
+2024-25 cool off (3s+FTs, true talent):
+  Nikola Jokic: 30.9 PPG to 1 Jan, projected 29.3 (3P 52.5% vs true 39.5%); actual after: 27.3 (3P 38.7%)
+  De'Andre Hunter: 20.6 PPG to 1 Jan, projected 19.2 (3P 45.5% vs true 38.7%); actual after: 15.1 (3P 38.2%)
+  Nikola Vucevic: 20.6 PPG to 1 Jan, projected 19.2 (3P 45.3% vs true 35.6%); actual after: 16.8 (3P 35.9%)
+  Zach LaVine: 22.0 PPG to 1 Jan, projected 20.8 (3P 44.7% vs true 38.9%); actual after: 24.1 (3P 44.5%)
+  Anthony Edwards: 24.8 PPG to 1 Jan, projected 23.7 (3P 41.7% vs true 38.2%); actual after: 29.5 (3P 39.0%)
+  Norman Powell: 24.3 PPG to 1 Jan, projected 23.2 (3P 45.3% vs true 41.6%); actual after: 19.8 (3P 38.6%)
+  Jordan Poole: 21.2 PPG to 1 Jan, projected 20.2 (3P 40.6% vs true 36.1%); actual after: 19.9 (3P 36.6%)
+  Pascal Siakam: 19.9 PPG to 1 Jan, projected 18.9 (3P 43.8% vs true 36.9%); actual after: 20.2 (3P 34.7%)

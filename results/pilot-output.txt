@@ -1,0 +1,85 @@
+
+1. WINNER'S DESERVED CHANCE (share of games)
+  A 3s+FTs, shooter rates (proposal)         winner_under_50=0.291  winner_under_35=0.159  winner_under_25=0.088  winner_35_65=0.298  winner_65_plus=0.544  winner_90_plus=0.177  median_winner_chance=0.685
+  B all shots, shooter 3s/FTs + zone 2s      winner_under_50=0.445  winner_under_35=0.216  winner_under_25=0.105  winner_35_65=0.481  winner_65_plus=0.304  winner_90_plus=0.024  median_winner_chance=0.530
+  C 3s+FTs, league rates                     winner_under_50=0.300  winner_under_35=0.163  winner_under_25=0.092  winner_35_65=0.311  winner_65_plus=0.526  winner_90_plus=0.166  median_winner_chance=0.671
+  D all shots, league/zone rates             winner_under_50=0.464  winner_under_35=0.227  winner_under_25=0.113  winner_35_65=0.484  winner_65_plus=0.289  winner_90_plus=0.023  median_winner_chance=0.521
+
+2. CALIBRATION: deserved (home) vs actual regulation result; z = (actual − expected margin)/sd
+  A: mean pred 0.534 vs actual 0.564;  var(z) = 0.98 (1 = right spread);  ties actual/predicted = 2.21
+     [0.05→0.13, n=659]  [0.18→0.26, n=1188]  [0.33→0.43, n=1216]  [0.50→0.53, n=1747]  [0.68→0.68, n=1322]  [0.83→0.81, n=1447]  [0.95→0.91, n=1040]
+  B: mean pred 0.514 vs actual 0.564;  var(z) = 1.01 (1 = right spread);  ties actual/predicted = 2.42
+     [0.07→0.40, n=121]  [0.19→0.48, n=879]  [0.33→0.53, n=1674]  [0.50→0.54, n=2845]  [0.67→0.62, n=1830]  [0.82→0.65, n=1085]  [0.93→0.73, n=185]
+  C: mean pred 0.534 vs actual 0.564;  var(z) = 1.02 (1 = right spread);  ties actual/predicted = 2.18
+     [0.05→0.13, n=600]  [0.18→0.29, n=1177]  [0.33→0.42, n=1258]  [0.50→0.53, n=1768]  [0.67→0.67, n=1379]  [0.83→0.80, n=1438]  [0.95→0.90, n=999]
+  D: mean pred 0.514 vs actual 0.564;  var(z) = 1.06 (1 = right spread);  ties actual/predicted = 2.41
+     [0.07→0.46, n=114]  [0.19→0.51, n=893]  [0.33→0.55, n=1681]  [0.50→0.54, n=2834]  [0.67→0.60, n=1820]  [0.81→0.62, n=1082]  [0.93→0.72, n=195]
+
+3. LUCK IN WINS PER TEAM-SEASON (actual wins − deserved wins)
+  A: SD 5.59 wins (model's own SD 3.40); |luck| ≥ 3: 57%, ≥ 5: 39%
+     luckiest: ['2018 BOS: +13.5 (55 W vs 41.5)', '2017 BOS: +13.5 (53 W vs 39.5)', '2022 PHX: +13.4 (64 W vs 50.6)']
+     unluckiest: ['2022 IND: -14.8 (25 W vs 39.8)', '2025 PHI: -12.8 (24 W vs 36.8)', '2018 DAL: -12.2 (24 W vs 36.2)']
+  B: SD 9.70 wins (model's own SD 3.80); |luck| ≥ 3: 73%, ≥ 5: 60%
+     luckiest: ['2018 GS: +24.5 (57 W vs 32.5)', '2022 PHX: +23.8 (64 W vs 40.2)', '2017 GS: +22.8 (67 W vs 44.2)']
+     unluckiest: ['2024 POR: -20.9 (21 W vs 41.9)', '2019 CLE: -20.3 (19 W vs 39.3)', '2023 HOU: -20.2 (22 W vs 42.2)']
+  C: SD 6.76 wins (model's own SD 3.43); |luck| ≥ 3: 62%, ≥ 5: 49%
+     luckiest: ['2017 GS: +16.1 (67 W vs 50.9)', '2022 PHX: +15.1 (64 W vs 48.9)', '2023 PHI: +14.9 (54 W vs 39.1)']
+     unluckiest: ['2022 IND: -15.5 (25 W vs 40.5)', '2023 HOU: -15.2 (22 W vs 37.2)', '2017 PHX: -13.5 (24 W vs 37.5)']
+  D: SD 10.87 wins (model's own SD 3.80); |luck| ≥ 3: 75%, ≥ 5: 63%
+     luckiest: ['2017 GS: +30.1 (67 W vs 36.9)', '2018 GS: +29.7 (57 W vs 27.3)', '2022 PHX: +25.6 (64 W vs 38.4)']
+     unluckiest: ['2023 HOU: -24.3 (22 W vs 46.3)', '2024 POR: -21.7 (21 W vs 42.7)', '2024 DET: -20.9 (14 W vs 34.9)']
+
+4a. SPLIT-HALF RELIABILITY (odd vs even games, correlation across team-seasons)
+  raw=0.781  wpct=0.695  adj_A=0.788  adj_B=0.664  adj_C=0.756  adj_D=0.682  dwpct_A=0.729  dwpct_B=0.500  def_A=0.798  off_A=0.826  def_C=0.806
+
+4b. NEXT-GAME PREDICTION (leave-one-season-out logistic on rating gap; 7515 games; lower is better)
+  predictor                 log loss  Brier    games 10-20   games 21-41     games 42+   Δ log loss vs raw [95% CI]
+  raw margin                0.6271  0.2188        0.6438        0.6325        0.6195   +0.0000 [+0.0000, +0.0000]
+  win %                     0.6302  0.2202        0.6514        0.6335        0.6225   +0.0031 [+0.0003, +0.0061]
+  adjusted margin A         0.6324  0.2213        0.6442        0.6348        0.6278   +0.0053 [+0.0018, +0.0088]
+  adjusted margin B         0.6696  0.2384        0.6720        0.6723        0.6674   +0.0425 [+0.0361, +0.0489]
+  adjusted margin C         0.6402  0.2248        0.6506        0.6436        0.6355   +0.0131 [+0.0091, +0.0172]
+  adjusted margin D         0.6803  0.2436        0.6770        0.6812        0.6807   +0.0532 [+0.0463, +0.0600]
+  deserved win % A          0.6330  0.2215        0.6446        0.6342        0.6291   +0.0059 [+0.0023, +0.0095]
+  deserved win % B          0.6698  0.2385        0.6722        0.6723        0.6677   +0.0427 [+0.0358, +0.0492]
+  raw + adjusted B          0.6271  0.2188        0.6436        0.6328        0.6194   +0.0001 [-0.0004, +0.0005]
+  raw + adjusted A          0.6262  0.2184        0.6403        0.6308        0.6197   -0.0009 [-0.0019, +0.0001]
+  defence-only A            0.6284  0.2194        0.6417        0.6311        0.6231   +0.0013 [-0.0010, +0.0037]
+  offence-only A            0.6307  0.2204        0.6462        0.6359        0.6234   +0.0036 [+0.0012, +0.0060]
+  defence-only C            0.6289  0.2196        0.6417        0.6320        0.6235   +0.0018 [-0.0005, +0.0042]
+  raw + defence-only A      0.6263  0.2184        0.6412        0.6307        0.6197   -0.0008 [-0.0017, +0.0002]
+  closing spread (market)   0.5966  0.2053   (same games: raw 0.6271)
+
+4c. REST-OF-SEASON WIN % FROM THE FIRST N GAMES (leave-one-season-out linear fit; RMSE in win %, lower is better)
+  N=10: raw=0.1188  wpct=0.1219  adj_A=0.1239  adj_B=0.1408  adj_C=0.1288  adj_D=0.1449  dwpct_A=0.1254  dwpct_B=0.1408  def_A=0.1226  off_A=0.1217  def_C=0.1234
+  N=20: raw=0.1076  wpct=0.1086  adj_A=0.1153  adj_B=0.1408  adj_C=0.1225  adj_D=0.1468  dwpct_A=0.1166  dwpct_B=0.1408  def_A=0.1127  off_A=0.1142  def_C=0.1147
+  N=30: raw=0.1099  wpct=0.1093  adj_A=0.1161  adj_B=0.1413  adj_C=0.1224  adj_D=0.1488  dwpct_A=0.1167  dwpct_B=0.1412  def_A=0.1139  off_A=0.1150  def_C=0.1155
+  N=41: raw=0.1139  wpct=0.1146  adj_A=0.1220  adj_B=0.1492  adj_C=0.1278  adj_D=0.1567  dwpct_A=0.1224  dwpct_B=0.1493  def_A=0.1206  off_A=0.1195  def_C=0.1224
+
+5. 2024-25: BIGGEST ROBBERIES (lowest winner chance), variants A and B
+  A:
+    2024-12-26 MIA 89 @ ORL 88: winner had 1%
+    2025-03-16 ORL 108 @ CLE 103: winner had 4%
+    2024-12-19 UTAH 126 @ DET 119: winner had 4%
+    2025-03-01 GS 119 @ PHI 126: winner had 4%
+    2024-11-02 SAC 128 @ TOR 131: winner had 4% (OT)
+    2024-11-15 MEM 118 @ GS 123: winner had 4%
+    2024-11-08 LAC 107 @ SAC 98: winner had 5%
+    2025-01-04 NY 126 @ CHI 139: winner had 5%
+    2025-04-06 PHX 98 @ NY 112: winner had 5%
+    2024-12-07 MEM 127 @ BOS 121: winner had 5%
+  B:
+    2024-11-13 PHX 104 @ SAC 127: winner had 3%
+    2025-03-01 BKN 94 @ DET 115: winner had 3%
+    2025-01-22 DET 114 @ ATL 104: winner had 4%
+    2025-04-01 PHX 123 @ MIL 133: winner had 5%
+    2024-12-03 SA 93 @ PHX 104: winner had 6%
+    2025-03-04 HOU 102 @ IND 115: winner had 6%
+    2025-04-02 SAC 111 @ WSH 116: winner had 7%
+    2024-12-27 GS 92 @ LAC 102: winner had 8%
+    2024-12-19 CHA 114 @ WSH 123: winner had 8%
+    2025-04-13 DET 133 @ MIL 140: winner had 8% (OT)
+
+Bias check, actual − expected points per team-game: {'A': -0.36, 'B': 0.06, 'C': -0.12, 'D': 0.29}
+
+Saved /Users/westlake/AI Coding Projects/NBA Luck Site/results/pilot.json

@@ -1,0 +1,116 @@
+{
+  "host": "Joshuas-MacBook-Pro.local",
+  "date_probed": "20260410",
+  "at": "2026-10-08T19:01:00Z",
+  "results": [
+    {
+      "source": "espn scoreboard",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20260410",
+      "status": 200,
+      "seconds": 0.2,
+      "bytes": 207296,
+      "fields": {
+        "games": 15
+      }
+    },
+    {
+      "source": "espn summary (pbp+box)",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401811026",
+      "status": 200,
+      "seconds": 0.17,
+      "bytes": 416951,
+      "fields": {
+        "plays": 506,
+        "shooting_plays": 227,
+        "shots_with_coordinates": 178,
+        "has_participants": true,
+        "sample_types": [
+          "Alley Oop Dunk Shot",
+          "Away from Play Foul",
+          "Bad Pass\nTurnover",
+          "Coach's Challenge (Overturned)",
+          "Coach's Challenge (Stands)",
+          "Coach's Challenge (replaycenter)",
+          "Cutting Dunk Shot",
+          "Cutting Layup Shot",
+          "Defensive Rebound",
+          "Delay of Game",
+          "Double Personal Foul",
+          "Double Technical Foul",
+          "Driving Dunk Shot",
+          "Driving Finger Roll Layup",
+          "Driving Floating Bank Jump Shot",
+          "Driving Floating Jump Shot",
+          "Driving Hook Shot",
+          "Driving Layup Shot",
+          "Dunk Shot",
+          "End Game",
+          "End Period",
+          "Fade Away Jump Shot",
+          "Free Throw - 1 of 1",
+          "Free Throw - 1 of 2",
+          "Free Throw - 1 of 3",
+          "Free Throw - 2 of 2",
+          "Free Throw - 2 of 3",
+          "Free Throw - 3 of 3",
+          "Full Timeout",
+          "Heave Jump Shot",
+          "Hook Shot",
+          "Jump Shot",
+          "Jumpball",
+          "Kicked Ball",
+          "Layup Driving Reverse",
+          "Layup Shot",
+          "Layup Shot Putback",
+          "Loose Ball Foul",
+          "Lost Ball Turnover",
+          "Offensive Rebound"
+        ],
+        "has_boxscore_players": true
+      }
+    },
+    {
+      "source": "cdn.nba.com schedule",
+      "url": "https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json",
+      "status": 403,
+      "seconds": 0.22,
+      "bytes": 425
+    },
+    {
+      "source": "cdn.nba.com today's scoreboard",
+      "url": "https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json",
+      "status": 403,
+      "seconds": 0.19,
+      "bytes": 445
+    },
+    {
+      "source": "stats.nba.com scoreboard",
+      "url": "https://stats.nba.com/stats/scoreboardv3?GameDate=2026-04-10&LeagueID=00",
+      "status": "error",
+      "seconds": 15.25,
+      "error": "ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=15)"
+    },
+    {
+      "source": "sportsdataverse ESPN pbp release",
+      "url": "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/espn_nba_pbp",
+      "status": 200,
+      "seconds": 0.51,
+      "bytes": 131923,
+      "fields": {
+        "parquet_files": 25,
+        "latest": [
+          "play_by_play_2024.parquet",
+          "play_by_play_2025.parquet",
+          "play_by_play_2026.parquet"
+        ]
+      }
+    },
+    {
+      "source": "sportsdataverse pbp file download",
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_team_boxscores/team_box_2026.parquet",
+      "status": 200,
+      "seconds": 0.81,
+      "bytes": 140628
+    }
+  ]
+}

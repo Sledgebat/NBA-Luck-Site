@@ -1,0 +1,91 @@
+{
+  "k": {
+    "2": 87.1781413138245,
+    "3": 292.162308879045,
+    "FT": 22.649876214361417
+  },
+  "player_seasons": 1031,
+  "seasons": [
+    2017,
+    2018,
+    2019,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "methods": {
+    "naive": {
+      "ppg_rmse": 2.6546351466118674,
+      "ppg_mae": 2.04940968929713,
+      "pps_rmse": 0.08157301406248421,
+      "pps_slope": NaN,
+      "big_n": 0,
+      "big_direction_right": null,
+      "big_pred_change": null,
+      "big_actual_change_same_direction": null
+    },
+    "usual %, 3s+FTs": {
+      "ppg_rmse": 2.652703388965215,
+      "ppg_mae": 2.046938467611901,
+      "pps_rmse": 0.07388986539713466,
+      "pps_slope": 0.7418497984418125,
+      "big_n": 38,
+      "big_direction_right": 0.6842105263157895,
+      "big_pred_change": 1.7707670467371115,
+      "big_actual_change_same_direction": 1.3561054633600453
+    },
+    "usual %, all shots": {
+      "ppg_rmse": 2.6836663399147302,
+      "ppg_mae": 2.0733315395751264,
+      "pps_rmse": 0.07385300350087447,
+      "pps_slope": 0.6343428253121671,
+      "big_n": 138,
+      "big_direction_right": 0.6376811594202898,
+      "big_pred_change": 1.973090845065804,
+      "big_actual_change_same_direction": 0.6436518701431752
+    },
+    "true %, 3s+FTs": {
+      "ppg_rmse": 2.610347810051164,
+      "ppg_mae": 2.010682038702975,
+      "pps_rmse": 0.07027575101652274,
+      "pps_slope": 1.034391255874886,
+      "big_n": 5,
+      "big_direction_right": 0.8,
+      "big_pred_change": 1.6724065336327119,
+      "big_actual_change_same_direction": 1.8502361782930432
+    },
+    "true %, all shots": {
+      "ppg_rmse": 2.6058866819602327,
+      "ppg_mae": 2.0002223476159355,
+      "pps_rmse": 0.06465547610852461,
+      "pps_slope": 0.9077931365746601,
+      "big_n": 50,
+      "big_direction_right": 0.74,
+      "big_pred_change": 1.7880921280305557,
+      "big_actual_change_same_direction": 1.4323839133486336
+    }
+  },
+  "examples_2025": {
+    "bounce_back": [
+      "Paul George: 15.4 PPG to 1 Jan, projected 16.9 (3P 32.0% vs true 38.5%); actual after: 17.0 (3P 39.9%)",
+      "CJ McCollum: 21.4 PPG to 1 Jan, projected 22.8 (3P 34.8% vs true 39.9%); actual after: 21.0 (3P 38.6%)",
+      "Tyrese Maxey: 25.9 PPG to 1 Jan, projected 27.2 (3P 34.4% vs true 38.6%); actual after: 26.7 (3P 33.5%)",
+      "Dejounte Murray: 16.0 PPG to 1 Jan, projected 17.3 (3P 27.1% vs true 35.5%); actual after: 19.1 (3P 32.6%)",
+      "Keegan Murray: 11.6 PPG to 1 Jan, projected 12.9 (3P 28.6% vs true 36.4%); actual after: 13.0 (3P 38.2%)",
+      "Scottie Barnes: 19.8 PPG to 1 Jan, projected 20.9 (3P 27.2% vs true 33.6%); actual after: 19.0 (3P 28.0%)",
+      "Miles Bridges: 17.9 PPG to 1 Jan, projected 19.1 (3P 27.9% vs true 34.8%); actual after: 21.3 (3P 33.4%)",
+      "Fred VanVleet: 15.3 PPG to 1 Jan, projected 16.4 (3P 32.9% vs true 37.2%); actual after: 12.8 (3P 37.5%)"
+    ],
+    "cool_off": [
+      "Nikola Jokic: 30.9 PPG to 1 Jan, projected 29.3 (3P 52.5% vs true 39.5%); actual after: 27.3 (3P 38.7%)",
+      "De'Andre Hunter: 20.6 PPG to 1 Jan, projected 19.2 (3P 45.5% vs true 38.7%); actual after: 15.1 (3P 38.2%)",
+      "Nikola Vucevic: 20.6 PPG to 1 Jan, projected 19.2 (3P 45.3% vs true 35.6%); actual after: 16.8 (3P 35.9%)",
+      "Zach LaVine: 22.0 PPG to 1 Jan, projected 20.8 (3P 44.7% vs true 38.9%); actual after: 24.1 (3P 44.5%)",
+      "Anthony Edwards: 24.8 PPG to 1 Jan, projected 23.7 (3P 41.7% vs true 38.2%); actual after: 29.5 (3P 39.0%)",
+      "Norman Powell: 24.3 PPG to 1 Jan, projected 23.2 (3P 45.3% vs true 41.6%); actual after: 19.8 (3P 38.6%)",
+      "Jordan Poole: 21.2 PPG to 1 Jan, projected 20.2 (3P 40.6% vs true 36.1%); actual after: 19.9 (3P 36.6%)",
+      "Pascal Siakam: 19.9 PPG to 1 Jan, projected 18.9 (3P 43.8% vs true 36.9%); actual after: 20.2 (3P 34.7%)"
+    ]
+  }
+}
