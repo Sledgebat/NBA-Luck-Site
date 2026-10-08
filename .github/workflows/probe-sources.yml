@@ -1,8 +1,14 @@
 # Checks which NBA data sources answer from GitHub's servers (where the nightly updates will run).
-# Start it from the Actions tab with "Run workflow"; the report is in the run's log and saved as an artifact.
+# Runs by itself whenever the probe or this file is pushed, or from the Actions tab with "Run workflow".
+# The report is in the run's log and saved as an artifact.
 name: Probe data sources
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "research/00_probe_sources.py"
+      - ".github/workflows/probe-sources.yml"
   workflow_dispatch:
 
 jobs:
