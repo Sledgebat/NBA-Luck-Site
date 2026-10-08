@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BucketWeights Social Cards</title>
+<!-- Mock-up only. Real cards are rendered at 1080 × 1350 by the nightly run. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Gothic:wdth@75..100&family=Libre+Franklin:ital,wght@0,400..900;1,400..900&family=Courier+Prime:ital,wght@0,400;0,700;1,700&family=Big+Shoulders+Stencil+Display:wght@800;900&display=swap" rel="stylesheet">
+<style>
+:root { color-scheme: light; --page: #FAF8F2; --ink: #141414; --ink-2: #57524A; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; --page: #131313; --ink: #F2EFE6; --ink-2: #B5AFA3; } }
+:root[data-theme="dark"] { color-scheme: dark; --page: #131313; --ink: #F2EFE6; --ink-2: #B5AFA3; }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 400 1rem/1.5 "Libre Franklin", system-ui, sans-serif; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 24px 16px 60px; }
+h1 { font: 400 clamp(3rem, 8vw, 5rem)/.86 "League Gothic"; text-transform: uppercase; margin: 0 0 8px; }
+.intro { max-width: 48em; margin: 0 0 26px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(378px, 1fr)); gap: 34px 26px; }
+.item h2 { font: 400 1.7rem/.9 "League Gothic"; text-transform: uppercase; margin: 0 0 4px; }
+.item p { margin: 0 0 10px; font-size: .9rem; color: var(--ink-2); min-height: 4.2em; }
+.frame { width: 378px; height: 472.5px; overflow: hidden; box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 25%, transparent); }
+.card { width: 1080px; height: 1350px; transform: scale(.35); transform-origin: top left; position: relative; overflow: hidden; font-family: "Libre Franklin"; color: #141414; }
+@media (max-width: 420px) { .grid { grid-template-columns: 1fr; } .frame { width: 343px; height: 428.75px; } .card { transform: scale(.3176); } }
+
+.gothic { font-family: "League Gothic"; font-weight: 400; text-transform: uppercase; line-height: .86; }
+.stripes { height: 26px; background: repeating-linear-gradient(to bottom, currentColor 0 5px, transparent 5px 10px); }
+
+/* ---------- 1. Tonight's issue (SLAM cover) ---------- */
+.c-issue { background: #FFD200; padding: 34px 48px; }
+.c-issue .strap { display: flex; justify-content: space-between; font: 400 34px/1 "League Gothic"; text-transform: uppercase; letter-spacing: .04em; border-bottom: 6px solid #141414; padding-bottom: 12px; }
+.c-issue .strap b { color: #E2231A; font-weight: 400; }
+.c-issue .logo { font-size: 214px; color: #E2231A; margin: 12px 0 0; letter-spacing: -.005em; white-space: nowrap; }
+.c-issue .name { position: relative; text-align: right; margin-top: -78px; font: italic 900 230px/.8 "Libre Franklin"; text-transform: uppercase; letter-spacing: -.035em; color: #fff; text-shadow: 11px 11px 0 #141414; -webkit-text-stroke: 3px #141414; }
+.c-issue .who { text-align: right; font: 400 44px/1 "League Gothic"; text-transform: uppercase; letter-spacing: .04em; margin-top: 16px; }
+.c-issue .nums { font: 400 260px/.8 "League Gothic"; margin-top: 70px; letter-spacing: -.01em; }
+.c-issue .nums span { color: #E2231A; font-size: .55em; vertical-align: .3em; }
+.c-issue .cap { font: 800 26px/1.2 "Libre Franklin"; text-transform: uppercase; letter-spacing: .07em; margin-top: 16px; }
+.c-issue .cl { margin-top: 40px; width: 560px; }
+.c-issue .cl div { border-top: 5px solid #141414; padding: 12px 0 14px; }
+.c-issue .cl b { display: block; font: 400 64px/.86 "League Gothic"; text-transform: uppercase; color: #E2231A; }
+.c-issue .cl span { font: 800 26px/1.2 "Libre Franklin"; }
+.c-issue .main { position: absolute; left: 48px; bottom: 100px; font: 700 106px/.9 "Courier Prime"; letter-spacing: -.05em; color: #fff; text-shadow: 8px 8px 0 #141414; -webkit-text-stroke: 2px #141414; }
+.c-issue .foot { position: absolute; left: 48px; right: 48px; bottom: 34px; display: flex; justify-content: space-between; font: 400 34px/1 "League Gothic"; text-transform: uppercase; letter-spacing: .05em; }
+
+/* ---------- 2. Robbery of the night (black issue) ---------- */
+.c-rob { background: #141414; color: #fff; padding: 34px 48px; }
+.c-rob .strap { display: flex; justify-content: space-between; font: 400 34px/1 "League Gothic"; text-transform: uppercase; letter-spacing: .04em; border-bottom: 6px solid #fff; padding-bottom: 12px; }
+.c-rob .logo { font-size: 120px; color: #FF3B30; margin-top: 14px; }
+.c-rob .big { font: 900 250px/.82 "Big Shoulders Stencil Display"; text-transform: uppercase; color: #FFD200; margin-top: 40px; letter-spacing: -.01em; }
+.c-rob .score { font: 400 120px/.9 "League Gothic"; text-transform: uppercase; margin-top: 30px; }
+.c-rob .pct { display: flex; align-items: flex-end; gap: 28px; margin-top: 40px; }
+.c-rob .pct b { font: 400 280px/.78 "League Gothic"; color: #FF3B30; }
+.c-rob .pct span { font: 800 46px/1.15 "Libre Franklin"; padding-bottom: 14px; }
+.c-rob .lines { margin-top: 46px; border-top: 4px solid #fff; padding-top: 22px; font: 700 38px/1.45 "Libre Franklin"; }
+.c-rob .lines i { font-style: normal; color: #FFD200; }
+.c-rob .foot { position: absolute; left: 48px; right: 48px; bottom: 34px; font: 400 32px/1 "League Gothic"; text-transform: uppercase; letter-spacing: .05em; color: #B5AFA3; display: flex; justify-content: space-between; }
+
+/* ---------- 3. Defrost card back (vintage trading card) ---------- */
+.c-back { background: #CFC8B8; padding: 46px; }
+.c-back .inner { position: absolute; inset: 30px; border: 6px solid #1D3A6E; padding: 34px 36px; }
+.c-back .head { display: grid; grid-template-columns: 150px 1fr; gap: 30px; align-items: center; border-bottom: 8px solid #C8102E; padding-bottom: 24px; }
+.c-back .no { width: 150px; height: 150px; border-radius: 50%; background: #C8102E; color: #F2EFE6; display: grid; place-items: center; text-align: center; font: 400 38px/.95 "League Gothic"; text-transform: uppercase; }
+.c-back .nm { font: 400 132px/.84 "League Gothic"; text-transform: uppercase; color: #1D3A6E; }
+.c-back .bio { font: 400 30px/1.3 "Courier Prime"; margin-top: 10px; }
+.c-back table { width: 100%; border-collapse: collapse; margin-top: 26px; font: 400 34px/1.5 "Courier Prime"; }
+.c-back th { font: 900 22px/1 "Libre Franklin"; letter-spacing: .08em; text-transform: uppercase; color: #C8102E; text-align: right; padding: 8px 10px; border-bottom: 4px solid #1D3A6E; }
+.c-back th:first-child, .c-back td:first-child { text-align: left; }
+.c-back td { text-align: right; padding: 4px 10px; border-bottom: 2px solid rgba(29,58,110,.25); }
+.c-back tr.now td { font-weight: 700; background: rgba(10,111,214,.16); }
+.c-back tr.lvl td { font-weight: 700; color: #1D3A6E; border-top: 4px solid #1D3A6E; border-bottom: 0; }
+.c-back .trivia { margin-top: 30px; border: 4px solid #1D3A6E; background: #FAF8F2; padding: 20px 24px; font: 500 32px/1.35 "Libre Franklin"; }
+.c-back .trivia b { display: block; font: 400 50px/1 "League Gothic"; text-transform: uppercase; color: #C8102E; margin-bottom: 6px; }
+.c-back .foot { position: absolute; left: 36px; right: 36px; bottom: 26px; display: flex; justify-content: space-between; font: 400 30px/1 "League Gothic"; text-transform: uppercase; letter-spacing: .05em; color: #1D3A6E; }
+
+/* ---------- 4. Heat check, Street & Smith's yearbook style ---------- */
+.c-year { background: #13294B; color: #fff; padding: 46px 52px; }
+.c-year .top { font: 900 30px/1.1 "Libre Franklin"; text-transform: uppercase; letter-spacing: .02em; display: flex; justify-content: space-between; }
+.c-year .title { font: italic 900 220px/.86 "Libre Franklin"; letter-spacing: -.045em; color: #7FCBEA; -webkit-text-stroke: 5px #fff; paint-order: stroke fill; margin: 20px 0 0 -10px; transform: skewX(-6deg); transform-origin: left bottom; }
+.c-year .sub { display: flex; justify-content: space-between; font: 900 32px/1 "Libre Franklin"; text-transform: uppercase; margin-top: 16px; }
+.c-year ul { list-style: none; margin: 34px 0 0; padding: 0; }
+.c-year li { margin: 0 0 20px; }
+.c-year li .p { display: inline-block; font: 400 66px/.9 "League Gothic"; text-transform: uppercase; border-bottom: 5px solid #7FCBEA; padding-bottom: 6px; }
+.c-year li .s { display: block; font: 700 29px/1.25 "Libre Franklin"; margin-top: 8px; color: #E3EEF7; }
+.c-year .foot { position: absolute; left: 52px; right: 52px; bottom: 40px; font: 900 28px/1.2 "Libre Franklin"; text-transform: uppercase; letter-spacing: .04em; display: flex; justify-content: space-between; color: #7FCBEA; }
+
+/* ---------- 5. Last night, newspaper agate ---------- */
+.c-agate { background: #EFEADB; padding: 46px 54px; }
+.c-agate .flag { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 8px double #141414; padding-bottom: 14px; }
+.c-agate .flag b { font: 400 120px/.82 "League Gothic"; text-transform: uppercase; }
+.c-agate .flag span { font: 700 28px/1.2 "Courier Prime"; text-align: right; }
+.c-agate .row { display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: baseline; padding: 19px 0; border-bottom: 2px solid rgba(20,20,20,.25); }
+.c-agate .row .g { font: 800 40px/1.1 "Libre Franklin"; }
+.c-agate .row .v { font: 400 46px/1 "League Gothic"; text-transform: uppercase; letter-spacing: .02em; white-space: nowrap; }
+.c-agate .row .v small { font: 700 30px/1 "Courier Prime"; text-transform: none; letter-spacing: 0; margin-left: 10px; color: #141414; }
+.c-agate .rob { color: #C11B14; } .c-agate .coin { color: #0A5BB0; } .c-agate .earn { color: #141414; }
+.c-agate .key { margin-top: 22px; font: 700 26px/1.35 "Courier Prime"; }
+.c-agate .best { margin-top: 26px; background: #141414; color: #fff; padding: 18px 22px; font: 700 30px/1.3 "Libre Franklin"; }
+.c-agate .best b { font: 400 44px/1 "League Gothic"; text-transform: uppercase; color: #FFD200; display: block; margin-bottom: 4px; }
+.c-agate .foot { position: absolute; left: 54px; right: 54px; bottom: 34px; display: flex; justify-content: space-between; font: 400 34px/1 "League Gothic"; text-transform: uppercase; letter-spacing: .05em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Social cards</h1>
+  <p class="intro">Two families. <b>SLAM covers</b> for the nightly cards: tonight's issue and the robbery of the night, each in that issue's colour. <b>Vintage basketball print</b> for player cards: card backs for a single player, Street &amp; Smith's yearbook covers for the weekly lists, newspaper agate for the night's scores. All 1080 × 1350, every number real (2024-25).</p>
+
+  <div class="grid">
+    <!-- 1 -->
+    <section class="item">
+      <h2>1 · Tonight's issue</h2>
+      <p>SLAM cover. Every morning. The cover player's name overlaps the logo; the main line's face rotates by issue.</p>
+      <div class="frame"><div class="card c-issue">
+        <div class="strap"><span>The shooting-luck basketball daily</span><span>No. 79 <b>★</b> 1 Jan 2025</span></div>
+        <div class="gothic logo">BucketWeights</div>
+        <div class="name">George</div>
+        <div class="who">Paul George, 76ers · 3PT 32.0%, his level 38.5%</div>
+        <div class="nums">15.4<span>→</span>16.9</div>
+        <div class="cap">Points a game now → at his true shooting<br>Same shots &amp; minutes</div>
+        <div class="cl"><div><b>Heat check</b><span>Jokić: 52.5% from three won't last</span></div><div><b>Robbery!</b><span>Heat 89, Magic 88</span></div></div>
+        <div class="main">cold, not broke.</div>
+        <div class="foot"><span>bucketweights.com</span><span>Free, every night</span></div>
+      </div></div>
+    </section>
+
+    <!-- 2 -->
+    <section class="item">
+      <h2>2 · Robbery of the night</h2>
+      <p>SLAM cover, black issue. Only when a winner had under 35%. Stencil face for the big word.</p>
+      <div class="frame"><div class="card c-rob">
+        <div class="strap"><span>Last night</span><span>Thu 26 Dec 2024</span></div>
+        <div class="gothic logo">BucketWeights</div>
+        <div class="big">Robbery!</div>
+        <div class="score">Heat 89, Magic 88</div>
+        <div class="pct"><b>1%</b><span>Miami's chance of winning<br>at both teams' true shooting</span></div>
+        <div class="lines">From three: Heat <i>15-30</i> (expected 11.4) · Magic <i>5-29</i> (expected 10.5)<br>Swung it: Alec Burks, 3-for-3 from deep</div>
+        <div class="foot"><span>bucketweights.com</span><span>Earned it? Not this one.</span></div>
+      </div></div>
+    </section>
+
+    <!-- 3 -->
+    <section class="item">
+      <h2>3 · Defrost: the card back</h2>
+      <p>Vintage trading card back, two inks on grey board. One player, his seasons, and his true level now.</p>
+      <div class="frame"><div class="card c-back">
+        <div class="inner">
+          <div class="head">
+            <div class="no">Defrost<br>No. 1</div>
+            <div><div class="nm">Paul George</div><div class="bio">FORWARD · PHILADELPHIA 76ERS<br>3PT LEVEL 38.5% (LIKELY 36.6–40.3)</div></div>
+          </div>
+          <table>
+            <thead><tr><th>Season</th><th>Tm</th><th>PPG</th><th>3PT</th><th>3PT%</th></tr></thead>
+            <tbody>
+              <tr><td>2016-17</td><td>IND</td><td>23.5</td><td>197-501</td><td>39.3</td></tr>
+              <tr><td>2017-18</td><td>OKC</td><td>21.8</td><td>247-603</td><td>41.0</td></tr>
+              <tr><td>2018-19</td><td>OKC</td><td>27.9</td><td>296-740</td><td>40.0</td></tr>
+              <tr><td>2019-20</td><td>LAC</td><td>21.5</td><td>151-369</td><td>40.9</td></tr>
+              <tr><td>2020-21</td><td>LAC</td><td>23.2</td><td>177-410</td><td>43.2</td></tr>
+              <tr><td>2021-22</td><td>LAC</td><td>24.5</td><td>93-256</td><td>36.3</td></tr>
+              <tr><td>2022-23</td><td>LAC</td><td>23.6</td><td>159-424</td><td>37.5</td></tr>
+              <tr><td>2023-24</td><td>LAC</td><td>22.5</td><td>246-582</td><td>42.3</td></tr>
+              <tr class="now"><td>2024-25*</td><td>PHI</td><td>15.4</td><td>39-122</td><td>32.0</td></tr>
+              <tr class="lvl"><td colspan="2">At his level</td><td>16.9</td><td></td><td>38.5</td></tr>
+            </tbody>
+          </table>
+          <div class="trivia"><b>Did you know?</b>He made about 40% of his threes over the eight seasons before this one. That's why his level sits at 38.5%, not 32%.</div>
+          <div class="foot"><span>*To 1 Jan 2025 · same shots &amp; minutes</span><span>bucketweights.com</span></div>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- 4 -->
+    <section class="item">
+      <h2>4 · Heat check: the yearbook</h2>
+      <p>Street &amp; Smith's yearbook cover: slanted title, coverlines as an underlined contents list. Weekly lists.</p>
+      <div class="frame"><div class="card c-year">
+        <div class="top"><span>BucketWeights' Official</span><span>Midseason · 1 Jan 2025</span></div>
+        <div class="title">Heat Check</div>
+        <div class="sub"><span>Hot now · Most complete · Most honest</span><span>Free</span></div>
+        <ul>
+          <li><span class="p">Nikola Jokić</span><span class="s">52.5% from three, level 39.5% · 30.9 → 29.3 PPG</span></li>
+          <li><span class="p">De'Andre Hunter</span><span class="s">45.5%, level 38.7% · 20.6 → 19.2</span></li>
+          <li><span class="p">Nikola Vučević</span><span class="s">45.3%, level 35.6% · 20.6 → 19.2</span></li>
+          <li><span class="p">Zach LaVine</span><span class="s">44.7%, level 38.9% · 22.0 → 20.8</span></li>
+          <li><span class="p">Anthony Edwards</span><span class="s">41.7%, level 38.2% · 24.8 → 23.7</span></li>
+        </ul>
+        <div class="foot"><span>Same shots &amp; minutes</span><span>bucketweights.com</span></div>
+      </div></div>
+    </section>
+
+    <!-- 5 -->
+    <section class="item">
+      <h2>5 · Last night: the agate</h2>
+      <p>Newspaper box-score page. Every game of the night with its verdict and the winner's chance.</p>
+      <div class="frame"><div class="card c-agate">
+        <div class="flag"><b>Last night</b><span>THU 26 DEC 2024<br>9 GAMES</span></div>
+        <div class="row"><span class="g">Heat 89, Magic 88</span><span class="v rob">Robbery<small>1%</small></span></div>
+        <div class="row"><span class="g">Pistons 114, Kings 113</span><span class="v coin">Coin flip<small>42%</small></span></div>
+        <div class="row"><span class="g">Nets 111, Bucks 105</span><span class="v coin">Coin flip<small>50%</small></span></div>
+        <div class="row"><span class="g">Rockets 128, Pelicans 111</span><span class="v earn">Earned it<small>66%</small></span></div>
+        <div class="row"><span class="g">Thunder 120, Pacers 114</span><span class="v earn">Earned it<small>77%</small></span></div>
+        <div class="row"><span class="g">Trail Blazers 122, Jazz 120</span><span class="v earn">Earned it<small>82%</small></span></div>
+        <div class="row"><span class="g">Wizards 113, Hornets 110</span><span class="v earn">Earned it<small>87%</small></span></div>
+        <div class="row"><span class="g">Hawks 141, Bulls 133</span><span class="v earn">Earned it<small>92%</small></span></div>
+        <div class="row"><span class="g">Grizzlies 155, Raptors 126</span><span class="v earn">Earned it<small>96%</small></span></div>
+        <div class="key">% = the winner's chance at both teams' true shooting.</div>
+        <div class="best"><b>Robbery of the night</b>Orlando shot 5-for-29 from three and lost by one.</div>
+        <div class="foot"><span>bucketweights.com</span><span>Who earned it ★ Who got lucky</span></div>
+      </div></div>
+    </section>
+  </div>
+</div>
+</body>
+</html>

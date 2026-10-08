@@ -4,553 +4,443 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BucketWeights Style Guide</title>
-<!-- Mock-up only: the real site self-hosts these fonts (Fontsource), like HockeyWeights. -->
+<!-- Mock-up only: the real site self-hosts these fonts. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&family=Bowlby+One+SC&family=Permanent+Marker&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=League+Gothic:wdth@75..100&family=Libre+Franklin:ital,wght@0,400..900;1,400..900&family=Courier+Prime:ital,wght@0,400;0,700;1,700&family=Big+Shoulders+Stencil+Display:wght@800;900&display=swap" rel="stylesheet">
 <style>
 /* =====================================================================
-   BucketWeights — "Newsprint" (light) and "Blacktop" (dark) editions.
-   Every colour is a token; components only use tokens.
+   BucketWeights. Direction: "the type is the photo".
+   Taken from real 90s SLAM covers (flat issue colour, huge logo with the
+   cover star overlapping it, stars and stripe rules, a different face for
+   each issue's main coverline) and older basketball print (yearbooks,
+   card backs, newspaper agate). No tape, stamps, grain or tilts.
    ===================================================================== */
 :root {
   color-scheme: light;
-  --paper: #F5F0E1;          /* newsprint page */
-  --paper-2: #FFFDF6;        /* glossy insert / cards */
-  --paper-3: #E9E1CB;        /* sunken */
-  --ink: #111111;
-  --ink-2: #5A5246;          /* muted text, 6.8:1 on paper */
-  --red: #C8102E;            /* brand red: fills + text (5.2:1 on paper) */
-  --yellow: #FFE600;         /* highlighter: fills only, ink text on it */
-  --blue: #0047FF;           /* electric blue: fills, white text on it */
-  --pink: #FF2E93;           /* sticker pink: fills, ink text on it */
-  --on-red: #FFFFFF;
-  --on-blue: #FFFFFF;
-  --hot: #E8410C;            /* chart mark: hotter than his true level */
-  --cold: #0A6FD6;           /* chart mark: colder than his true level */
-  --hot-ink: #B33200;        /* hot as small text, 5.5:1 */
-  --cold-ink: #0A5BB0;       /* cold as small text, 5.9:1 */
-  --rule: #111111;
-  --halftone: rgba(17,17,17,.22);
-  --grain-opacity: .16;
-  --shadow: #111111;
+  --page: #FAF8F2;            /* magazine page */
+  --news: #EFEADB;            /* newsprint, for agate sections */
+  --board: #CFC8B8;           /* card-back grey board */
+  --ink: #141414;
+  --ink-2: #57524A;           /* 7.1:1 on page */
+  --red: #E2231A;             /* SLAM red: logo, fills, type 24px+ */
+  --red-ink: #C11B14;         /* red for small text */
+  --yellow: #FFD200;
+  --cyan: #00A3E0;
+  --hot: #E8410C; --cold: #0A6FD6;          /* chart marks */
+  --hot-ink: #B33200; --cold-ink: #0A5BB0;  /* small text */
+  --issue: #FFD200;           /* tonight's cover colour (rotates by issue) */
+  --rule: #141414;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --paper: #141414; --paper-2: #1F1F1F; --paper-3: #0B0B0B;
-    --ink: #F5F0E1; --ink-2: #B9B0A0;
-    --red: #FF4A5E; --yellow: #FFE600; --blue: #2A55E8; --pink: #FF2E93;
-    --on-red: #111111; --on-blue: #FFFFFF;
+    --page: #131313; --news: #1C1B19; --board: #2A2824;
+    --ink: #F2EFE6; --ink-2: #B5AFA3;
+    --red: #FF3B30; --red-ink: #FF6B5F;
     --hot: #F2541B; --cold: #2A9BE8; --hot-ink: #FF7A45; --cold-ink: #5CB8FF;
-    --rule: #F5F0E1; --halftone: rgba(245,240,225,.16); --grain-opacity: .10; --shadow: #000000;
+    --rule: #F2EFE6;
   }
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --paper: #141414; --paper-2: #1F1F1F; --paper-3: #0B0B0B;
-  --ink: #F5F0E1; --ink-2: #B9B0A0;
-  --red: #FF4A5E; --yellow: #FFE600; --blue: #2A55E8; --pink: #FF2E93;
-  --on-red: #111111; --on-blue: #FFFFFF;
+  --page: #131313; --news: #1C1B19; --board: #2A2824;
+  --ink: #F2EFE6; --ink-2: #B5AFA3;
+  --red: #FF3B30; --red-ink: #FF6B5F;
   --hot: #F2541B; --cold: #2A9BE8; --hot-ink: #FF7A45; --cold-ink: #5CB8FF;
-  --rule: #F5F0E1; --halftone: rgba(245,240,225,.16); --grain-opacity: .10; --shadow: #000000;
+  --rule: #F2EFE6;
 }
 
-/* ---------- base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
-body {
-  margin: 0; background: var(--paper); color: var(--ink);
-  font-family: "Archivo", system-ui, sans-serif; font-size: 1rem; line-height: 1.45;
-  overflow-x: hidden;
-}
-/* newsprint grain over everything */
-body::after {
-  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: var(--grain-opacity);
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  mix-blend-mode: multiply;
-}
-:root[data-theme="dark"] body::after { mix-blend-mode: screen; }
-:root[data-theme="dark"] .tape { mix-blend-mode: normal; opacity: .85; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body::after { mix-blend-mode: screen; } :root:not([data-theme="light"]) .tape { mix-blend-mode: normal; opacity: .85; } }
-a { color: inherit; }
-.wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 400 1rem/1.5 "Libre Franklin", system-ui, sans-serif; overflow-x: hidden; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+.gothic { font-family: "League Gothic", "Oswald", sans-serif; font-weight: 400; text-transform: uppercase; line-height: .86; letter-spacing: .005em; }
+.franklin-black { font-family: "Libre Franklin"; font-weight: 900; }
+.type { font-family: "Courier Prime", monospace; }
 .tab { font-variant-numeric: tabular-nums; }
-.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.star { color: var(--red); }
 
-/* ---------- type roles ---------- */
-.t-logo   { font-family: "Bowlby One SC", "Anton", sans-serif; letter-spacing: -.01em; line-height: .86; }
-.t-head   { font-family: "Anton", sans-serif; text-transform: uppercase; line-height: .9; letter-spacing: .005em; }
-.t-kicker { font-family: "Archivo", sans-serif; font-weight: 900; font-stretch: 112%; text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; }
-.t-marker { font-family: "Permanent Marker", cursive; line-height: 1.1; }
-.t-label  { font-family: "Archivo", sans-serif; font-weight: 800; font-stretch: 75%; text-transform: uppercase; letter-spacing: .06em; font-size: .78rem; }
-.t-num    { font-family: "Anton", sans-serif; font-variant-numeric: tabular-nums; line-height: .9; }
-.outline  { color: transparent; -webkit-text-stroke: 2px var(--ink); paint-order: stroke fill; }
+/* ---------- stripe rules: SLAM's stacked bars ---------- */
+.stripes { height: 14px; background: repeating-linear-gradient(to bottom, var(--rule) 0 3px, transparent 3px 5.5px); }
 
-/* ---------- graphic kit ---------- */
-.halftone { background-image: radial-gradient(var(--halftone) 1.4px, transparent 1.6px); background-size: 9px 9px; }
-.halftone-lg { background-image: radial-gradient(rgba(0,0,0,.28) 2.6px, transparent 2.9px); background-size: 14px 14px; }
-.hard { box-shadow: 6px 6px 0 var(--shadow); border: 3px solid var(--ink); }
-.tape {
-  position: absolute; width: 110px; height: 30px; background: rgba(255,230,0,.72);
-  border-left: 2px dashed rgba(0,0,0,.12); border-right: 2px dashed rgba(0,0,0,.12);
-  transform: rotate(-6deg); z-index: 3; mix-blend-mode: multiply;
-}
-.torn-top { position: relative; }
-.torn-top::before {
-  content: ""; position: absolute; left: 0; right: 0; top: -13px; height: 14px; background: inherit;
-  clip-path: polygon(0 100%,0 60%,3% 20%,6% 70%,9% 30%,13% 80%,17% 25%,21% 65%,25% 15%,29% 70%,33% 35%,37% 85%,41% 30%,45% 60%,49% 10%,53% 70%,57% 30%,61% 75%,65% 20%,69% 65%,73% 35%,77% 80%,81% 25%,85% 70%,89% 30%,93% 75%,97% 25%,100% 55%,100% 100%);
-}
-.sticker {
-  display: inline-block; padding: .35rem .7rem .3rem; border: 3px solid var(--ink); background: var(--yellow); color: #111;
-  font-family: "Bowlby One SC", sans-serif; font-size: 1rem; line-height: 1; transform: rotate(-3deg); box-shadow: 4px 4px 0 var(--shadow);
-}
-.sticker.pink { background: var(--pink); }
-.sticker.blue { background: var(--blue); color: var(--on-blue); }
-.stamp {
-  display: inline-block; font-family: "Bowlby One SC", sans-serif; color: var(--red); border: 4px solid var(--red);
-  padding: .2rem .55rem .1rem; font-size: 1.55rem; line-height: 1; transform: rotate(-9deg); letter-spacing: .02em;
-  border-radius: 4px; opacity: .92;
-  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60'><filter id='r'><feTurbulence baseFrequency='.55' numOctaves='2'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.7'/></filter><rect width='120' height='60' filter='url(%23r)'/></svg>");
-          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60'><filter id='r'><feTurbulence baseFrequency='.55' numOctaves='2'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.7'/></filter><rect width='120' height='60' filter='url(%23r)'/></svg>");
-}
-.stamp.earned { color: var(--ink); border-color: var(--ink); transform: rotate(5deg); }
-.stamp.toss { color: var(--blue); border-color: var(--blue); transform: rotate(-4deg); }
-:root[data-theme="dark"] .stamp.toss { color: #8FA8FF; border-color: #8FA8FF; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .stamp.toss { color: #8FA8FF; border-color: #8FA8FF; } }
-.burst { position: relative; display: grid; place-items: center; width: 150px; aspect-ratio: 1; }
-.burst svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.burst span { position: relative; text-align: center; color: #111; transform: rotate(-8deg); }
-.badge {
-  display: inline-block; min-width: 2.9em; text-align: center; padding: .12rem .3rem .05rem; background: var(--ink); color: var(--paper);
-  font-family: "Archivo", sans-serif; font-weight: 900; font-stretch: 80%; font-size: .72rem; letter-spacing: .05em; line-height: 1.25;
-}
-.pill { display: inline-block; padding: .05rem .45rem; font-weight: 900; font-stretch: 85%; border: 2px solid currentColor; border-radius: 99px; font-size: .82rem; }
-.hot-t { color: var(--hot-ink); } .cold-t { color: var(--cold-ink); }
-.scrawl { font-family: "Permanent Marker", cursive; color: var(--red); font-size: 1.15rem; transform: rotate(-4deg); display: inline-block; }
+/* ---------- site bar (above the cover) ---------- */
+.bar { display: flex; align-items: center; gap: 18px; padding: 10px 0; flex-wrap: wrap; }
+.bar .mini { font-size: 1.9rem; color: var(--red); }
+.bar nav { display: flex; gap: 18px; flex-wrap: wrap; }
+.bar nav a { font-family: "League Gothic"; text-transform: uppercase; font-size: 1.35rem; letter-spacing: .03em; text-decoration: none; color: var(--ink); padding-bottom: 2px; border-bottom: 3px solid transparent; }
+.bar nav a[aria-current] { border-color: var(--red); }
+.theme-btn { margin-left: auto; font: 700 .72rem/1 "Libre Franklin"; text-transform: uppercase; letter-spacing: .1em; background: none; color: var(--ink); border: 2px solid var(--ink); padding: .5rem .7rem; cursor: pointer; }
 
-/* ---------- ticker ---------- */
-.ticker { background: var(--red); color: var(--on-red); border-bottom: 3px solid var(--ink); overflow: hidden; white-space: nowrap; }
-.ticker-track { display: inline-flex; gap: 2.5rem; padding: .45rem 0; animation: tick 38s linear infinite; }
-.ticker-track span { font-weight: 900; font-stretch: 110%; text-transform: uppercase; letter-spacing: .06em; font-size: .82rem; }
-.ticker-track b { color: var(--yellow); }
-:root[data-theme="dark"] .ticker-track b { color: #111; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ticker-track b { color: #111; } }
-@keyframes tick { to { transform: translateX(-50%); } }
-@media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
+/* =====================================================================
+   THE COVER. One flat issue colour; logo across the top; the cover
+   star's name overlapping it; coverline stack; one big main line.
+   It is always printed: same colours in both editions.
+   ===================================================================== */
+.cover { position: relative; background: var(--issue); color: #141414; overflow: hidden; padding: 14px clamp(14px, 3vw, 34px) 26px; }
+.strap { display: flex; justify-content: space-between; gap: 4px 12px; flex-wrap: wrap; font-family: "League Gothic"; text-transform: uppercase; font-size: clamp(.95rem, 1.6vw, 1.25rem); letter-spacing: .05em; border-bottom: 3px solid #141414; padding-bottom: 6px; }
+.strap .star { color: #E2231A; }
+.mast { position: relative; display: flex; align-items: flex-start; margin-top: 6px; }
+.wordmark { font-family: "League Gothic"; font-weight: 400; font-variation-settings: "wdth" 100; text-transform: uppercase; color: #E2231A; font-size: min(15.2rem, calc((100vw - 64px - 2.6rem) / 4.6)); line-height: .78; white-space: nowrap; letter-spacing: -.005em; margin: 0; }
+.mast .stars { display: flex; flex-direction: column; gap: .12em; font-size: clamp(1.4rem, 3.2vw, 2.6rem); line-height: 1; color: #141414; margin: .25em 0 0 .18em; }
+/* the cover star's name sits in front of the logo, like a player's head on SLAM */
+.surname { position: relative; z-index: 2; margin: clamp(-5.4rem, -9.5vw, -2.4rem) 0 0 auto; width: max-content; max-width: 100%; text-align: right; }
+.surname span { display: block; font-family: "Libre Franklin"; font-weight: 900; font-style: italic; text-transform: uppercase; color: #FFFFFF; font-size: clamp(3.6rem, 13vw, 10.5rem); line-height: .82; letter-spacing: -.03em; text-shadow: .045em .045em 0 #141414; -webkit-text-stroke: .012em #141414; }
+.surname small { display: block; font-family: "League Gothic"; text-transform: uppercase; font-size: clamp(1.2rem, 2.4vw, 1.9rem); letter-spacing: .04em; margin-top: .15em; }
+.cover-body { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 26px; margin-top: 16px; align-items: end; }
+.lines { list-style: none; margin: 0; padding: 0; }
+.lines li { padding: 10px 0; border-top: 3px solid #141414; }
+.lines li:first-child { border-top: 0; }
+.lines .k { display: block; font-family: "League Gothic"; text-transform: uppercase; font-size: clamp(2rem, 4.4vw, 3.3rem); line-height: .85; color: #E2231A; }
+.lines .k.ink { color: #141414; }
+.lines .d { display: block; font-weight: 800; font-size: clamp(.95rem, 1.5vw, 1.12rem); line-height: 1.2; margin-top: 4px; }
+.lines .pg { font-family: "League Gothic"; font-weight: 400; font-size: 1.1rem; letter-spacing: .05em; margin-left: .35em; }
+.numbers { text-align: right; }
+.numbers .big { font-family: "League Gothic"; font-size: clamp(5.2rem, 13vw, 10rem); line-height: .8; letter-spacing: -.01em; }
+.numbers .big .to { color: #E2231A; font-size: .55em; vertical-align: .32em; margin: 0 .06em; }
+.numbers .cap { font-weight: 800; text-transform: uppercase; letter-spacing: .08em; font-size: .78rem; margin-top: 6px; }
+.mainline { margin: 18px 0 0; font-size: clamp(3rem, 9.4vw, 7.6rem); line-height: .9; color: #FFFFFF; text-shadow: .05em .05em 0 #141414; -webkit-text-stroke: .01em #141414; }
+/* issue faces: the main coverline changes face by issue, like SLAM's did */
+.face-typewriter { font-family: "Courier Prime"; font-weight: 700; text-transform: lowercase; letter-spacing: -.04em; }
+.face-stencil { font-family: "Big Shoulders Stencil Display"; font-weight: 900; text-transform: uppercase; letter-spacing: .01em; }
+.face-gothic { font-family: "League Gothic"; text-transform: uppercase; }
+.face-italic { font-family: "Libre Franklin"; font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: -.035em; }
+.cover-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-top: 18px; flex-wrap: wrap; }
+.cover-foot p { margin: 0; max-width: 40em; font-size: .92rem; font-weight: 600; }
+.barcode { display: flex; gap: 8px; align-items: stretch; background: #fff; border: 2px solid #141414; padding: 6px 8px; color: #141414; }
+.barcode i { width: 74px; background: repeating-linear-gradient(90deg, #141414 0 2px, #fff 2px 3px, #141414 3px 4px, #fff 4px 7px, #141414 7px 10px, #fff 10px 11px, #141414 11px 12px, #fff 12px 14px); }
+.barcode span { font: 700 .62rem/1.25 "Libre Franklin"; text-transform: uppercase; letter-spacing: .05em; }
 
-/* ---------- masthead ---------- */
-.mast { position: relative; padding: 18px 0 0; }
-.mast-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.logo { display: flex; align-items: center; gap: .1em; font-size: clamp(2.6rem, 9.5vw, 7.4rem); text-decoration: none; transform: rotate(-2deg); transform-origin: left bottom; }
-.logo .bucket { color: var(--yellow); -webkit-text-stroke: .045em #111; paint-order: stroke fill; text-shadow: .06em .06em 0 var(--red); }
-.logo .weights { background: var(--ink); color: var(--paper); padding: .06em .14em .02em; transform: skew(-8deg); font-size: .62em; margin-left: .08em; box-shadow: .07em .07em 0 var(--red); }
-.logo .ball { width: .62em; height: .62em; margin-left: .06em; animation: spin 9s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { .logo .ball { animation: none; } }
-.issue { text-align: right; }
-.issue .t-kicker { display: block; }
-.tagline { font-size: clamp(1.1rem, 2.6vw, 1.6rem); color: var(--red); margin: .3rem 0 0 .2rem; transform: rotate(-2deg); display: inline-block; }
-.nav { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0 0; padding: 12px 0; border-top: 6px solid var(--rule); border-bottom: 2px solid var(--rule); }
-.nav a { text-decoration: none; font-family: "Anton", sans-serif; text-transform: uppercase; font-size: 1.25rem; padding: .1rem .7rem; border: 3px solid transparent; }
-.nav a[aria-current] { background: var(--yellow); color: #111; border-color: var(--ink); transform: rotate(-2deg); box-shadow: 3px 3px 0 var(--shadow); }
-.nav a:hover { border-color: var(--ink); }
-.theme-btn { margin-left: auto; font: 800 .78rem/1 "Archivo", sans-serif; font-stretch: 80%; text-transform: uppercase; letter-spacing: .08em; background: var(--paper-2); color: var(--ink); border: 3px solid var(--ink); padding: .5rem .7rem; cursor: pointer; box-shadow: 3px 3px 0 var(--shadow); }
+/* =====================================================================
+   INSIDE PAGES: running head, then print-style sections.
+   ===================================================================== */
+.runhead { display: flex; justify-content: space-between; gap: 10px; font-family: "League Gothic"; text-transform: uppercase; font-size: 1.05rem; letter-spacing: .06em; border-bottom: 2px solid var(--rule); padding: 30px 0 4px; }
+.sec-title { font-size: clamp(3.4rem, 9vw, 6.4rem); margin: 14px 0 4px; }
+.sec-title .star { font-size: .5em; vertical-align: .6em; }
+.dek { font-weight: 700; font-size: 1.05rem; margin: 0 0 16px; max-width: 46em; }
+.note { font-size: .8rem; color: var(--ink-2); }
 
-/* ---------- cover story ---------- */
-.cover { position: relative; display: grid; grid-template-columns: 1.25fr 1fr; gap: 28px; margin: 28px 0 10px; }
-.cover-main { position: relative; background: var(--blue); color: var(--on-blue); padding: 28px 26px 30px; overflow: hidden; border: 3px solid var(--ink); box-shadow: 8px 8px 0 var(--shadow); }
-.cover-main .court { position: absolute; right: -90px; bottom: -110px; width: 430px; opacity: .3; }
-.cover-main .halftone-lg { position: absolute; inset: 0; opacity: .5; mask-image: linear-gradient(115deg, transparent 35%, #000 95%); -webkit-mask-image: linear-gradient(115deg, transparent 35%, #000 95%); }
-.cover-main > * { position: relative; }
-.cover .kick { display: inline-block; background: var(--yellow); color: #111; padding: .25rem .55rem; transform: rotate(-2deg); }
-.cover h1 { font-size: clamp(3.3rem, 11vw, 8.6rem); margin: .2em 0 .06em; }
-.cover h1 .line2 { display: block; color: var(--yellow); -webkit-text-stroke: 0; text-shadow: 5px 5px 0 #111; }
-.cover .who { font-family: "Anton", sans-serif; font-size: clamp(1.7rem, 4.6vw, 3rem); text-transform: uppercase; line-height: .95; }
-.cover .who em { font-style: normal; color: var(--yellow); }
-.cover .dek { font-size: 1.08rem; max-width: 34em; margin: .6rem 0 0; font-weight: 500; }
-.cover .dek b { background: var(--yellow); color: #111; padding: 0 .2em; }
-.cover .burst { position: absolute; right: 18px; top: 18px; width: 158px; }
-.cover .sample { margin-top: 1.1rem; font-size: .8rem; opacity: .9; font-style: italic; }
+/* ---------- LAST NIGHT: newspaper agate ---------- */
+.agate { background: var(--news); padding: 16px 18px; columns: 3 260px; column-gap: 26px; column-rule: 1px solid color-mix(in srgb, var(--ink) 30%, transparent); }
+.game { break-inside: avoid; margin: 0 0 16px; font-size: .84rem; line-height: 1.38; }
+.game h3 { margin: 0; font-family: "Libre Franklin"; font-weight: 900; font-size: 1rem; text-transform: uppercase; letter-spacing: -.005em; }
+.verdict { display: inline-block; font-family: "League Gothic"; text-transform: uppercase; font-size: 1.45rem; letter-spacing: .03em; line-height: 1; margin: 4px 0 2px; }
+.verdict.robbery { color: var(--red-ink); }
+.game p { margin: 2px 0; }
+.game b { font-weight: 800; }
+.dots { display: flex; gap: 4px; align-items: baseline; }
+.dots::after { content: ""; order: 1; flex: 1; border-bottom: 1px dotted var(--ink-2); transform: translateY(-3px); }
+.dots span:last-child { order: 2; font-variant-numeric: tabular-nums; }
 
-/* the meter */
-.panel { background: var(--paper-2); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--shadow); padding: 20px 20px 18px; position: relative; }
-.panel h2 { font-size: 2.1rem; margin: 0 0 .1em; }
-.meter { width: 100%; height: auto; display: block; margin: 8px 0 4px; overflow: visible; }
-.meter text { font-family: "Archivo", sans-serif; font-weight: 700; font-stretch: 80%; font-size: 13px; fill: var(--ink-2); }
-.meter .lab { font-weight: 900; fill: var(--ink); font-size: 14px; }
-.meter .lab-hot { fill: var(--cold-ink); font-weight: 900; font-size: 14px; }
-.meter .range { fill: var(--yellow); stroke: var(--ink); stroke-width: 2; }
-.meter .axis { stroke: var(--ink); stroke-width: 2; }
-.meter .tick { stroke: var(--ink-2); stroke-width: 1.5; }
-.meter .mark-hit { fill: transparent; cursor: help; }
-.legend-row { display: flex; gap: 14px; flex-wrap: wrap; font-size: .82rem; color: var(--ink-2); font-weight: 600; }
-.legend-row i { display: inline-block; width: 14px; height: 14px; vertical-align: -2px; margin-right: 5px; border: 2px solid var(--ink); }
-.big-swap { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 10px; margin: 14px 0 6px; }
-.big-swap .t-num { font-size: clamp(3rem, 8vw, 4.6rem); }
-.big-swap .arrow { font-family: "Permanent Marker"; font-size: 2.4rem; color: var(--red); padding-bottom: .4rem; }
-.big-swap small { display: block; font-size: .72rem; font-weight: 800; font-stretch: 80%; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
-.fine { font-size: .8rem; color: var(--ink-2); }
-.adds { margin-top: 14px; border-top: 3px solid var(--ink); padding-top: 10px; }
-.add-ln { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px solid var(--paper-3); font-size: .9rem; font-weight: 600; }
-.add-ln b { font-family: "Anton"; font-weight: 400; font-size: 1.25rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.add-ln.tot { border-bottom: 0; font-weight: 900; }
-.tip { position: fixed; z-index: 50; pointer-events: none; background: var(--ink); color: var(--paper); padding: .4rem .55rem; font-size: .8rem; font-weight: 600; max-width: 240px; display: none; box-shadow: 3px 3px 0 var(--red); }
+/* ---------- HEAT CHECK / DEFROST: SLAM's flush-right stacked name lists ---------- */
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.stack { padding: 20px 22px 18px; color: #fff; }
+.stack.hot { background: #B32A0C; }
+.stack.cold { background: #0A4FA0; }
+.stack h3 { margin: 0 0 4px; font-size: clamp(2.8rem, 6vw, 4.4rem); line-height: .85; }
+.stack .sub { font-weight: 700; font-size: .9rem; margin: 0 0 10px; }
+.stack .stripes { background: repeating-linear-gradient(to bottom, #fff 0 3px, transparent 3px 5.5px); }
+.stack ol { list-style: none; margin: 10px 0; padding: 0; text-align: right; }
+.stack li { padding: 3px 0; }
+.stack li .n { font-family: "League Gothic"; text-transform: uppercase; font-size: clamp(1.9rem, 3.6vw, 2.6rem); line-height: .95; display: block; }
+.stack li .s { font-size: .82rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stack li .s b { font-weight: 900; background: #fff; padding: 0 .3em; }
+.stack.hot li .s b { color: #8F2209; } .stack.cold li .s b { color: #0A4FA0; }
 
-/* ---------- section heads ---------- */
-.sec { margin: 54px 0 0; }
-.sec-head { display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; border-bottom: 6px solid var(--rule); padding-bottom: 8px; margin-bottom: 22px; }
-.sec-head h2 { font-size: clamp(2.6rem, 7vw, 4.6rem); margin: 0; }
-.sec-head .scrawl { margin-bottom: .5rem; }
-.sec-head .page { margin-left: auto; font-family: "Anton"; font-size: 1.1rem; }
+/* ---------- PLAYER PAGE: a card back ---------- */
+.cardback { background: var(--board); color: var(--ink); border: 2px solid var(--ink); padding: 16px 18px 14px; }
+.cb-top { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; border-bottom: 3px solid var(--red-ink); padding-bottom: 10px; }
+.cb-no { width: 62px; height: 62px; border-radius: 50%; background: var(--red-ink); color: #F2EFE6; display: grid; place-items: center; font-family: "League Gothic"; font-size: 1.5rem; line-height: 1; }
+.cb-name { font-family: "League Gothic"; text-transform: uppercase; font-size: clamp(2.2rem, 5vw, 3.2rem); line-height: .85; }
+.cb-bio { font-family: "Courier Prime"; font-size: .82rem; line-height: 1.35; }
+.cb-team { font-family: "League Gothic"; font-size: 1.6rem; color: var(--red-ink); text-align: right; line-height: .9; }
+.cb-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-family: "Courier Prime"; font-size: .84rem; }
+.cb-table th { font-family: "Libre Franklin"; font-weight: 900; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--red-ink); text-align: right; padding: 3px 5px; border-bottom: 2px solid var(--ink); }
+.cb-table th:first-child, .cb-table td:first-child, .cb-table th:nth-child(2), .cb-table td:nth-child(2) { text-align: left; }
+.cb-table td { text-align: right; padding: 2px 5px; border-bottom: 1px solid color-mix(in srgb, var(--ink) 18%, transparent); white-space: nowrap; }
+.cb-table tr.now td { font-weight: 700; background: color-mix(in srgb, var(--cold) 16%, transparent); }
+.cb-table tr.true td { font-weight: 700; border-top: 2px solid var(--ink); border-bottom: 0; color: var(--cold-ink); }
+.cb-scroll { overflow-x: auto; }
+.cb-foot { display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: end; }
+.cb-trivia { border: 2px solid var(--ink); background: var(--page); padding: 8px 10px; font-size: .86rem; }
+.cb-trivia b { font-family: "League Gothic"; font-weight: 400; text-transform: uppercase; font-size: 1.3rem; color: var(--red-ink); display: block; line-height: 1; margin-bottom: 2px; }
+.cb-meter { width: 260px; max-width: 100%; color: var(--ink); }
+.cb-meter text { font: 700 11px "Libre Franklin"; fill: var(--ink); }
 
-/* ---------- verdict cards ---------- */
-.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
-.vcard { position: relative; background: var(--paper-2); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--shadow); padding: 18px 16px 16px; }
-.vcard:nth-child(2) { transform: rotate(.8deg); } .vcard:nth-child(3) { transform: rotate(-.6deg); }
-.vcard .tape { top: -14px; left: 38%; }
-.vcard .date { color: var(--ink-2); }
-.score { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 6px 10px; margin: 8px 0 4px; }
-.score .t-num { font-size: 2.6rem; }
-.score .tm { font-family: "Anton"; font-size: 1.35rem; text-transform: uppercase; }
-.score .w { color: var(--ink); } .score .l { color: var(--ink-2); }
-.score .won::after { content: " ◀"; font-size: .9rem; color: var(--red); }
-.vtop { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-.vcard .stamp { font-size: 1.2rem; margin-right: 4px; }
-.chance { display: flex; align-items: baseline; gap: 8px; margin: 6px 0 10px; }
-.chance .t-num { font-size: 3.4rem; color: var(--red); }
-.chance span { font-weight: 800; font-stretch: 85%; line-height: 1.1; }
-.shoot { width: 100%; border-collapse: collapse; font-size: .86rem; margin: 6px 0 10px; }
-.shoot th { text-align: left; font-weight: 800; font-stretch: 80%; text-transform: uppercase; letter-spacing: .05em; font-size: .72rem; color: var(--ink-2); border-bottom: 2px solid var(--ink); padding: 3px 4px; }
-.shoot td { padding: 4px; border-bottom: 1px solid var(--paper-3); }
-.shoot td.n { text-align: right; font-variant-numeric: tabular-nums; }
-.swing { background: var(--paper-3); padding: 8px 10px; font-size: .9rem; border-left: 6px solid var(--red); }
-.swing b { font-weight: 900; }
+/* ---------- TRASH TALK: the letters page ---------- */
+.letters { columns: 2 300px; column-gap: 30px; column-rule: 2px solid var(--rule); }
+.letter { break-inside: avoid; margin: 0 0 18px; }
+.letter .q { font-weight: 900; text-transform: uppercase; font-size: 1.05rem; margin: 0 0 4px; }
+.letter .a { margin: 0; }
+.letter .a::first-letter { font-family: "League Gothic"; font-size: 2.6em; float: left; line-height: .8; margin: .06em .08em 0 0; color: var(--red-ink); }
 
-/* ---------- heat / ice lists ---------- */
-.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-.list { border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--shadow); background: var(--paper-2); }
-.list-head { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #111; border-bottom: 3px solid var(--ink); }
-.list-head.hot { background: linear-gradient(100deg, #FFE600 0%, #FF8A00 55%, #E8410C 100%); }
-.list-head.cold { background: linear-gradient(100deg, #E6F7FF 0%, #7FD3FF 50%, #0A6FD6 100%); }
-.list-head h3 { font-family: "Anton"; text-transform: uppercase; font-size: 2.3rem; margin: 0; line-height: .9; }
-.list-head p { margin: 0; font-weight: 800; font-stretch: 85%; font-size: .85rem; }
-.list-head svg { width: 46px; height: 46px; flex: none; }
-.row { display: grid; grid-template-columns: 52px 1fr auto; gap: 4px 12px; align-items: center; padding: 12px 16px; border-bottom: 2px solid var(--paper-3); }
-.row:last-child { border-bottom: 0; }
-.row .rk { font-family: "Anton"; font-size: 2.6rem; line-height: .8; -webkit-text-stroke: 2px var(--ink); color: transparent; }
-.row .nm { font-family: "Anton"; font-size: 1.45rem; text-transform: uppercase; line-height: 1; }
-.row .sub { grid-column: 2; font-size: .82rem; color: var(--ink-2); font-weight: 600; }
-.row .pp { grid-row: 1 / span 2; grid-column: 3; text-align: right; }
-.row .pp .t-num { font-size: 1.9rem; }
-.row .pp small { display: block; font-size: .72rem; font-weight: 800; font-stretch: 80%; text-transform: uppercase; color: var(--ink-2); }
-.spark { display: inline-block; vertical-align: middle; }
-
-/* ---------- receipts ---------- */
-.receipts { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: start; }
-.receipt { background: var(--paper-2); color: var(--ink); font-family: "Archivo"; font-stretch: 70%; font-weight: 600; padding: 22px 22px 30px; border: 2px dashed var(--ink); position: relative; transform: rotate(-1deg);
-  -webkit-mask: radial-gradient(circle 7px at 50% 100%, transparent 98%, #000) 0 0 / 18px 100%;
-          mask: radial-gradient(circle 7px at 50% 100%, transparent 98%, #000) 0 0 / 18px 100%; }
-.receipt h3 { font-family: "Bowlby One SC"; font-size: 1.6rem; margin: 0 0 .3rem; text-align: center; }
-.receipt .ln { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px dotted var(--ink-2); padding: 6px 0; font-size: .95rem; }
-.receipt .ln span:last-child { font-variant-numeric: tabular-nums; white-space: nowrap; }
-.receipt .tot { font-family: "Anton"; font-size: 1.5rem; text-transform: uppercase; border-top: 3px double var(--ink); margin-top: 8px; padding-top: 8px; display: flex; justify-content: space-between; }
-.hit { color: var(--cold-ink); font-weight: 900; } .miss { color: var(--red); font-weight: 900; }
-.trash { background: var(--pink); color: #111; border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--shadow); padding: 20px; transform: rotate(.8deg); }
-.trash h3 { font-family: "Anton"; text-transform: uppercase; font-size: 2.6rem; margin: 0; line-height: .9; }
-.trash .q { font-family: "Permanent Marker"; font-size: 1.2rem; margin: 1rem 0 .3rem; }
-.trash .a { margin: 0; font-weight: 600; }
+/* ---------- LAST SHOT: one stat, huge ---------- */
+.lastshot { background: #141414; color: #fff; padding: 24px clamp(16px, 4vw, 40px) 26px; display: grid; grid-template-columns: auto 1fr; gap: 26px; align-items: end; margin-top: 50px; }
+.lastshot .gothic { font-size: clamp(6rem, 22vw, 14rem); line-height: .78; color: #FFD200; }
+.lastshot .lbl { font-family: "League Gothic"; font-size: 1.6rem; text-transform: uppercase; letter-spacing: .05em; color: #FF3B30; }
+.lastshot p { margin: 4px 0 0; font-weight: 700; font-size: 1.15rem; max-width: 26em; }
 
 /* ---------- style guide ---------- */
-.guide { margin-top: 70px; padding: 30px 0 60px; background: var(--paper-3); border-top: 6px solid var(--rule); }
-.guide h2 { font-size: clamp(2.4rem, 6vw, 4rem); margin: 0 0 .2em; }
-.guide h3 { font-family: "Anton"; text-transform: uppercase; font-size: 1.8rem; margin: 34px 0 10px; }
-.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
-.sw { border: 3px solid var(--ink); background: var(--paper-2); }
-.sw div { height: 70px; border-bottom: 3px solid var(--ink); }
-.sw p { margin: 0; padding: 6px 8px; font-size: .8rem; line-height: 1.3; }
-.sw p b { display: block; font-size: .9rem; }
-.specimens { display: grid; gap: 14px; }
-.spec { display: grid; grid-template-columns: 170px 1fr; gap: 14px; align-items: baseline; background: var(--paper-2); border: 2px solid var(--ink); padding: 12px 14px; }
-.spec .t-label { color: var(--ink-2); }
+.guide { padding: 30px 0 50px; }
+.guide h2 { font-size: clamp(3rem, 8vw, 5rem); margin: 0; }
+.guide h3 { font-family: "League Gothic"; text-transform: uppercase; font-size: 2rem; font-weight: 400; margin: 30px 0 10px; }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.sw { border: 2px solid var(--ink); }
+.sw div { height: 60px; border-bottom: 2px solid var(--ink); }
+.sw p { margin: 0; padding: 5px 7px; font-size: .78rem; line-height: 1.3; }
+.sw p b { display: block; font-size: .86rem; }
+.issues { display: flex; gap: 10px; flex-wrap: wrap; }
+.issue-chip { width: 88px; height: 112px; border: 2px solid var(--ink); padding: 6px; display: flex; flex-direction: column; justify-content: space-between; }
+.issue-chip b { font-family: "League Gothic"; font-weight: 400; color: #E2231A; font-size: 1.5rem; line-height: .8; }
+.issue-chip span { font: 800 .62rem/1.2 "Libre Franklin"; text-transform: uppercase; color: #141414; }
+.spec { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 14px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid color-mix(in srgb, var(--ink) 25%, transparent); }
+.spec > span:first-child { font-weight: 800; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
 .spec > * { min-width: 0; overflow-wrap: anywhere; }
-.cover > *, .duo > *, .receipts > *, .cards > * { min-width: 0; }
-.kit { display: flex; flex-wrap: wrap; gap: 26px; align-items: center; background: var(--paper-2); border: 2px solid var(--ink); padding: 24px; }
 .rules { columns: 2 320px; column-gap: 34px; padding-left: 1.2rem; }
 .rules li { margin: 0 0 .6rem; break-inside: avoid; }
-.rules b { font-weight: 900; }
-.vocab { width: 100%; border-collapse: collapse; background: var(--paper-2); border: 2px solid var(--ink); font-size: .92rem; }
-.vocab th, .vocab td { padding: 8px 10px; border-bottom: 1px solid var(--paper-3); text-align: left; vertical-align: top; }
-.vocab th { font-weight: 900; font-stretch: 80%; text-transform: uppercase; font-size: .75rem; letter-spacing: .06em; border-bottom: 3px solid var(--ink); }
-footer { padding: 26px 0 40px; font-size: .8rem; color: var(--ink-2); border-top: 2px solid var(--rule); }
+.vocab { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.vocab th, .vocab td { text-align: left; padding: 7px 9px; border-bottom: 1px solid color-mix(in srgb, var(--ink) 25%, transparent); vertical-align: top; }
+.vocab th { font-weight: 900; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; border-bottom: 2px solid var(--ink); }
+footer { padding: 20px 0 40px; font-size: .8rem; color: var(--ink-2); border-top: 2px solid var(--rule); }
 
-/* ---------- phone ---------- */
-@media (max-width: 900px) {
-  .cover, .duo, .receipts { grid-template-columns: 1fr; }
-  .cards { grid-template-columns: 1fr; }
-  .vcard:nth-child(n) { transform: none; }
+@media (max-width: 860px) {
+  .cover-body, .duo { grid-template-columns: 1fr; }
+  .numbers { text-align: left; }
+  .lastshot { grid-template-columns: 1fr; gap: 6px; }
+  .cb-foot { grid-template-columns: 1fr; }
 }
-@media (max-width: 560px) {
-  .cover-main { padding: 22px 16px 24px; }
-  .cover .burst { position: relative; right: auto; top: auto; width: 128px; margin: -6px 0 6px auto; }
-  .issue { text-align: left; }
-  .nav a { font-size: 1.05rem; padding: .1rem .45rem; }
+@media (max-width: 520px) {
   .theme-btn { margin-left: 0; }
   .spec { grid-template-columns: 1fr; }
-  .row { grid-template-columns: 40px 1fr auto; padding: 10px 12px; }
-  .row .rk { font-size: 2rem; }
-  .row .nm { font-size: 1.2rem; }
+  .cb-top { grid-template-columns: auto 1fr; }
+  .cb-team { grid-column: 1 / -1; text-align: left; }
 }
 </style>
 </head>
 <body>
 
-<!-- ======= TICKER ======= -->
-<div class="ticker" aria-label="Last night's verdicts">
-  <div class="ticker-track" aria-hidden="true">
-    <span>Last night →</span><span>MIA 89 ORL 88 · <b>Robbery</b> · winner had 1%</span><span>ORL 108 CLE 103 · <b>Robbery</b> · 4%</span><span>UTAH 126 DET 119 · <b>Robbery</b> · 4%</span><span>Heat check: Jokić 52.5% from 3 won't last</span><span>Defrost: Paul George is better than 32%</span>
-    <span>Last night →</span><span>MIA 89 ORL 88 · <b>Robbery</b> · winner had 1%</span><span>ORL 108 CLE 103 · <b>Robbery</b> · 4%</span><span>UTAH 126 DET 119 · <b>Robbery</b> · 4%</span><span>Heat check: Jokić 52.5% from 3 won't last</span><span>Defrost: Paul George is better than 32%</span>
+<div class="wrap">
+  <div class="bar">
+    <span class="gothic mini">BucketWeights</span>
+    <nav aria-label="Sections"><a href="#" aria-current="page">Tonight's issue</a><a href="#">Players</a><a href="#">Games</a><a href="#">Teams</a><a href="#">About the model</a></nav>
+    <button class="theme-btn" id="themeBtn" type="button">Blacktop edition</button>
   </div>
 </div>
 
+<!-- ======================= THE COVER ======================= -->
+<header class="cover" aria-label="Tonight's issue">
+  <div class="strap"><span>The shooting-luck basketball daily</span><span>Jokić <span class="star">★</span> George <span class="star">★</span> Maxey <span class="star">★</span> Vučević <span class="star">★</span> The receipts</span></div>
+  <div class="mast">
+    <h1 class="wordmark">BucketWeights</h1>
+    <div class="stars" aria-hidden="true"><span>★</span><span>★</span><span>★</span></div>
+  </div>
+  <div class="surname"><span>George</span><small>Paul George, 76ers · cover story · pg. 4</small></div>
+
+  <div class="cover-body">
+    <ul class="lines">
+      <li><span class="k">Heat check</span><span class="d">Jokić is hitting 52.5% from deep. His level is 39.5%. <span class="pg">PG. 3</span></span></li>
+      <li><span class="k ink">Robbery!</span><span class="d">Heat 89, Magic 88. Orlando shot 5-for-29 from three. <span class="pg">PG. 2</span></span></li>
+      <li><span class="k">The receipts</span><span class="d">Last season's calls, misses included. <span class="pg">PG. 5</span></span></li>
+    </ul>
+    <div class="numbers">
+      <div class="big tab">15.4<span class="to">→</span>16.9</div>
+      <div class="cap">Points a game now → at his true shooting, same shots &amp; minutes</div>
+    </div>
+  </div>
+
+  <p class="mainline face-typewriter">cold, not broke.</p>
+
+  <div class="cover-foot">
+    <p>Paul George is shooting 32.0% from three. His true level is 38.5%. Mock-up with real numbers, as of 1 January 2025.</p>
+    <div class="barcode" aria-hidden="true"><i></i><span>No. 79<br>Wed 1 Jan 2025<br>Free, every night</span></div>
+  </div>
+</header>
+
 <div class="wrap">
-  <!-- ======= MASTHEAD ======= -->
-  <header class="mast">
-    <div class="mast-row">
-      <div>
-        <a class="logo t-logo" href="#" aria-label="BucketWeights home">
-          <span class="bucket">BUCKET</span><span class="weights">WEIGHTS</span>
-          <svg class="ball" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#FF7A1A" stroke="#111" stroke-width="7"/><path d="M50 4v92M4 50h92M18 16c18 18 18 50 0 68M82 16c-18 18-18 50 0 68" fill="none" stroke="#111" stroke-width="6"/></svg>
-        </a>
-        <div class="tagline t-marker">Shooting luck, weighed nightly.</div>
-      </div>
-      <div class="issue">
-        <span class="t-kicker">Vol. 1 · No. 1</span>
-        <span class="t-kicker">Updated every night</span>
-        <span class="sticker pink" style="margin-top:8px">No paywall!</span>
-      </div>
-    </div>
-    <nav class="nav" aria-label="Sections">
-      <a href="#" aria-current="page">Home</a><a href="#">Players</a><a href="#">Games</a><a href="#">Teams</a><a href="#">About the model</a>
-      <button class="theme-btn" id="themeBtn" type="button">Blacktop edition</button>
-    </nav>
-  </header>
+  <!-- ======================= PG 2: LAST NIGHT ======================= -->
+  <div class="runhead"><span>BucketWeights ★ Last night</span><span>Pg. 2</span></div>
+  <h2 class="gothic sec-title">Last night <span class="star">★</span></h2>
+  <p class="dek">Every game, and whether the winner earned it or got bailed out by shooting luck.</p>
+  <div class="agate">
+    <article class="game">
+      <h3>Heat 89, Magic 88</h3>
+      <span class="verdict robbery">Robbery</span>
+      <p><b>Miami had a 1% chance</b> of winning at both teams' true shooting.</p>
+      <p class="dots"><span>Heat 3PT 15-30</span><span>exp. 11.4</span></p>
+      <p class="dots"><span>Magic 3PT 5-29</span><span>exp. 10.5</span></p>
+      <p class="dots"><span>Heat FT 12-14</span><span>exp. 11.5</span></p>
+      <p class="dots"><span>Magic FT 15-18</span><span>exp. 13.6</span></p>
+      <p><b>Swung it:</b> Burks 3-3 3PT (<span style="color:var(--hot-ink)">+5.7</span>); Suggs 2-11 (<span style="color:var(--cold-ink)">−5.0</span>).</p>
+    </article>
+    <article class="game">
+      <h3>Magic 108, Cavaliers 103</h3>
+      <span class="verdict robbery">Robbery</span>
+      <p><b>Orlando had a 4% chance.</b></p>
+      <p class="dots"><span>Magic 3PT 13-31</span><span>exp. 10.7</span></p>
+      <p class="dots"><span>Cavaliers 3PT 10-40</span><span>exp. 15.3</span></p>
+      <p class="dots"><span>Magic FT 27-34</span><span>exp. 25.6</span></p>
+      <p class="dots"><span>Cavaliers FT 13-20</span><span>exp. 16.4</span></p>
+      <p><b>Swung it:</b> Mitchell 3-14 3PT (<span style="color:var(--cold-ink)">−6.6</span>); A. Black 3-3 (<span style="color:var(--hot-ink)">+5.3</span>).</p>
+    </article>
+    <article class="game">
+      <h3>Jazz 126, Pistons 119</h3>
+      <span class="verdict robbery">Robbery</span>
+      <p><b>Utah had a 4% chance.</b></p>
+      <p class="dots"><span>Jazz 3PT 20-40</span><span>exp. 14.7</span></p>
+      <p class="dots"><span>Pistons 3PT 13-47</span><span>exp. 17.6</span></p>
+      <p class="dots"><span>Jazz FT 28-31</span><span>exp. 26.3</span></p>
+      <p class="dots"><span>Pistons FT 14-18</span><span>exp. 13.8</span></p>
+      <p><b>Swung it:</b> K. George 7-13 3PT (<span style="color:var(--hot-ink)">+7.4</span>); Sexton 5-7 (<span style="color:var(--hot-ink)">+6.2</span>).</p>
+    </article>
+  </div>
+  <p class="note">Sample games from 2024-25. Labels: <b style="color:var(--red-ink)">Robbery</b> = winner under 35% · <b style="color:var(--cold-ink)">Coin flip</b> = 35–65% · <b>Earned it</b> = 65% or more.</p>
 
-  <!-- ======= COVER STORY ======= -->
-  <section class="cover" aria-labelledby="cover-h">
-    <div class="cover-main">
-      <div class="halftone-lg"></div>
-      <svg class="court" viewBox="0 0 400 400" aria-hidden="true" fill="none" stroke="#fff" stroke-width="6"><rect x="140" y="250" width="120" height="150"/><circle cx="200" cy="250" r="60"/><path d="M40 400V300a160 160 0 0 1 320 0v100"/><circle cx="200" cy="372" r="9"/></svg>
-      <div class="burst" aria-hidden="true">
-        <svg viewBox="0 0 100 100"><polygon fill="#FFE600" stroke="#111" stroke-width="3" points="50,2 58,20 76,8 74,29 95,28 82,44 98,58 77,62 84,82 64,76 58,97 47,80 32,95 30,74 9,78 20,60 3,46 22,38 12,18 33,22 40,3"/></svg>
-        <span><span class="t-num" style="font-size:2.3rem;display:block">+1.5</span><span class="t-label" style="font-size:.8rem">PPG on the way</span></span>
-      </div>
-      <span class="kick t-kicker">Cover story · Defrost</span>
-      <h1 id="cover-h" class="t-head">Cold,<span class="line2">not broke.</span></h1>
-      <div class="who">Paul George <em>shoots better than this.</em></div>
-      <p class="dek">He's averaging <b>15.4</b> a night on <b>32.0%</b> from three. His true level is <b>38.5%</b>. Hit that on the same shots and minutes and he's scoring <b>16.9</b>.</p>
-      <p class="sample">Mock-up with real numbers: the Philadelphia 76ers' Paul George as of 1 January 2025.</p>
-    </div>
+  <!-- ======================= PG 3: HEAT CHECK / DEFROST ======================= -->
+  <div class="runhead"><span>BucketWeights ★ Heat check / Defrost</span><span>Pg. 3</span></div>
+  <h2 class="gothic sec-title">Heat check / Defrost</h2>
+  <p class="dek">Who's shooting above or below their true level, and what they'd be scoring at it with the same shots and minutes.</p>
+  <div class="duo">
+    <section class="stack hot" aria-labelledby="hot-h">
+      <h3 id="hot-h" class="gothic">Heat check</h3>
+      <p class="sub">Above their level. Expect a cool-off.</p>
+      <div class="stripes"></div>
+      <ol>
+        <li><span class="n">Nikola Jokić</span><span class="s">3PT 52.5%, level 39.5% · PPG 30.9 → <b>29.3</b></span></li>
+        <li><span class="n">De'Andre Hunter</span><span class="s">3PT 45.5%, level 38.7% · PPG 20.6 → <b>19.2</b></span></li>
+        <li><span class="n">Nikola Vučević</span><span class="s">3PT 45.3%, level 35.6% · PPG 20.6 → <b>19.2</b></span></li>
+        <li><span class="n">Zach LaVine</span><span class="s">3PT 44.7%, level 38.9% · PPG 22.0 → <b>20.8</b></span></li>
+        <li><span class="n">Anthony Edwards</span><span class="s">3PT 41.7%, level 38.2% · PPG 24.8 → <b>23.7</b></span></li>
+      </ol>
+      <div class="stripes"></div>
+    </section>
+    <section class="stack cold" aria-labelledby="cold-h">
+      <h3 id="cold-h" class="gothic">Defrost</h3>
+      <p class="sub">Below their level. Expect a bounce-back.</p>
+      <div class="stripes"></div>
+      <ol>
+        <li><span class="n">Paul George</span><span class="s">3PT 32.0%, level 38.5% · PPG 15.4 → <b>16.9</b></span></li>
+        <li><span class="n">CJ McCollum</span><span class="s">3PT 34.8%, level 39.9% · PPG 21.4 → <b>22.8</b></span></li>
+        <li><span class="n">Tyrese Maxey</span><span class="s">3PT 34.4%, level 38.6% · PPG 25.9 → <b>27.2</b></span></li>
+        <li><span class="n">Dejounte Murray</span><span class="s">3PT 27.1%, level 35.5% · PPG 16.0 → <b>17.3</b></span></li>
+        <li><span class="n">Keegan Murray</span><span class="s">3PT 28.6%, level 36.4% · PPG 11.6 → <b>12.9</b></span></li>
+      </ol>
+      <div class="stripes"></div>
+    </section>
+  </div>
+  <p class="note">The real lists as of 1 January 2025.</p>
 
-    <aside class="panel" aria-labelledby="meter-h">
-      <span class="tape" style="top:-14px;right:30px"></span>
-      <span class="t-kicker" style="color:var(--red)">The meter</span>
-      <h2 id="meter-h" class="t-head">3-point shooting</h2>
-      <div class="big-swap">
-        <div><small>This season</small><span class="t-num cold-t">32.0%</span></div>
-        <div class="arrow" aria-hidden="true">→</div>
-        <div><small>True level</small><span class="t-num">38.5%</span></div>
-      </div>
-      <svg class="meter" viewBox="0 0 420 120" role="img" aria-label="Paul George 3-point percentage: this season 32.0 percent on 122 attempts; true level 38.5 percent, likely between 36.6 and 40.3 percent; league average 37.3 percent.">
-        <!-- scale 28% to 44% across x 20..400 -->
-        <line class="axis" x1="20" y1="70" x2="400" y2="70"/>
-        <g class="tick"><line x1="20" y1="64" x2="20" y2="76"/><line x1="115" y1="64" x2="115" y2="76"/><line x1="210" y1="64" x2="210" y2="76"/><line x1="305" y1="64" x2="305" y2="76"/><line x1="400" y1="64" x2="400" y2="76"/></g>
-        <text x="20" y="96" text-anchor="middle">28%</text><text x="115" y="96" text-anchor="middle">32%</text><text x="210" y="96" text-anchor="middle">36%</text><text x="305" y="96" text-anchor="middle">40%</text><text x="400" y="96" text-anchor="middle">44%</text>
-        <!-- true-level range 36.6–40.3 → x 224.3..312.1 -->
-        <rect class="range" x="224.3" y="56" width="87.8" height="28" rx="4"/>
-        <line x1="263.6" y1="50" x2="263.6" y2="90" stroke="var(--ink)" stroke-width="4"/>
-        <text class="lab" x="263.6" y="40" text-anchor="middle">TRUE 38.5%</text>
-        <!-- league 37.3 → x 240.9 -->
-        <line x1="240.9" y1="102" x2="240.9" y2="108" stroke="var(--ink-2)" stroke-width="2"/>
-        <text x="240.9" y="120" text-anchor="middle" style="font-size:11px">league 37.3%</text>
-        <!-- actual 32.0 → x 114.9 -->
-        <circle cx="114.9" cy="70" r="10" fill="var(--cold)" stroke="var(--paper-2)" stroke-width="3"/>
-        <text class="lab-hot" x="114.9" y="40" text-anchor="middle">NOW 32.0%</text>
-        <circle class="mark-hit" cx="114.9" cy="70" r="22" data-tip="This season: 39 of 122 from three (32.0%)"/>
-        <rect class="mark-hit" x="224.3" y="50" width="87.8" height="40" data-tip="True level 38.5%. 80% likely between 36.6% and 40.3%. Built from his last three seasons and this one, pulled toward the league."/>
+  <!-- ======================= PG 4: PLAYER PAGE (CARD BACK) ======================= -->
+  <div class="runhead"><span>BucketWeights ★ Players</span><span>Pg. 4</span></div>
+  <h2 class="gothic sec-title">The card back</h2>
+  <p class="dek">Every player page reads like the back of a basketball card: his year-by-year shooting, then his true level now.</p>
+  <article class="cardback" aria-label="Paul George card back">
+    <div class="cb-top">
+      <div class="cb-no" title="Card number">001</div>
+      <div><div class="cb-name">Paul George</div><div class="cb-bio">FORWARD · 2024-25 · FROM PLAY-BY-PLAY<br>3PT LEVEL 38.5% (80% LIKELY 36.6–40.3)</div></div>
+      <div class="cb-team">PHILADELPHIA<br>76ERS</div>
+    </div>
+    <div class="cb-scroll">
+      <table class="cb-table">
+        <thead><tr><th>Season</th><th>Team</th><th>GP</th><th>PPG</th><th>3PT</th><th>3PT%</th><th>FT</th><th>FT%</th></tr></thead>
+        <tbody>
+          <tr><td>2016-17</td><td>IND</td><td>76</td><td>23.5</td><td>197-501</td><td>39.3</td><td>336-374</td><td>89.8</td></tr>
+          <tr><td>2017-18</td><td>OKC</td><td>79</td><td>21.8</td><td>247-603</td><td>41.0</td><td>329-403</td><td>81.6</td></tr>
+          <tr><td>2018-19</td><td>OKC</td><td>78</td><td>27.9</td><td>296-740</td><td>40.0</td><td>453-539</td><td>84.0</td></tr>
+          <tr><td>2019-20</td><td>LAC</td><td>47</td><td>21.5</td><td>151-369</td><td>40.9</td><td>190-217</td><td>87.6</td></tr>
+          <tr><td>2020-21</td><td>LAC</td><td>55</td><td>23.2</td><td>177-410</td><td>43.2</td><td>198-228</td><td>86.8</td></tr>
+          <tr><td>2021-22</td><td>LAC</td><td>31</td><td>24.5</td><td>93-256</td><td>36.3</td><td>129-150</td><td>86.0</td></tr>
+          <tr><td>2022-23</td><td>LAC</td><td>57</td><td>23.6</td><td>159-424</td><td>37.5</td><td>256-294</td><td>87.1</td></tr>
+          <tr><td>2023-24</td><td>LAC</td><td>75</td><td>22.5</td><td>246-582</td><td>42.3</td><td>265-292</td><td>90.8</td></tr>
+          <tr class="now"><td>2024-25*</td><td>PHI</td><td>20</td><td>15.4</td><td>39-122</td><td>32.0</td><td>48-61</td><td>78.7</td></tr>
+          <tr class="true"><td colspan="3">At his true level</td><td>16.9</td><td></td><td>38.5</td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cb-foot">
+      <div class="cb-trivia"><b>Did you know?</b>Over his eight seasons before this one he made about 40% of his threes. That history is most of why his true level sits at 38.5%, not 32%.</div>
+      <svg class="cb-meter" viewBox="0 0 260 64" role="img" aria-label="3-point shooting: 32.0% this season, true level 38.5%, likely 36.6 to 40.3%">
+        <line x1="10" y1="34" x2="250" y2="34" stroke="currentColor" stroke-width="2"/>
+        <rect x="139" y="24" width="55.5" height="20" fill="#FFD200" stroke="currentColor" stroke-width="2"/>
+        <line x1="167.5" y1="18" x2="167.5" y2="50" stroke="currentColor" stroke-width="3"/>
+        <circle cx="70" cy="34" r="7" fill="var(--cold)" stroke="var(--board)" stroke-width="2"/>
+        <text x="70" y="14" text-anchor="middle">NOW 32.0</text><text x="167.5" y="12" text-anchor="middle">LEVEL 38.5</text>
+        <text x="10" y="62">28%</text><text x="250" y="62" text-anchor="end">44%</text>
       </svg>
-      <div class="legend-row"><span><i style="background:var(--cold);border-radius:50%"></i>This season</span><span><i style="background:var(--yellow)"></i>True level, 80% range</span></div>
-      <div class="adds">
-        <div class="t-kicker" style="margin-bottom:6px">How +1.5 adds up</div>
-        <div class="add-ln"><span>Threes · 6.1 a game · 32.0% → 38.5%</span><b class="cold-t">+1.2</b></div>
-        <div class="add-ln"><span>Free throws · 3.1 a game · 78.7% → his level</span><b class="cold-t">+0.3</b></div>
-        <div class="add-ln tot"><span>Points a game, same shots &amp; minutes</span><b>15.4 → 16.9</b></div>
-      </div>
-      <p class="fine" style="margin:.8rem 0 0">Not "due". Nobody is owed makes. A cold stretch says little about his next shot, which goes in about 38.5% of the time.</p>
-    </aside>
-  </section>
-
-  <!-- ======= LAST NIGHT ======= -->
-  <section class="sec" aria-labelledby="ln-h">
-    <div class="sec-head"><h2 id="ln-h" class="t-head">Last night</h2><span class="scrawl">who earned it, who got lucky</span><span class="page">P. 2</span></div>
-    <div class="cards">
-      <article class="vcard">
-        <span class="tape"></span>
-        <div class="vtop"><div class="t-kicker date">Thu 26 Dec 2024 · sample</div><span class="stamp">Robbery</span></div>
-        <div class="score">
-          <span class="badge">MIA</span><span class="tm w won">Heat</span><span class="t-num w">89</span>
-          <span class="badge">ORL</span><span class="tm l">Magic</span><span class="t-num l">88</span>
-        </div>
-        <div class="chance"><span class="t-num">1%</span><span>Miami's chance of winning at true shooting</span></div>
-        <table class="shoot"><thead><tr><th>From three</th><th class="n">Made</th><th class="n">Expected</th></tr></thead>
-          <tbody><tr><td>Heat</td><td class="n">15 / 30</td><td class="n">11.4</td></tr><tr><td>Magic</td><td class="n">5 / 29</td><td class="n">10.5</td></tr></tbody></table>
-        <div class="swing">Swung it: <b>Alec Burks</b> 3-for-3 from deep (<span class="hot-t"><b>+5.7 pts</b></span>). <b>Jalen Suggs</b> 2-for-11 (<span class="cold-t"><b>−5.0</b></span>).</div>
-      </article>
-      <article class="vcard">
-        <span class="tape" style="left:20%;transform:rotate(5deg)"></span>
-        <div class="vtop"><div class="t-kicker date">Sun 16 Mar 2025 · sample</div><span class="stamp">Robbery</span></div>
-        <div class="score">
-          <span class="badge">ORL</span><span class="tm w won">Magic</span><span class="t-num w">108</span>
-          <span class="badge">CLE</span><span class="tm l">Cavaliers</span><span class="t-num l">103</span>
-        </div>
-        <div class="chance"><span class="t-num">4%</span><span>Orlando's chance of winning at true shooting</span></div>
-        <table class="shoot"><thead><tr><th>From three</th><th class="n">Made</th><th class="n">Expected</th></tr></thead>
-          <tbody><tr><td>Magic</td><td class="n">13 / 31</td><td class="n">10.7</td></tr><tr><td>Cavaliers</td><td class="n">10 / 40</td><td class="n">15.3</td></tr></tbody></table>
-        <div class="swing">Swung it: <b>Donovan Mitchell</b> 3-for-14 (<span class="cold-t"><b>−6.6 pts</b></span>). <b>Anthony Black</b> 3-for-3 (<span class="hot-t"><b>+5.3</b></span>).</div>
-      </article>
-      <article class="vcard">
-        <span class="tape" style="left:55%;transform:rotate(-9deg)"></span>
-        <div class="vtop"><div class="t-kicker date">Thu 19 Dec 2024 · sample</div><span class="stamp">Robbery</span></div>
-        <div class="score">
-          <span class="badge">UTAH</span><span class="tm w won">Jazz</span><span class="t-num w">126</span>
-          <span class="badge">DET</span><span class="tm l">Pistons</span><span class="t-num l">119</span>
-        </div>
-        <div class="chance"><span class="t-num">4%</span><span>Utah's chance of winning at true shooting</span></div>
-        <table class="shoot"><thead><tr><th>From three</th><th class="n">Made</th><th class="n">Expected</th></tr></thead>
-          <tbody><tr><td>Jazz</td><td class="n">20 / 40</td><td class="n">14.7</td></tr><tr><td>Pistons</td><td class="n">13 / 47</td><td class="n">17.6</td></tr></tbody></table>
-        <div class="swing">Swung it: <b>Keyonte George</b> 7-for-13 (<span class="hot-t"><b>+7.4 pts</b></span>). <b>Collin Sexton</b> 5-for-7 (<span class="hot-t"><b>+6.2</b></span>).</div>
-      </article>
     </div>
-    <p class="fine" style="margin-top:22px">Verdicts: <span class="stamp" style="font-size:.85rem;transform:none;border-width:2px">Robbery</span> winner under 35% · <span class="stamp toss" style="font-size:.85rem;transform:none;border-width:2px">Coin flip</span> 35–65% · <span class="stamp earned" style="font-size:.85rem;transform:none;border-width:2px">Earned it</span> 65%+. Thresholds are set in the methodology, and every probability has been checked against past seasons.</p>
-  </section>
+    <p class="note" style="margin:8px 0 0">*Through 1 January 2025. "At his true level" keeps his shots and minutes and resets his makes. Season lines from ESPN play-by-play; older seasons can differ from official totals by an attempt or two.</p>
+  </article>
 
-  <!-- ======= HEAT CHECK / DEFROST ======= -->
-  <section class="sec" aria-labelledby="hc-h">
-    <div class="sec-head"><h2 id="hc-h" class="t-head">Heat check <span class="outline">/</span> Defrost</h2><span class="scrawl">at the same shots &amp; minutes</span><span class="page">P. 3</span></div>
-    <div class="duo">
-      <div class="list">
-        <div class="list-head hot">
-          <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 4c4 12 18 18 18 34a18 18 0 0 1-36 0c0-9 5-14 9-19 0 7 3 11 7 12-3-9 0-19 2-27z" fill="#FFE600" stroke="#111" stroke-width="4" stroke-linejoin="round"/><path d="M32 34c3 5 8 7 8 13a8 8 0 0 1-16 0c0-4 3-6 4-8 1 3 2 4 4 4-1-3-1-6 0-9z" fill="#E8410C" stroke="#111" stroke-width="3"/></svg>
-          <div><h3>Heat check</h3><p>Shooting above their true level: expect a cool-off</p></div>
-        </div>
-        <div class="row"><span class="rk">1</span><span class="nm">Nikola Jokić <span class="badge">DEN</span></span><span class="sub">3P 52.5% now · true 39.5%</span><span class="pp"><span class="t-num">30.9 → <span class="hot-t">29.3</span></span><small>PPG now → at true</small></span></div>
-        <div class="row"><span class="rk">2</span><span class="nm">De'Andre Hunter <span class="badge">ATL</span></span><span class="sub">3P 45.5% now · true 38.7%</span><span class="pp"><span class="t-num">20.6 → <span class="hot-t">19.2</span></span><small>PPG now → at true</small></span></div>
-        <div class="row"><span class="rk">3</span><span class="nm">Nikola Vučević <span class="badge">CHI</span></span><span class="sub">3P 45.3% now · true 35.6%</span><span class="pp"><span class="t-num">20.6 → <span class="hot-t">19.2</span></span><small>PPG now → at true</small></span></div>
-        <div class="row"><span class="rk">4</span><span class="nm">Zach LaVine <span class="badge">CHI</span></span><span class="sub">3P 44.7% now · true 38.9%</span><span class="pp"><span class="t-num">22.0 → <span class="hot-t">20.8</span></span><small>PPG now → at true</small></span></div>
-        <div class="row"><span class="rk">5</span><span class="nm">Anthony Edwards <span class="badge">MIN</span></span><span class="sub">3P 41.7% now · true 38.2%</span><span class="pp"><span class="t-num">24.8 → <span class="hot-t">23.7</span></span><small>PPG now → at true</small></span></div>
-      </div>
-      <div class="list" style="transform:rotate(.5deg)">
-        <div class="list-head cold">
-          <svg viewBox="0 0 64 64" aria-hidden="true"><g stroke="#111" stroke-width="5" stroke-linecap="round"><path d="M32 6v52M9.5 19l45 26M9.5 45l45-26"/></g><g stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M32 6v52M9.5 19l45 26M9.5 45l45-26"/></g><circle cx="32" cy="32" r="7" fill="#0A6FD6" stroke="#111" stroke-width="3"/></svg>
-          <div><h3>Defrost</h3><p>Shooting below their true level: expect a bounce-back</p></div>
-        </div>
-        <div class="row"><span class="rk">1</span><span class="nm">Paul George <span class="badge">PHI</span></span><span class="sub">3P 32.0% now · true 38.5%</span><span class="pp"><span class="t-num">15.4 → <span class="cold-t">16.9</span></span><small>PPG now → at true</small></span></div>
-        <div class="row"><span class="rk">2</span><span class="nm">CJ McCollum <span class="badge">NO</span></span><span class="sub">3P 34.8% now · true 39.9%</span><span class="pp"><span class="t-num">21.4 → <span class="cold-t">22.8</span></span><small>PPG now → at true</small></span></div>
-        <div class="row"><span class="rk">3</span><span class="nm">Tyrese Maxey <span class="badge">PHI</span></span><span class="sub">3P 34.4% now · true 38.6%</span><span class="pp"><span class="t-num">25.9 → <span class="cold-t">27.2</span></span><small>PPG now → at true</small></span></div>
-        <div class="row"><span class="rk">4</span><span class="nm">Dejounte Murray <span class="badge">NO</span></span><span class="sub">3P 27.1% now · true 35.5%</span><span class="pp"><span class="t-num">16.0 → <span class="cold-t">17.3</span></span><small>PPG now → at true</small></span></div>
-        <div class="row"><span class="rk">5</span><span class="nm">Keegan Murray <span class="badge">SAC</span></span><span class="sub">3P 28.6% now · true 36.4%</span><span class="pp"><span class="t-num">11.6 → <span class="cold-t">12.9</span></span><small>PPG now → at true</small></span></div>
-      </div>
-    </div>
-    <p class="fine" style="margin-top:18px">Sample: the real lists as of 1 January 2025. "At true" keeps each player's shots and minutes as they are and resets only his makes to his true level.</p>
-  </section>
-
-  <!-- ======= RECEIPTS + TRASH TALK ======= -->
-  <section class="sec" aria-labelledby="rc-h">
-    <div class="sec-head"><h2 id="rc-h" class="t-head">The receipts</h2><span class="scrawl">we keep score on ourselves</span><span class="page">P. 4</span></div>
-    <div class="receipts">
-      <div class="receipt">
-        <h3>BucketWeights</h3>
-        <div class="fine" style="text-align:center;margin-bottom:10px">1 Jan 2025 calls · what happened next</div>
-        <div class="ln"><span>Jokić: 52.5% from 3 won't last</span><span class="hit">38.7% after ✓</span></div>
-        <div class="ln"><span>Paul George: better than 32%</span><span class="hit">39.9% after ✓</span></div>
-        <div class="ln"><span>Vučević: 45.3% won't last</span><span class="hit">35.9% after ✓</span></div>
-        <div class="ln"><span>Keegan Murray: better than 28.6%</span><span class="hit">38.2% after ✓</span></div>
-        <div class="ln"><span>Zach LaVine: 44.7% won't last</span><span class="miss">44.5% after ✗</span></div>
-        <div class="ln"><span>Tyrese Maxey: better than 34.4%</span><span class="miss">33.5% after ✗</span></div>
-        <div class="tot"><span>Big calls, 7 seasons</span><span>3 in 4 right</span></div>
-        <p class="fine" style="margin:.6rem 0 0">Tested on 1,031 player-seasons across seven seasons between 2016-17 and 2024-25: calls of 1.5+ points a game went the right way 74% of the time. We show the misses too.</p>
-      </div>
-      <div class="trash">
-        <h3>Trash talk</h3>
-        <p class="t-kicker">Letters to the editor (ok, questions we expect)</p>
-        <p class="q">"So he's DUE?"</p>
-        <p class="a">Nope. Nobody is owed buckets. His next three goes in at his true rate, about 38.5%, however cold he's been. The bounce-back is that rate catching up, not a make-up call.</p>
-        <p class="q">"Where's 'true level' from?"</p>
-        <p class="a">His last three seasons and this one, recent games counting more, pulled toward the league average until he's shot enough to trust. For threes that takes about 300 attempts; for free throws, about 25.</p>
-        <p class="q">"Can you see how open the shots were?"</p>
-        <p class="a">No. Public data doesn't track defenders. If a player's shots get harder (new team, bigger role) we'll call it luck when it isn't. We say so on every page.</p>
-      </div>
-    </div>
-  </section>
+  <!-- ======================= PG 5: TRASH TALK ======================= -->
+  <div class="runhead"><span>BucketWeights ★ Trash talk</span><span>Pg. 5</span></div>
+  <h2 class="gothic sec-title">Trash talk</h2>
+  <p class="dek">The questions we get most, answered straight.</p>
+  <div class="letters">
+    <div class="letter"><p class="q">So he's due?</p><p class="a">No. Nobody is owed buckets. His next three goes in at his true level, about 38.5%, however cold he's been. The bounce-back is that rate catching up, not a make-up call.</p></div>
+    <div class="letter"><p class="q">Where does "true level" come from?</p><p class="a">His last three seasons and this one, recent games counting more, pulled toward the league average until he's shot enough to trust. For threes that takes about 300 attempts; for free throws, about 25.</p></div>
+    <div class="letter"><p class="q">Can you see how open the shots were?</p><p class="a">No. Public data doesn't track defenders. If a player's shots get harder, with a new team or a bigger role, we'll call it luck when it isn't. We say so on every page.</p></div>
+    <div class="letter"><p class="q">Do your calls come true?</p><p class="a">About three in four of the big ones did over seven past seasons, and we show the misses. Zach LaVine stayed hot all of 2024-25.</p></div>
+  </div>
 </div>
 
+<!-- ======================= LAST SHOT ======================= -->
+<section class="lastshot" aria-label="Last shot">
+  <div class="gothic tab">5-29</div>
+  <div><div class="lbl">Last shot ★</div><p>Orlando from three on 26 December 2024. They lost by one.</p></div>
+</section>
+
 <!-- ======================= STYLE GUIDE ======================= -->
-<section class="guide" aria-labelledby="g-h">
+<section class="guide">
   <div class="wrap">
-    <span class="sticker blue">Behind the scenes</span>
-    <h2 id="g-h" class="t-head" style="margin-top:14px">Style guide</h2>
-    <p style="max-width:44em">The look is a 1990s basketball magazine: newsprint, loud colour, cut-and-paste layouts, stickers and stamps, a marker in the margins. Everything above is built from the tokens and pieces below. Toggle the <b>Blacktop edition</b> at the top for dark mode.</p>
+    <h2 class="gothic">Style guide</h2>
+    <p style="max-width:46em">Built from real 1990s SLAM covers and older basketball print (see <i>design-references.md</i>). The cover is loud and changes every issue; the inside pages are calm print: agate, card backs, letters. Stars and stripe rules are the only ornaments.</p>
 
     <h3>Colour</h3>
     <div class="swatches">
-      <div class="sw"><div style="background:var(--paper)"></div><p><b>Newsprint</b>page · #F5F0E1 / #141414</p></div>
-      <div class="sw"><div style="background:var(--ink)"></div><p><b>Ink</b>text, rules, shadows</p></div>
-      <div class="sw"><div style="background:var(--red)"></div><p><b>Bucket red</b>brand, stamps, scrawls · text OK</p></div>
-      <div class="sw"><div style="background:var(--yellow)"></div><p><b>Highlighter</b>fills only, ink on top</p></div>
-      <div class="sw"><div style="background:var(--blue)"></div><p><b>Electric blue</b>cover panels, white on top</p></div>
-      <div class="sw"><div style="background:var(--pink)"></div><p><b>Sticker pink</b>stickers, Trash Talk</p></div>
-      <div class="sw"><div style="background:var(--hot)"></div><p><b>Hot</b>above true level · text: hot-ink</p></div>
-      <div class="sw"><div style="background:var(--cold)"></div><p><b>Cold</b>below true level · text: cold-ink</p></div>
+      <div class="sw"><div style="background:#E2231A"></div><p><b>SLAM red</b>logo, big type · small text uses red-ink</p></div>
+      <div class="sw"><div style="background:#FFD200"></div><p><b>Yellow</b>issue colour, highlights</p></div>
+      <div class="sw"><div style="background:#00A3E0"></div><p><b>Cyan</b>issue colour, labels</p></div>
+      <div class="sw"><div style="background:var(--ink)"></div><p><b>Ink</b>text, rules</p></div>
+      <div class="sw"><div style="background:var(--page)"></div><p><b>Page</b>magazine white</p></div>
+      <div class="sw"><div style="background:var(--news)"></div><p><b>Newsprint</b>agate sections</p></div>
+      <div class="sw"><div style="background:var(--board)"></div><p><b>Board</b>card backs</p></div>
+      <div class="sw"><div style="background:var(--hot)"></div><p><b>Hot</b>above his level</p></div>
+      <div class="sw"><div style="background:var(--cold)"></div><p><b>Cold</b>below his level</p></div>
     </div>
-    <p class="fine">Hot and cold replace green and red: shooting luck isn't good or bad, it's above or below a player's level. Checked: every text pair passes WCAG AA (ink 16.6:1, red 5.2:1, hot-ink 5.5:1, cold-ink 5.9:1 on newsprint), and hot vs cold stays distinct under every colour-blindness type, in both editions.</p>
+
+    <h3>Issue colours (one per night, in turn)</h3>
+    <div class="issues">
+      <div class="issue-chip" style="background:#FFD200"><b>BW</b><span>No. 1<br>yellow</span></div>
+      <div class="issue-chip" style="background:#FFFFFF"><b>BW</b><span>No. 2<br>white</span></div>
+      <div class="issue-chip" style="background:#00A3E0"><b>BW</b><span>No. 3<br>cyan</span></div>
+      <div class="issue-chip" style="background:#141414"><b>BW</b><span style="color:#fff">No. 4<br>black</span></div>
+      <div class="issue-chip" style="background:#F26B1D"><b style="color:#141414">BW</b><span>No. 5<br>orange (logo goes ink)</span></div>
+      <div class="issue-chip" style="background:#C9C2B2"><b>BW</b><span>No. 6<br>stone</span></div>
+    </div>
 
     <h3>Type</h3>
-    <div class="specimens">
-      <div class="spec"><span class="t-label">Logo · Bowlby One SC</span><span class="t-logo" style="font-size:clamp(1.5rem,7vw,2.6rem)">BUCKETWEIGHTS</span></div>
-      <div class="spec"><span class="t-label">Headlines · Anton</span><span class="t-head" style="font-size:2.6rem">Cold, not broke.</span></div>
-      <div class="spec"><span class="t-label">Big numbers · Anton</span><span class="t-num" style="font-size:2.6rem">15.4 → 16.9</span></div>
-      <div class="spec"><span class="t-label">Kickers · Archivo Black, wide</span><span class="t-kicker">Cover story · Heat check · P. 3</span></div>
-      <div class="spec"><span class="t-label">Margin notes · Permanent Marker</span><span class="t-marker" style="font-size:1.5rem;color:var(--red)">at the same shots &amp; minutes</span></div>
-      <div class="spec"><span class="t-label">Body &amp; tables · Archivo</span><span>Archivo has a width axis: wide for kickers, condensed (75%) for labels and tables, normal for reading. <span class="tab">Tabular figures 0123456789.</span></span></div>
-    </div>
+    <div class="spec"><span>Logo &amp; headlines · League Gothic</span><span class="gothic" style="font-size:3rem;color:var(--red)">BucketWeights ★ Heat check</span></div>
+    <div class="spec"><span>Cover name · Franklin Black Italic</span><span class="franklin-black" style="font-style:italic;text-transform:uppercase;font-size:2.6rem;letter-spacing:-.03em;line-height:1">George</span></div>
+    <div class="spec"><span>Main coverline · a different face each issue</span><span><span class="face-typewriter" style="font-size:2.2rem">cold, not broke.</span><br><span class="face-stencil" style="font-size:2.2rem">Bricks don't last</span><br><span class="face-italic" style="font-size:2.2rem">Robbery!</span><br><span class="face-gothic" style="font-size:2.6rem">Heat won't keep</span></span></div>
+    <div class="spec"><span>Text · Libre Franklin</span><span>Libre Franklin, a revival of Franklin Gothic, the American sports-page face SLAM also used. <span class="tab">Tabular 0123456789.</span></span></div>
+    <div class="spec"><span>Card backs &amp; notes · Courier Prime</span><span class="type">2018-19 OKC 78 27.9 296-740 40.0</span></div>
 
-    <h3>The kit</h3>
-    <div class="kit">
-      <span class="sticker">Sticker</span>
-      <span class="sticker pink">Hot take</span>
-      <span class="stamp">Robbery</span>
-      <span class="stamp toss">Coin flip</span>
-      <span class="stamp earned">Earned it</span>
-      <span class="badge">BOS</span>
-      <span class="pill hot-t">+1.6 hot</span>
-      <span class="pill cold-t">−1.5 cold</span>
-      <span class="t-num outline" style="font-size:3.6rem">23</span>
-      <span class="scrawl">margin scrawl</span>
-      <div class="burst" style="width:120px"><svg viewBox="0 0 100 100" aria-hidden="true"><polygon fill="#FFE600" stroke="#111" stroke-width="3" points="50,2 58,20 76,8 74,29 95,28 82,44 98,58 77,62 84,82 64,76 58,97 47,80 32,95 30,74 9,78 20,60 3,46 22,38 12,18 33,22 40,3"/></svg><span class="t-label">Starburst</span></div>
-      <div class="halftone" style="width:120px;height:80px;border:3px solid var(--ink)"></div>
-      <div style="position:relative;width:150px;height:70px;background:var(--paper);border:2px solid var(--ink)"><span class="tape" style="left:18px;top:-12px"></span><span class="fine" style="position:absolute;bottom:6px;left:8px">tape strip</span></div>
+    <h3>Ornaments</h3>
+    <div style="display:flex;gap:30px;flex-wrap:wrap;align-items:center">
+      <span class="gothic" style="font-size:2rem">Jokić <span class="star">★</span> George <span class="star">★</span> Maxey</span>
+      <div style="width:160px"><div class="stripes"></div></div>
+      <span class="gothic" style="font-size:3rem;color:#fff;text-shadow:.05em .05em 0 #141414;-webkit-text-stroke:.01em #141414;background:#FFD200;padding:4px 10px">Drop shadow: one line only</span>
     </div>
 
     <h3>Rules</h3>
     <ol class="rules">
-      <li><b>Cover loud, tables calm.</b> Stickers, stamps, bursts and tilts are for the cover story, section heads and one thing per card. Tables and numbers stay straight, on paper, in ink.</li>
-      <li><b>Hard shadows, square corners.</b> 3px ink borders and a 6px offset shadow. No soft shadows, no gradients except the heat/ice list heads.</li>
-      <li><b>Hot and cold, not green and red.</b> Above a player's true level is hot; below is cold. Colour is never the only signal: there's always a word, sign or icon.</li>
-      <li><b>Every projection says what it holds fixed</b> ("at the same shots and minutes") and has a range or sample size close by.</li>
-      <li><b>Never "due".</b> See the vocabulary below. The voice is loud; the stats are honest.</li>
-      <li><b>No logos, no photos.</b> Teams are ink abbreviation badges; players are big type. The halftone, court lines and graphics carry the visuals.</li>
-      <li><b>One spin, one scroll.</b> The ticker and the logo ball move; both stop for reduced-motion settings. Nothing else animates.</li>
-      <li><b>Phone first.</b> Every layout stacks to one column at 375px with a 16px gutter; tilts drop to zero on cards when stacked.</li>
+      <li><b>Loud cover, calm inside.</b> The cover gets the issue colour, the logo, the overlap and one shadowed line. Inside pages are print: agate, card backs, letters, on page white or newsprint.</li>
+      <li><b>Only stars and stripe rules.</b> No tape, stamps, stickers, starbursts, grain, halftone overlays or tilted boxes.</li>
+      <li><b>One drop shadow per screen,</b> on the main coverline. Square corners everywhere.</li>
+      <li><b>Hot and cold, not green and red,</b> and colour is never the only signal: there's always a word or number.</li>
+      <li><b>Every projection says what it holds fixed</b> ("same shots and minutes") and shows a range or sample size.</li>
+      <li><b>No logos or photos.</b> Players are their names, set big. Teams are written out or abbreviated.</li>
+      <li><b>No decorative motion.</b></li>
+      <li><b>Phone first:</b> one column at 375px, 16px gutters; the cover keeps the overlap at every width.</li>
     </ol>
 
     <h3>Vocabulary</h3>
@@ -559,7 +449,7 @@ footer { padding: 26px 0 40px; font-size: .8rem; color: var(--ink-2); border-top
       <tbody>
         <tr><td>Defrost · bounce-back · better than this</td><td>Due · owed · bound to</td><td>A cold shooter isn't owed makes; his rate just catches up.</td></tr>
         <tr><td>Heat check · cool-off · won't last</td><td>Fluke · fraud</td><td>Some of a hot streak is real; we only take off the part we expect to fade.</td></tr>
-        <tr><td>True level · his level</td><td>True talent (on the site)</td><td>Same idea, plainer words.</td></tr>
+        <tr><td>True level · his level</td><td>True talent</td><td>Same idea, plainer words.</td></tr>
         <tr><td>Robbery · coin flip · earned it</td><td>Rigged · deserved to lose</td><td>It's about shooting luck, not effort or refs.</td></tr>
         <tr><td>At the same shots and minutes</td><td>Will score</td><td>Minutes and role move scoring more than shooting does.</td></tr>
       </tbody>
@@ -567,35 +457,21 @@ footer { padding: 26px 0 40px; font-size: .8rem; color: var(--ink-2); border-top
   </div>
 </section>
 
-<div class="wrap">
-  <footer>BucketWeights is an independent fan site, not affiliated with the NBA or its teams. Data from ESPN's public feeds. Mock-up, October 2026: every number is real, from the 2024-25 season.</footer>
-</div>
+<div class="wrap"><footer>BucketWeights is an independent fan site, not affiliated with the NBA or its teams. Data from ESPN's public feeds. Mock-up, October 2026; every number is real, from the 2024-25 season.</footer></div>
 
-<div class="tip" id="tip" role="tooltip"></div>
 <script>
-  // theme toggle: system default, remembered per viewer
   (function () {
     const root = document.documentElement, btn = document.getElementById("themeBtn");
     let saved = null;
     try { saved = localStorage.getItem("bw-theme"); } catch (e) {}
     if (saved) root.dataset.theme = saved;
     const isDark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-    const label = () => { btn.textContent = isDark() ? "Newsprint edition" : "Blacktop edition"; };
+    const label = () => { btn.textContent = isDark() ? "Paper edition" : "Blacktop edition"; };
     label();
     btn.addEventListener("click", () => {
       root.dataset.theme = isDark() ? "light" : "dark";
       try { localStorage.setItem("bw-theme", root.dataset.theme); } catch (e) {}
       label();
-    });
-  })();
-  // hover / tap tooltips on chart marks
-  (function () {
-    const tip = document.getElementById("tip");
-    document.querySelectorAll("[data-tip]").forEach((el) => {
-      const show = (e) => { tip.textContent = el.dataset.tip; tip.style.display = "block"; tip.style.left = Math.min(e.clientX + 14, innerWidth - 250) + "px"; tip.style.top = e.clientY + 14 + "px"; };
-      el.addEventListener("mousemove", show);
-      el.addEventListener("click", show);
-      el.addEventListener("mouseleave", () => (tip.style.display = "none"));
     });
   })();
 </script>
