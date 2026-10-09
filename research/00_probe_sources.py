@@ -8,6 +8,7 @@ Writes results/probe-<hostname>.json and prints a table. Exit code 0 even when s
 the point is the report.
 """
 import json
+import os
 import socket
 import sys
 import time
@@ -125,4 +126,13 @@ out.parent.mkdir(exist_ok=True)
 out.write_text(json.dumps({"host": host, "date_probed": DATE, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "results": results}, indent=2))
 for r in results:
     print(f"{r['source']:42} {str(r.get('status')):>6} {r.get('seconds', ''):>6}s  {r.get('error', '')}")
+
+# On GitHub Actions, also write a table to the run's summary page (readable without signing in).
+summary = os.environ.get("GITHUB_STEP_SUMMARY")
+if summary:
+    with open(summary, "a") as f:
+        f.write(f"### Data sources from {host}\n\n| Source | Status | Seconds | Note |\n| --- | --- | --- | --- |\n")
+        for r in results:
+            note = r.get("error", "") or ", ".join(f"{k}: {v}" for k, v in (r.get("fields") or {}).items() if not isinstance(v, (list, dict)))
+            f.write(f"| {r['source']} | {r.get('status')} | {r.get('seconds', '')} | {note[:120]} |\n")
 print(f"\nSaved {out}")

@@ -32,7 +32,7 @@ concurrency:
 
 jobs:
   update:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # pinned: ubuntu-latest moves to a new version from 19 Oct 2026
     timeout-minutes: 30
     env:
       GH_TOKEN: ${{ github.token }}

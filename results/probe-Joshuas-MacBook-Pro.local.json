@@ -1,13 +1,13 @@
 {
   "host": "Joshuas-MacBook-Pro.local",
   "date_probed": "20260410",
-  "at": "2026-10-08T19:01:00Z",
+  "at": "2026-10-09T18:06:02Z",
   "results": [
     {
       "source": "espn scoreboard",
       "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20260410",
       "status": 200,
-      "seconds": 0.2,
+      "seconds": 0.14,
       "bytes": 207296,
       "fields": {
         "games": 15
@@ -18,7 +18,7 @@
       "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401811026",
       "status": 200,
       "seconds": 0.17,
-      "bytes": 416951,
+      "bytes": 405190,
       "fields": {
         "plays": 506,
         "shooting_plays": 227,
@@ -73,29 +73,29 @@
       "source": "cdn.nba.com schedule",
       "url": "https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json",
       "status": 403,
-      "seconds": 0.22,
+      "seconds": 0.17,
       "bytes": 425
     },
     {
       "source": "cdn.nba.com today's scoreboard",
       "url": "https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json",
       "status": 403,
-      "seconds": 0.19,
+      "seconds": 0.16,
       "bytes": 445
     },
     {
       "source": "stats.nba.com scoreboard",
       "url": "https://stats.nba.com/stats/scoreboardv3?GameDate=2026-04-10&LeagueID=00",
       "status": "error",
-      "seconds": 15.25,
+      "seconds": 15.13,
       "error": "ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=15)"
     },
     {
       "source": "sportsdataverse ESPN pbp release",
       "url": "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/espn_nba_pbp",
       "status": 200,
-      "seconds": 0.51,
-      "bytes": 131923,
+      "seconds": 0.36,
+      "bytes": 131926,
       "fields": {
         "parquet_files": 25,
         "latest": [
@@ -109,7 +109,7 @@
       "source": "sportsdataverse pbp file download",
       "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_team_boxscores/team_box_2026.parquet",
       "status": 200,
-      "seconds": 0.81,
+      "seconds": 0.65,
       "bytes": 140628
     }
   ]

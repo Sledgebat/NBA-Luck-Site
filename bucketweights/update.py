@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import traceback
 from datetime import date, datetime, timedelta, timezone
@@ -239,6 +240,13 @@ def main(argv=None) -> int:
         season = args.season or model.season_of((date.fromisoformat(args.to) if args.to else today_et()).isoformat())
         meta = write_outputs(con, season, args.preseason)
         log(f"Wrote {OUT}: issue {meta['issue']}, {meta['games']} games, {meta['players']} players, data through {meta['data_through']}")
+        summary = os.environ.get("GITHUB_STEP_SUMMARY")
+        if summary:  # shown on the run's page on GitHub
+            with open(summary, "a") as f:
+                f.write(f"### Update\n\n- {stats['new']} new games, {stats['changed']} changed, {stats.get('same', 0)} unchanged\n"
+                        f"- Season {meta['season_label']}: {meta['games']} games, {meta['players']} players, data through {meta['data_through']}\n")
+                for p in stats["problems"]:
+                    f.write(f"- **Problem:** {p}\n")
         stale = stale_problem(con, season)
         if stale and not args.to:
             stats["problems"].append(stale)
