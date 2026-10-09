@@ -92,7 +92,7 @@ html, body { margin: 0; background: #FAF8F2; }
 
 /* ---------- the yearbook: Street & Smith's cover, slanted title, contents as a list ---------- */
 .c-year { --stock: #13294B; --title: #7FCBEA; --rule: #7FCBEA; --sub: #E3EEF7; background: var(--stock); color: #fff; padding: 46px 52px; }
-.c-year.defrost { --stock: #8E1B12; --title: #FFD200; --rule: #FFD200; --sub: #FBE9DF; }
+.c-year.heat_check { --stock: #8E1B12; --title: #FFD200; --rule: #FFD200; --sub: #FBE9DF; } /* hot: red stock; Defrost keeps the navy (Josh, 9 Oct 2026) */
 .c-year .top { font: 900 30px/1.1 "Libre Franklin"; text-transform: uppercase; letter-spacing: .02em; display: flex; justify-content: space-between; }
 .c-year .title { font: italic 900 220px/.86 "Libre Franklin"; letter-spacing: -.045em; color: var(--title); -webkit-text-stroke: 5px #fff; paint-order: stroke fill; margin: 20px 0 0 -10px; transform: skewX(-6deg); transform-origin: left bottom; white-space: nowrap; }
 .c-year .sub { display: flex; justify-content: space-between; font: 900 32px/1 "Libre Franklin"; text-transform: uppercase; margin-top: 16px; }

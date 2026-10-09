@@ -169,7 +169,7 @@ avoids that.
 1. Josh to push, then run "Update site" with **preseason** ticked and download the `social-cards`
    artifact to look at the real cards (first run with Playwright on GitHub).
 2. Josh's review of the cards: which to post, the weekly days, the cover's main lines, the
-   Defrost yearbook's red stock (the approved mock only had Heat check).
+   yearbooks: Heat check on red stock, Defrost on navy (swapped at Josh's request, 9 Oct).
 3. Polish: Open Graph images/meta for sharing (a card could double as the page's share image), a
    sitemap, the empty "Last night" date line before opening night, preseason games' pages.
 4. When Josh says go: Cloudflare secrets + domain (bucketweights.com?) → publish. Change
