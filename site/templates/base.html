@@ -29,7 +29,7 @@
   <button class="teams-btn" type="button" id="teamsBtn" aria-haspopup="dialog">30 Teams <span aria-hidden="true">▾</span></button>
   {% if nav != "home" %}<a class="home" href="{{ root }}">BucketWeights</a>{% endif %}
   <nav class="mainnav" aria-label="Main">
-    {% for key, label, href in [("home", "Home", ""), ("players", "Players", "players/"), ("games", "Games", "games/"), ("teams", "Teams", "teams/"), ("guide", "Guide", "guide/")] %}
+    {% for key, label, href in [("home", "Home", ""), ("players", "Players", "players/"), ("games", "Games", "games/"), ("teams", "Teams", "teams/"), ("receipts", "Receipts", "receipts/"), ("guide", "Guide", "guide/")] %}
     {% if not loop.first %}<span class="star" aria-hidden="true">★</span>{% endif %}<a href="{{ root }}{{ href }}"{% if nav == key %} aria-current="page"{% endif %}>{{ label }}</a>
     {% endfor %}
   </nav>
@@ -71,6 +71,7 @@
   <a href="{{ root }}players/"{% if nav == "players" %} aria-current="page"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.8 3.2-6 6.5-6s5.9 2.2 6.5 6"/><circle cx="17" cy="9" r="2.6"/><path d="M16 14.2c2.9.1 4.9 2 5.5 5.3"/></svg>Players</a>
   <a href="{{ root }}games/"{% if nav == "games" %} aria-current="page"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M12 5v14M3 12h18"/></svg>Games</a>
   <a href="{{ root }}teams/"{% if nav == "teams" %} aria-current="page"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 7.8 8 9 4.6-1.2 8-4.5 8-9V6z"/></svg>Teams</a>
+  <a href="{{ root }}receipts/"{% if nav == "receipts" %} aria-current="page"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5L6 21z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>Receipts</a>
   <a href="{{ root }}guide/"{% if nav == "guide" %} aria-current="page"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"/></svg>Guide</a>
 </nav>
 

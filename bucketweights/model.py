@@ -231,6 +231,12 @@ def player_table(shots: pd.DataFrame, appearances: pd.DataFrame, season: int, ra
         d[f"lo{k}"] = lv.lo.fillna(mu)
         d[f"hi{k}"] = lv.hi.fillna(mu)
         luck += VALUE[k] * (d[f"m{k}"] - d[f"a{k}"] * d[f"level{k}"])
+    # his latest game (played minutes or took a shot), so the lists can leave out players who are out
+    dates = shots[(shots.season == season)].drop_duplicates("game_id").set_index("game_id").date
+    last_ap = ap.assign(date=ap.game_id.map(dates)).groupby("player_id").date.max()
+    last_shot = cur.groupby("shooter").date.max()
+    both = pd.concat([last_ap, last_shot], axis=1).fillna("")  # ISO dates: text order is date order
+    d["last_date"] = both.max(axis=1).reindex(d.index).replace("", None)
     d = d[d.gp > 0].copy()
     d["ppg"] = d.pts / d.gp
     d["luck_ppg"] = luck.reindex(d.index) / d.gp
@@ -240,14 +246,19 @@ def player_table(shots: pd.DataFrame, appearances: pd.DataFrame, season: int, ra
     return d.drop(columns=["sg"]).reset_index()
 
 
-def hot_cold(table: pd.DataFrame, n: int = 10, min_fga: float = 8.0) -> dict:
+def hot_cold(table: pd.DataFrame, n: int = 10, min_fga: float = 8.0, active_days: int = 14) -> dict:
     """
     Heat check (shooting above his level: expect a cool-off) and Defrost (below: bounce-back).
     Regulars only: 8+ shots a game, and at least 5 games or a quarter of the most games anyone
-    has played, whichever is more (so 20 games by the end of the season).
+    has played, whichever is more (so 20 games by the end of the season). And only players who
+    have played in the last `active_days` days: an injured player's numbers freeze, and he'd sit
+    on the list for weeks with a bounce-back he can't have (found by the receipts, 9 Oct 2026).
     """
     min_games = max(5, int(round(0.25 * table.gp.max()))) if len(table) else 5
     x = table[(table.gp >= min_games) & (table.fga_pg >= min_fga)]
+    if len(x) and "last_date" in x:
+        latest = pd.to_datetime(table.last_date).max()
+        x = x[pd.to_datetime(x.last_date) >= latest - pd.Timedelta(days=active_days)]
     gap = x.proj_ppg - x.ppg
     return {
         "heat_check": x.loc[gap.sort_values().index].head(n)[gap.sort_values().head(n) < 0],

@@ -50,6 +50,13 @@ CREATE TABLE IF NOT EXISTS appearances (
 CREATE TABLE IF NOT EXISTS runs (
   run_at TEXT PRIMARY KEY, new_games INTEGER, changed_games INTEGER, status TEXT, notes TEXT
 );
+-- the receipts (receipts.py): every Heat check / Defrost call as published, or replayed for last season
+CREATE TABLE IF NOT EXISTS calls (
+  day TEXT NOT NULL, season INTEGER NOT NULL, list TEXT NOT NULL, rank INTEGER NOT NULL,
+  player_id INTEGER NOT NULL, name TEXT, team TEXT, gp INTEGER, ppg REAL, proj_ppg REAL,
+  source TEXT NOT NULL,               -- 'nightly' (as published) or 'replay' (rebuilt from earlier games)
+  PRIMARY KEY (day, list, player_id, source)
+);
 -- social cards made (cards.py): who got a card back when, so the same player doesn't repeat
 CREATE TABLE IF NOT EXISTS cards (
   day TEXT NOT NULL, card TEXT NOT NULL, subject INTEGER,

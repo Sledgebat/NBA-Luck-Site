@@ -17,7 +17,7 @@ from zoneinfo import ZoneInfo
 import pandas as pd
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from . import db, model, update
+from . import db, model, receipts, update
 
 SITE = db.ROOT / "site"
 OUT = db.ROOT / "build" / "site"
@@ -246,6 +246,13 @@ def build(season: int | None = None) -> Path:
     # teams: one league table. A team's players are the Players page filtered to it (?team=BOS),
     # where the "30 Teams" menu sends you; separate team pages only repeated that (Josh, 9 Oct 2026).
     page("teams/index.html", "teams.html", 1, nav="teams", teams=sorted(teams, key=lambda t: -t["luck_pts"]))
+
+    # the receipts: this season's calls as published, last season's replayed (once, then kept in the DB)
+    this_season = meta["season"]
+    receipts.ensure_replay(con, this_season - 1)
+    page("receipts/index.html", "receipts.html", 1, nav="receipts",
+         now=receipts.evaluate(con, this_season, "nightly"), last=receipts.evaluate(con, this_season - 1, "replay"),
+         odds=receipts.chances(con, games), player_ids={p["id"] for p in players})
 
     page("guide/index.html", "guide.html", 1, nav="guide")
     page("404.html", "404.html", 0, nav="")

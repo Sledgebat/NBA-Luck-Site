@@ -241,3 +241,21 @@ footer { padding: 22px 0 40px; margin-top: 50px; font-size: .8rem; color: var(--
 /* before opening night: the whole site shows last season (site.py `carried`) */
 .carried-strip { margin: 0; padding: 8px clamp(14px, 3vw, 34px); background: var(--ink); color: var(--page); font-size: .88rem; }
 .carried-strip b { font-family: "League Gothic"; font-weight: 400; text-transform: uppercase; letter-spacing: .05em; font-size: 1.1rem; }
+
+/* ---------- the receipts ---------- */
+.rc-totals { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 12px 0 18px; }
+.rc-total { border-top: 6px solid var(--cold); padding-top: 8px; }
+.rc-total.hot { border-color: var(--hot); }
+.rc-total p { margin: 0; }
+.rc-label { font-size: 1.6rem; }
+.rc-big { font-family: "League Gothic"; font-size: clamp(4.5rem, 14vw, 7rem); line-height: .85; }
+.rc-total.cold .rc-big { color: var(--cold-ink); } .rc-total.hot .rc-big { color: var(--hot-ink); }
+.rc-week { border-top: 2px solid var(--rule); padding: 8px 0; }
+.rc-week summary { cursor: pointer; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; align-items: baseline; }
+.rc-week summary .gothic { font-size: 1.35rem; }
+.rc-score { font-weight: 800; font-size: .9rem; }
+.rc-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 18px; margin-top: 10px; }
+.rc-cols caption { text-align: left; font-size: 1.3rem; padding-bottom: 4px; }
+.rc-right { color: var(--ink); } .rc-miss { color: var(--red-ink); } .rc-early { color: var(--ink-2); font-size: .8rem; white-space: normal; }
+.rc-cols td.name small { font-weight: 700; color: var(--ink-2); }
+.rc-odds { max-width: 560px; }

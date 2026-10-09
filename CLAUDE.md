@@ -87,6 +87,7 @@ Independent fan site; the footer disclaimer stays on every page. Started 8 Oct 2
 | `bucketweights/model.py` | levels, `shot_luck`, `game_verdicts`, `player_table`, `hot_cold`, calibration |
 | `bucketweights/update.py` | nightly fetch + checks + writes `build/data/*.json` (meta, players, hotcold, last_night, games, teams) |
 | `bucketweights/cards.py` | also draws `static/share.png` (1200 × 630 link preview, every run, games or not; a default copy is committed in `site/static/`) · the day's social cards: plan → card pages (`/social/cards/<slug>/`) → Playwright screenshots → `/social/` kit page + `posts.json` |
+| `bucketweights/receipts.py` | the receipts: `record` (nightly lists into `calls`), `replay` (last season every Monday, once, by itself), `evaluate` (scoring per shot after vs up to the call), `chances` (favourite's chance vs result) |
 | `bucketweights/site.py` | Jinja build into `build/site` (home, players + `/players/{id}/`, games + `/games/{id}/`, one Teams table (no per-team pages: Josh, 9 Oct 2026), guide, 404) |
 | `bucketweights/teams.json` | the 30 teams: ESPN id/abbrev, NBA abbrev, names, conference, division |
 | `site/templates/` | `base.html` (header, Teams dialog, bottom nav, footer), `macros.html`, one template per page, `social.html` (kit), `cards/` (one per card) |
@@ -143,6 +144,13 @@ avoids that.
   with Warriors, Knicks, 76ers and Heat corrected). `cards.team_inks` nudges a colour lighter or
   darker (keeping its hue) until it reads, else white/ink; a test checks all 30 teams. The site,
   the agate and the yearbook keep their own colours.
+- **The receipts** (`/receipts/`, in the main menu; Josh, 9 Oct 2026): every Heat check / Defrost
+  call (top 10 each, saved nightly as published) judged on **scoring per shot** (pts ÷ (FGA + 0.44
+  FTA)) after the call vs up to it: Defrost right if it went up, Heat check if down. Counts after 5
+  games and 40 shots; one set of calls per week (the week's first night). Plus game chances vs
+  results (favourite's chance in buckets, regulation, tie = half) and last season replayed every
+  Monday (2025-26: Defrost 79%, Heat check 95%). The replay found injured players sitting on the
+  lists for weeks, so **the lists now need a game in the last 14 days** (`model.hot_cold`).
 - **Link previews:** every page has Open Graph / Twitter tags (its own title and description) and the
   day's `static/share.png?v=<date>`: a 1200 × 630 SLAM cover in the issue colour with the night's
   headline (robbery, else the night, else a default line). Addresses from `site.SITE_URL`.

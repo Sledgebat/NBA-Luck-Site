@@ -248,6 +248,10 @@ def main(argv=None) -> int:
             log(f"  {stats['new']} new, {stats['changed']} changed, {stats.get('same', 0)} unchanged, {len(stats['problems'])} problems")
         season = args.season or model.season_of((date.fromisoformat(args.to) if args.to else today_et()).isoformat())
         meta = write_outputs(con, season, args.preseason)
+        if meta["issue"] and not args.season:  # the receipts: tonight's lists, as published
+            from . import receipts
+            n = receipts.record(con, meta["data_through"], season, json.loads((OUT / "hotcold.json").read_text()))
+            log(f"Receipts: recorded {n} calls for {meta['data_through']}")
         log(f"Wrote {OUT}: issue {meta['issue']}, {meta['games']} games, {meta['players']} players, data through {meta['data_through']}")
         summary = os.environ.get("GITHUB_STEP_SUMMARY")
         if summary:  # shown on the run's page on GitHub

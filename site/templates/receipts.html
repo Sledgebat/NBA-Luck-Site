@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}The receipts · BucketWeights{% endblock %}
+{% block description %}Every Heat check and Defrost call BucketWeights makes, checked against what happened next. Misses included.{% endblock %}
+
+{% macro result(x, finished) %}
+{% if x.status == "right" %}<b class="rc-right">Right</b>{% elif x.status == "miss" %}<b class="rc-miss">Miss</b>{% else %}<span class="rc-early">{{ "Too few games" if finished else "Too early" }}</span>{% endif %}
+{% endmacro %}
+
+{% macro calls(r, finished, player_ids) %}
+  <div class="rc-totals">
+    {% for which, label, verb in (("defrost", "Defrost", "shot better after the call"), ("heat_check", "Heat check", "cooled off after the call")) %}
+    {% set t = r.totals[which] %}
+    <div class="rc-total {{ 'cold' if which == 'defrost' else 'hot' }}">
+      <p class="gothic rc-label">{{ label }}</p>
+      {% if t.checked %}<p class="rc-big tab">{{ (100 * t.right / t.checked) | round | int }}%</p>
+      <p><b>{{ t.right }} of {{ t.checked }}</b> {{ verb }}.{% if t.early %} {{ t.early }} more {{ "didn't play enough after" if finished else "too early to tell" }}.{% endif %}</p>
+      {% else %}<p class="rc-big tab">—</p><p>{{ t.early }} call{{ "s" if t.early != 1 }}, all too early to tell.</p>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% for w in r.weeks %}
+  <details class="rc-week"{% if loop.first and not finished %} open{% endif %}>
+    <summary><span class="gothic">Calls of {{ w.day | long_date }}</span>
+      <span class="rc-score">Defrost {{ w.lists.defrost.right }}/{{ w.lists.defrost.checked }} · Heat check {{ w.lists.heat_check.right }}/{{ w.lists.heat_check.checked }}</span></summary>
+    <div class="rc-cols">
+      {% for which, label in (("defrost", "Defrost"), ("heat_check", "Heat check")) %}
+      <div class="scroll">
+      <table class="register">
+        <caption class="gothic">{{ label }}</caption>
+        <thead><tr><th class="l">#</th><th class="l">Player</th><th class="l">Result</th><th>Per shot, then → after</th><th>PPG → at level</th></tr></thead>
+        <tbody>
+        {% for x in w.lists[which].rows %}
+          <tr><td class="l">{{ x.rank }}</td>
+            <td class="l name">{% if x.id in player_ids %}<a href="{{ root }}players/{{ x.id }}/">{{ x.name }}</a>{% else %}{{ x.name }}{% endif %} <small>{{ x.team }}</small></td>
+            <td class="l">{{ result(x, finished) }}</td>
+            <td>{% if x.pps_then is not none %}{{ "%.2f" | format(x.pps_then) }}{% else %}—{% endif %} → {% if x.pps_after is not none %}{{ "%.2f" | format(x.pps_after) }}{% else %}…{% endif %}{% if x.games_after %} <small>({{ x.games_after }} g)</small>{% endif %}</td>
+            <td>{{ "%.1f" | format(x.ppg) }} → {{ "%.1f" | format(x.proj_ppg) }}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      </div>
+      {% endfor %}
+    </div>
+  </details>
+  {% endfor %}
+{% endmacro %}
+
+{% block content %}
+  <h1 class="gothic page-title">The receipts</h1>
+  <p class="dek">Every Heat check and Defrost call we make, checked against what happened next. Misses included.</p>
+
+  <div class="runhead"><span>This season</span><span>{{ now.season_label }}</span></div>
+  {% if now.weeks %}
+  <p class="note">Checked through {{ now.through | long_date }}. One set of calls a week counts: the lists from the first night of each week.</p>
+  {{ calls(now, False, player_ids) }}
+  {% else %}
+  <p>The first calls come a week or so after opening night (Tuesday 20 October): the lists need five games from each player. Every call is saved the night it's made and checked here as the games come in.</p>
+  {% endif %}
+
+  {% if odds %}
+  <h2 class="gothic sec-title">Game chances, checked <span class="star">★</span></h2>
+  <p class="dek">Every game's chance at both teams' true shooting{% if carried %} in {{ carried.season_label }}{% else %} this season{% endif %}, against what happened. If the numbers are honest, a team we made a 70% favourite wins about 70% of the time.</p>
+  <div class="scroll">
+  <table class="register rc-odds">
+    <thead><tr><th class="l">We made the favourite</th><th>Games</th><th>On average</th><th>It won</th></tr></thead>
+    <tbody>
+    {% for b in odds %}
+      <tr><td class="l">{{ (100 * b.lo) | round | int }}–{{ (100 * b.hi) | round | int }}%</td><td>{{ b.games }}</td><td>{{ b.said | pct(0) }}</td><td><b>{{ b.won | pct(0) }}</b></td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <p class="note">The result after four quarters: our chances leave out overtime, so a tie counts as half a win.</p>
+  {% endif %}
+
+  {% if last.weeks %}
+  <h2 class="gothic sec-title">Last season, replayed <span class="star">★</span></h2>
+  <p class="dek">{{ last.season_label }} wasn't on the site, so we rebuilt the lists every Monday with today's method, from only the games played before that date, and checked each call to the end of the season.</p>
+  {{ calls(last, True, player_ids) }}
+  {% endif %}
+
+  <h2 class="gothic sec-title">How we check <span class="star">★</span></h2>
+  <div class="letters">
+    <div class="letter"><p class="q">What counts as right?</p><p class="a">Our calls are about shooting, not minutes: "at his true shooting, with the same shots and minutes". So we check his scoring per shot: points divided by shots plus 0.44 for each free throw. A Defrost call is right if his scoring per shot went up after the call; a Heat check call if it went down.</p></div>
+    <div class="letter"><p class="q">When does a call count?</p><p class="a">Once he's played five more games and taken 40 more shots. Before that it's too early to tell, and it isn't in the totals. Calls are saved the night they're made, as published; nothing is changed later.</p></div>
+    <div class="letter"><p class="q">Isn't a cool-off easy to call?</p><p class="a">Easier than a bounce-back, yes: a hot streak is partly luck, and luck doesn't carry over. That's the point of the Heat check. The harder call is how far he'll fall, which is what "at his true shooting" puts a number on.</p></div>
+  </div>
+{% endblock %}
