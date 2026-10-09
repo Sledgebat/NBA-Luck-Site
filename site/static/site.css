@@ -237,3 +237,7 @@ footer { padding: 22px 0 40px; margin-top: 50px; font-size: .8rem; color: var(--
 /* players page: the chosen team's line, from the Teams table (shown by site.js) */
 .team-line { margin: 4px 0 14px; font-size: .95rem; }
 .team-line b { font-family: "League Gothic"; font-weight: 400; text-transform: uppercase; font-size: 1.5rem; letter-spacing: .02em; }
+
+/* before opening night: the whole site shows last season (site.py `carried`) */
+.carried-strip { margin: 0; padding: 8px clamp(14px, 3vw, 34px); background: var(--ink); color: var(--page); font-size: .88rem; }
+.carried-strip b { font-family: "League Gothic"; font-weight: 400; text-transform: uppercase; letter-spacing: .05em; font-size: 1.1rem; }

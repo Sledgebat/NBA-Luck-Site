@@ -165,8 +165,9 @@ def game_json(g: dict, who: dict) -> dict:
     return g
 
 
-def write_outputs(con, season: int, preseason: bool = False) -> dict:
-    OUT.mkdir(parents=True, exist_ok=True)
+def outputs(con, season: int, preseason: bool = False) -> dict:
+    """Every data file for a season, as {file name: content}. Also used by the site build for last
+    season's pages before opening night."""
     shots = model.load_shots(con, list(range(season - model.PARAMS["prior_seasons"], season + 1)))
     rates = model.league_rates(shots[shots.season == season - 1])
     games = pd.read_sql("SELECT * FROM games WHERE season = ? ORDER BY date, game_id", con, params=(season,))
@@ -212,13 +213,18 @@ def write_outputs(con, season: int, preseason: bool = False) -> dict:
         "issue": len(regular_dates), "games": len(verdicts), "players": len(players),
         "model": model.PARAMS["version"],
     }
-    files = {
+    return {
         "meta.json": meta, "players.json": players, "hotcold.json": hot, "last_night.json": last_night,
         "games.json": verdicts, "teams.json": sorted(teams.values(), key=lambda t: t["team"]),
     }
+
+
+def write_outputs(con, season: int, preseason: bool = False) -> dict:
+    OUT.mkdir(parents=True, exist_ok=True)
+    files = outputs(con, season, preseason)
     for name, obj in files.items():
         (OUT / name).write_text(json.dumps(obj, separators=(",", ":"), default=model.safe))
-    return meta
+    return files["meta.json"]
 
 
 def main(argv=None) -> int:

@@ -2,7 +2,7 @@
 {% block title %}Players · BucketWeights{% endblock %}
 {% block content %}
   <h1 class="gothic page-title">Players</h1>
-  <p class="dek">Every player this season: points a game now, and at his true shooting with the same shots and minutes. "Level" is our estimate of his real make rate.</p>
+  <p class="dek">Every player {{ season_word }}: points a game {{ "in " ~ carried.season_label if carried else "now" }}, and at his true shooting with the same shots and minutes. "Level" is our estimate of his real make rate.</p>
   {% if players %}
   <div class="filters">
     <label>Team <select id="teamFilter"><option value="">All 30</option>{% for t in TEAMS | sort(attribute="name") %}<option value="{{ t.abbrev }}">{{ t.name }}</option>{% endfor %}</select></label>

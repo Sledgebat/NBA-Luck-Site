@@ -129,8 +129,12 @@ avoids that.
   with the team's line from the Teams table on top); there are no team pages.
 - **Home:** cover = logo (no player name over it: Josh removed that) + dateline, then **Heat Check
   / Defrost first** (Josh: hottest and coldest players at the top), then **Last night** (agate,
-  robberies first), then **Last Shot**. Before opening night the lists show last season's
-  players, unlinked.
+  robberies first), then **Last Shot**.
+- **Before opening night** (no regular-season game stored yet): the whole site is built from last
+  season (`site.build` → `update.outputs(season - 1)`, ~13 s), with a black strip under the header
+  on every page ("Before opening night · last season's numbers"). Home: last season's lists (linked)
+  and "Last season's biggest robberies" instead of Last night (a preseason rehearsal's games still
+  show as Last night, with their pages). Switches to the new season by itself on opening night.
 - **Inside pages are print:** agate tables with dot leaders, player pages as card backs, Guide as
   a letters page.
 - **No logos or headshots.** Players are their names set big; teams are names/abbrevs. **Team
@@ -171,7 +175,7 @@ avoids that.
 2. Josh's review of the cards: which to post, the weekly days, the cover's main lines, the
    yearbooks: Heat check on red stock, Defrost on navy (swapped at Josh's request, 9 Oct).
 3. Polish: Open Graph images/meta for sharing (a card could double as the page's share image), a
-   sitemap, the empty "Last night" date line before opening night, preseason games' pages.
+   sitemap.
 4. When Josh says go: Cloudflare secrets + domain (bucketweights.com?) → publish. Change
    `cards.SITE_NAME` if the domain differs.
 5. Later in the season: playoff/Play-In odds on point differential (Cup games count except the

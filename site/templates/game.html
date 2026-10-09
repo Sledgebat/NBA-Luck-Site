@@ -2,7 +2,7 @@
 {% set hw = g.home_pts > g.away_pts %}
 {% set win, lose = (("home", "away") if hw else ("away", "home")) %}
 {% block title %}{{ g[win] | team_name }} {{ g[win + "_pts"] }}, {{ g[lose] | team_name }} {{ g[lose + "_pts"] }}: {{ g.label }} · BucketWeights{% endblock %}
-{% block description %}{{ g[win] | team_name(False) }} had a {{ (100 * g.winner_chance) | round | int }}% chance of winning at both teams' true shooting.{% endblock %}
+{% block description %}{{ g[win] | team_name(False) }} had {{ g.winner_chance | a_pct }} chance of winning at both teams' true shooting.{% endblock %}
 {% block content %}
   <p class="kicker" style="margin-top:24px">{{ g.date | long_date }}{% if g.season_type == 1 %} · Preseason{% elif g.season_type == 5 %} · Play-In{% elif g.season_type == 3 %} · Playoffs{% elif g.competition_type == "CC" %} · NBA Cup final{% endif %}</p>
   <div class="score-line">

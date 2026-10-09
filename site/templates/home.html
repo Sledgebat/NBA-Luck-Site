@@ -20,14 +20,14 @@
       <h2 id="hot-h" class="gothic">Heat check</h2>
       <p class="sub">{% if carried %}Shot above their level in {{ carried.season_label }}. Don't expect a repeat.{% else %}Shooting above their level. Expect a cool-off.{% endif %}</p>
       <div class="stripes"></div>
-      {% if heat %}<ol>{% for p in heat %}{{ stack_item(p, root, carried) }}{% endfor %}</ol>{% else %}<p class="empty">Not enough games yet.</p>{% endif %}
+      {% if heat %}<ol>{% for p in heat %}{{ stack_item(p, root) }}{% endfor %}</ol>{% else %}<p class="empty">Not enough games yet.</p>{% endif %}
       <div class="stripes"></div>
     </section>
     <section class="stack cold" aria-labelledby="cold-h">
       <h2 id="cold-h" class="gothic">Defrost</h2>
       <p class="sub">{% if carried %}Shot below their level in {{ carried.season_label }}. Expect better.{% else %}Shooting below their level. Expect a bounce-back.{% endif %}</p>
       <div class="stripes"></div>
-      {% if cold %}<ol>{% for p in cold %}{{ stack_item(p, root, carried) }}{% endfor %}</ol>{% else %}<p class="empty">Not enough games yet.</p>{% endif %}
+      {% if cold %}<ol>{% for p in cold %}{{ stack_item(p, root) }}{% endfor %}</ol>{% else %}<p class="empty">Not enough games yet.</p>{% endif %}
       <div class="stripes"></div>
     </section>
   </div>
@@ -37,6 +37,13 @@
 {% endblock %}
 
 {% block content %}
+  {% if carried and not last_night.games %}
+  <div class="runhead"><span>BucketWeights ★ Last season</span><span>{{ carried.season_label }}</span></div>
+  <h2 class="gothic sec-title">Last season's biggest robberies <span class="star">★</span></h2>
+  <p class="dek">The {{ carried.season_label }} winners with the smallest chance at both teams' true shooting. From opening night, this space is every game from the night before.</p>
+  <div class="agate">{% for g in carried.robberies %}{{ agate_game(g, root) }}{% endfor %}</div>
+  <p class="note"><b class="v-robbery">Robbery</b>: the winner had under a 35% chance at both teams' true shooting. <a href="{{ root }}games/">Every game of {{ carried.season_label }} →</a></p>
+  {% else %}
   <div class="runhead"><span>BucketWeights ★ Last night</span><span>{{ last_night.date | long_date }}</span></div>
   <h2 class="gothic sec-title">Last night <span class="star">★</span></h2>
   <p class="dek">Every game, and whether the winner earned it or got bailed out by shooting luck. Robberies first.</p>
@@ -45,6 +52,7 @@
   <p class="note"><b class="v-robbery">Robbery</b>: the winner had under a 35% chance at both teams' true shooting · <b class="v-coin">Coin flip</b>: 35–65% · <b>Earned it</b>: 65% or more. <a href="{{ root }}games/">All games →</a></p>
   {% else %}
   <p>No games yet. Opening night is Tuesday 20 October.</p>
+  {% endif %}
   {% endif %}
 {% endblock %}
 

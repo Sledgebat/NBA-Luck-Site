@@ -61,6 +61,12 @@ def short_date(iso: str | None) -> str:
     return f"{d.strftime('%a')} {d.day} {d.strftime('%b')}"
 
 
+def a_pct(x) -> str:
+    """'a 6%', 'an 8%', 'an 18%': the article that goes with a chance, said aloud."""
+    n = round(100 * x)
+    return f"{'an' if str(n).startswith('8') or n in (11, 18) else 'a'} {n}%"
+
+
 def verdict_class(label: str) -> str:
     return {"Robbery": "v-robbery", "Coin flip": "v-coin", "Earned it": "v-earned"}.get(label, "")
 
@@ -79,7 +85,7 @@ def meter(level, lo, hi, now, lo_axis, hi_axis) -> dict:
 
 def env() -> Environment:
     e = Environment(loader=FileSystemLoader(SITE / "templates"), autoescape=select_autoescape(["html"]), trim_blocks=True, lstrip_blocks=True)
-    e.filters.update(pct=pct, pct_bare=pct_bare, signed=signed, long_date=long_date, short_date=short_date,
+    e.filters.update(a_pct=a_pct, pct=pct, pct_bare=pct_bare, signed=signed, long_date=long_date, short_date=short_date,
                      verdict_class=verdict_class, team_name=team_name)
     e.globals.update(TEAMS=TEAM_LIST, BY_ABBREV=BY_ABBREV, REPO=REPO, meter=meter)
     return e
@@ -168,18 +174,32 @@ def build(season: int | None = None) -> Path:
     meta = read("meta.json")
     season = season or meta["season"]
     players, hot, last_night, games, teams = read("players.json"), read("hotcold.json"), read("last_night.json"), read("games.json"), read("teams.json")
+    extra_games = []
+
+    # Before opening night: the whole site shows last season, labelled, so every page and link
+    # works. From the first regular-season game it switches to this season by itself.
+    carried = None
+    if not any(g["season_type"] == 2 for g in games):
+        prev = update.outputs(con, season - 1)
+        extra_games = games  # preseason games from a rehearsal run: their pages are still built
+        players, hot, games, teams = prev["players.json"], prev["hotcold.json"], prev["games.json"], prev["teams.json"]
+        season -= 1
+        carried = {
+            "season": season, "season_label": prev["meta.json"]["season_label"],
+            "heat_check": hot["heat_check"][:5], "defrost": hot["defrost"][:5],
+            "robberies": sorted((g for g in games if g["label"] == "Robbery"), key=lambda g: g["winner_chance"])[:5],
+        }
     shots = model.load_shots(con, list(range(season - model.PARAMS["prior_seasons"], season + 1)))
     rates = model.league_rates(shots[shots.season == season - 1])
     lines = season_lines(con, season)
     logs = game_logs(con, season, rates, shots)
-    check = dict(con.execute("SELECT game_id, check_status FROM games WHERE season = ?", (season,)).fetchall())
-
-    carried = carried_lists(con, season) if not hot["heat_check"] and not hot["defrost"] else None
+    check = dict(con.execute("SELECT game_id, check_status FROM games WHERE season IN (?, ?)", (season, meta["season"])).fetchall())
 
     issue = meta.get("issue") or 0
     colour = ISSUE_COLOURS[issue % len(ISSUE_COLOURS)] if issue else "yellow"
     now_et = datetime.now(ZoneInfo("America/New_York"))
-    common = {"meta": meta, "issue_colour": colour, "built": now_et.strftime("%-d %b %Y, %-I:%M %p ET")}
+    common = {"meta": meta, "issue_colour": colour, "built": now_et.strftime("%-d %b %Y, %-I:%M %p ET"), "carried": carried,
+              "season_word": f"in {carried['season_label']}" if carried else "this season"}
 
     if OUT.exists():
         shutil.rmtree(OUT)
@@ -197,7 +217,7 @@ def build(season: int | None = None) -> Path:
     for g in ln_games + games_sorted:
         g["check"] = check.get(g["game_id"], "ok")
 
-    page("index.html", "home.html", 0, nav="home", hot=hot, carried=carried, last_night=dict(last_night, games=ln_games),
+    page("index.html", "home.html", 0, nav="home", hot=hot, last_night=dict(last_night, games=ln_games),
          shot=last_shot(last_night))
 
     # players
@@ -213,7 +233,7 @@ def build(season: int | None = None) -> Path:
     for g in games_sorted:
         by_date.setdefault(g["date"], []).append(g)
     page("games/index.html", "games.html", 1, nav="games", by_date=by_date)
-    for g in games_sorted:
+    for g in games_sorted + extra_games:
         page(f"games/{g['game_id']}/index.html", "game.html", 2, nav="games", g=g, by_id=by_id)
 
     # teams: one league table. A team's players are the Players page filtered to it (?team=BOS),

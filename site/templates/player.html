@@ -6,7 +6,7 @@
   <p class="kicker" style="margin-top:24px">{{ p.team | team_name(False) }}{% if p.pos %} · {{ p.pos }}{% endif %}</p>
   <div class="headline-proj">
     <div class="big tab">{{ "%.1f" | format(p.ppg) }}<span class="to">→</span>{{ "%.1f" | format(p.proj_ppg) }}</div>
-    <p>Points a game now → at his true shooting, with the same shots and minutes.
+    <p>Points a game {{ season_word if carried else "now" }} → at his true shooting, with the same shots and minutes.
     {% set gap = p.proj_ppg - p.ppg %}
     {% if gap >= 0.3 %}He's shooting below his level: <span class="cold-t">expect a bounce-back</span>, not because he's due, but because his level is better than this.
     {% elif gap <= -0.3 %}He's shooting above his level: <span class="hot-t">expect a cool-off</span>.
@@ -26,7 +26,7 @@
         <h3>{{ label }}</h3>
         <div class="nums tab">{{ d.pct | pct }}<span class="to"> → </span>{{ d.level | pct }}</div>
         {{ level_meter(label, d) }}
-        <p>{{ d.m }} of {{ d.a }} this season. Level likely {{ d.lo | pct }}–{{ d.hi | pct }}.</p>
+        <p>{{ d.m }} of {{ d.a }} {{ season_word }}. Level likely {{ d.lo | pct }}–{{ d.hi | pct }}.</p>
       </div>
       {% endfor %}
     </div>
@@ -47,7 +47,7 @@
       </tbody>
     </table>
     </div>
-    <p class="note">*This season so far. Regular season only, from ESPN's play-by-play; older seasons can differ from official totals by an attempt or two.</p>
+    <p class="note">*{{ "The " ~ carried.season_label ~ " season." if carried else "This season so far." }} Regular season only, from ESPN's play-by-play; older seasons can differ from official totals by an attempt or two.</p>
     {% endif %}
   </article>
 

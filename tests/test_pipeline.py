@@ -135,6 +135,11 @@ class CardWords(unittest.TestCase):
             # the badge: 38px type, so the large-text standard (3:1)
             self.assertGreaterEqual(cards.contrast(b["--ink2-text"], b["--ink2"]), 3.0, t["abbrev"])
 
+    def test_a_or_an_before_a_chance(self):
+        from bucketweights import site
+        self.assertEqual([site.a_pct(c) for c in (0.06, 0.08, 0.11, 0.18, 0.31, 0.83)],
+                         ["a 6%", "an 8%", "an 11%", "an 18%", "a 31%", "an 83%"])
+
 
 if __name__ == "__main__":
     unittest.main()

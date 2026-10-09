@@ -24,6 +24,7 @@
   <button class="theme-btn" id="themeBtn" type="button">Blacktop</button>
 </header>
 
+{% if carried %}<p class="carried-strip"><b>Before opening night</b> · last season's numbers ({{ carried.season_label }}). New season from Tue 20 Oct.</p>{% endif %}
 {% block cover %}{% endblock %}
 
 <main class="wrap">

@@ -4,7 +4,7 @@
   {% set hw = g.home_pts > g.away_pts %}
   <h3><a href="{{ root }}games/{{ g.game_id }}/">{% if hw %}{{ g.home | team_name }} {{ g.home_pts }}, {{ g.away | team_name }} {{ g.away_pts }}{% else %}{{ g.away | team_name }} {{ g.away_pts }}, {{ g.home | team_name }} {{ g.home_pts }}{% endif %}{% if g.periods > 4 %} (OT){% endif %}</a></h3>
   <span class="verdict {{ g.label | verdict_class }}">{{ g.label }}</span>
-  <p><b>{{ (g.home if hw else g.away) | team_name }} had a {{ (100 * g.winner_chance) | round | int }}% chance</b> at both teams' true shooting.</p>
+  <p><b>{{ (g.home if hw else g.away) | team_name }} had {{ g.winner_chance | a_pct }} chance</b> at both teams' true shooting.</p>
   {% for side in (("home", "away") if hw else ("away", "home")) %}
   <p class="dots"><span>{{ g[side] | team_name }} 3PT {{ g.teams[side].three[0] }}-{{ g.teams[side].three[1] }}</span><span>exp. {{ "%.1f" | format(g.teams[side].three[2]) }}</span></p>
   {% endfor %}
