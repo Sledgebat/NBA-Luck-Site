@@ -1,0 +1,34 @@
+{% extends "cards/base.html" %}
+{# A trading-card back: one player's seasons and his true level now. #}
+{% block card %}
+<div class="card c-back {{ c.which }}" data-card>
+  <div class="inner">
+    <div class="flow">
+      <div class="head">
+        <div class="no">{{ c.list_title }}<br>No. {{ c.rank }}</div>
+        <div><div class="nm" data-fit-width>{{ c.p.name }}</div><div class="bio">{{ c.bio }}<br>{{ c.range }}</div></div>
+      </div>
+      <table>
+        <thead><tr><th>Season</th><th>Tm</th><th>PPG</th><th>{{ c.label }}</th><th>{{ c.label }}%</th></tr></thead>
+        <tbody>
+          {% for r in c.rows %}
+          <tr{% if r.now %} class="now"{% endif %}><td>{{ r.season }}{{ "*" if r.now }}</td><td>{{ r.team }}</td><td>{{ "%.1f" | format(r.ppg) }}</td><td>{{ r.m }}-{{ r.a }}</td><td>{{ r.pct | pct_bare }}</td></tr>
+          {% endfor %}
+          <tr class="lvl"><td colspan="2">At his level</td><td>{{ "%.1f" | format(c.p.proj_ppg) }}</td><td></td><td>{{ c.p[c.kind].level | pct_bare }}</td></tr>
+        </tbody>
+      </table>
+      <div class="split">
+        <table class="mini">
+          <thead><tr><th>{{ c.rows[-1].season if c.carried and c.rows else 'This season' }}</th><th>Made</th><th>%</th><th>Level</th></tr></thead>
+          <tbody>{% for k, label in (("3", "3PT"), ("2", "2PT"), ("FT", "FT")) %}{% set d = c.p[k] %}
+            <tr{% if k == c.kind %} class="key"{% endif %}><td>{{ label }}</td><td>{{ d.m }}-{{ d.a }}</td><td>{{ d.pct | pct_bare }}</td><td>{{ d.level | pct_bare }}</td></tr>
+          {% endfor %}</tbody>
+        </table>
+        <div class="gp"><b>{{ c.p.gp }}</b>games<br><b>{{ "%.1f" | format(c.p.fga_pg) }}</b>shots a game</div>
+      </div>
+      <div class="trivia"><b>Did you know?</b>{{ c.trivia }}</div>
+    </div>
+    <div class="foot" data-floor><span>*{{ c.to }} · same shots &amp; minutes</span><span>{{ SITE_NAME }}</span></div>
+  </div>
+</div>
+{% endblock %}

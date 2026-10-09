@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>{{ c.title }} · BucketWeights card</title>
+<link rel="stylesheet" href="{{ root }}static/cards.css">
+</head>
+<body>
+{% block card %}{% endblock %}
+<script>
+// Big type that must stay on one line ([data-fit-width]) shrinks until it fits its box.
+window.fitWidths = function () {
+  document.querySelectorAll("[data-fit-width]").forEach(function (el) {
+    var size = parseFloat(getComputedStyle(el).fontSize), min = size * 0.45;
+    while (el.scrollWidth > el.clientWidth + 1 && size > min) { size -= 2; el.style.fontSize = size + "px"; }
+  });
+};
+document.fonts.ready.then(window.fitWidths);
+</script>
+</body>
+</html>

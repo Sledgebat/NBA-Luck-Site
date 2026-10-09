@@ -1,6 +1,6 @@
 # BucketWeights methodology, version 1 (for opening night, 2026-27)
 
-Status: **draft for Josh's approval**, 9 October 2026. Every number below comes from a script in
+Status: **approved by Josh ("for now")**, 9 October 2026. Every number below comes from a script in
 `research/` and can be reproduced (commands at the end). Seasons are named by the year they end in
 (2025 = 2024-25).
 

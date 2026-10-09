@@ -1,0 +1,17 @@
+{% extends "cards/base.html" %}
+{# A Street & Smith's yearbook cover: the week's Heat check or Defrost top five. #}
+{% block card %}
+<div class="card c-year {{ c.which }}" data-card>
+  <div class="flow">
+    <div class="top"><span>BucketWeights' Official</span><span>{{ c.season_label }} · {{ day | short_date }}</span></div>
+    <div class="title" data-fit-width>{{ c.list_title | title }}</div>
+    <div class="sub"><span>{{ c.sub }}</span><span>Free</span></div>
+    <ul>
+      {% for x in c["items"] %}
+      <li><span class="p">{{ x.p.name }}<small>{{ x.p.team }}</small></span><span class="s">{{ x.line }}</span></li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="foot" data-floor><span>PPG now → at their level</span><span>{{ SITE_NAME }}</span></div>
+</div>
+{% endblock %}

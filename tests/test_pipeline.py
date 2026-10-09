@@ -86,5 +86,40 @@ class EspnGame(unittest.TestCase):
             self.assertEqual(db.stored_hash(con, game["game_id"]), db.content_hash(game, shots))
 
 
+
+class CardWords(unittest.TestCase):
+    """The social cards' sentences (bucketweights/cards.py); the images themselves need a browser."""
+
+    def game(self, hp, ap, h3, a3, chance=0.2, periods=4):
+        return {"home": "BOS", "away": "ORL", "home_pts": hp, "away_pts": ap, "periods": periods,
+                "winner_chance": chance, "teams": {"home": {"three": h3}, "away": {"three": a3}}}
+
+    def test_score_line_puts_the_winner_first(self):
+        from bucketweights import cards
+        self.assertEqual(cards.score_line(self.game(108, 113, [12, 43, 15.0], [19, 50, 17.9])), "Magic 113, Celtics 108")
+        self.assertEqual(cards.score_line(self.game(110, 109, [1, 1, 1], [1, 1, 1], periods=5)), "Celtics 110, Magic 109 (OT)")
+
+    def test_night_story_tells_the_bigger_surprise(self):
+        from bucketweights import cards
+        cold_loser = self.game(113, 108, [19, 50, 17.9], [12, 43, 15.0])
+        self.assertEqual(cards.night_story(cold_loser), "Orlando shot 12-for-43 from three (15.0 expected) and lost by 5.")
+        hot_winner = self.game(124, 123, [17, 27, 9.3], [10, 30, 11.0])
+        self.assertEqual(cards.night_story(hot_winner), "Boston shot 17-for-27 from three (9.3 expected) and won by one.")
+
+    def test_chance_and_names(self):
+        from bucketweights import cards
+        self.assertEqual(cards.chance_short(0.004), "<1%")
+        self.assertEqual(cards.chance_short(0.312), "31%")
+        self.assertEqual(cards.last_name("Tim Hardaway Jr."), "Hardaway")
+        self.assertEqual(cards.last_name("Nikola Jokić"), "Jokić")
+
+    def test_key_kind_follows_the_list(self):
+        from bucketweights import cards
+        p = {"gp": 10, "3": {"pct": 0.30, "level": 0.38, "a": 60}, "2": {"pct": 0.56, "level": 0.52, "a": 100},
+             "FT": {"pct": 0.80, "level": 0.80, "a": 30}}
+        self.assertEqual(cards.key_kind(p, 1), "3")    # Defrost: the threes are below his level
+        self.assertEqual(cards.key_kind(p, -1), "2")   # Heat check: the twos are above it
+
+
 if __name__ == "__main__":
     unittest.main()

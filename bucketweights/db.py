@@ -50,6 +50,11 @@ CREATE TABLE IF NOT EXISTS appearances (
 CREATE TABLE IF NOT EXISTS runs (
   run_at TEXT PRIMARY KEY, new_games INTEGER, changed_games INTEGER, status TEXT, notes TEXT
 );
+-- social cards made (cards.py): who got a card back when, so the same player doesn't repeat
+CREATE TABLE IF NOT EXISTS cards (
+  day TEXT NOT NULL, card TEXT NOT NULL, subject INTEGER,
+  PRIMARY KEY (day, card)
+);
 """
 
 

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{# The day's social cards for Josh to post by hand: image, download, caption to copy. Not in the menus. #}
+{% block title %}Social cards · BucketWeights{% endblock %}
+{% block head %}<meta name="robots" content="noindex">{% endblock %}
+{% block content %}
+  <h1 class="gothic page-title">Social cards</h1>
+  <p class="dek">{% if day %}For {{ day | long_date }}{% if plan.issue_label %} · {{ plan.issue_label }}{% endif %}.{% endif %} Made {{ built }}. Download an image, copy its caption, post by hand.{% if plan.carried %} Before opening night the player cards use last season's lists.{% endif %}</p>
+  {% if plan.cards %}
+  <div class="kit">
+    {% for c in plan.cards %}
+    <section class="kit-card">
+      <h2 class="gothic">{{ c.title }}</h2>
+      <a href="{{ c.image }}"><img src="{{ c.image }}" width="1080" height="1350" alt="{{ c.title }}" loading="lazy"></a>
+      <textarea readonly rows="5" aria-label="Caption for {{ c.title }}">{{ c.caption }}</textarea>
+      <p><button type="button" class="copy-btn" data-copy>Copy caption</button> <a href="{{ c.image }}" download>Download image</a> · <a href="cards/{{ c.slug }}/">Card page</a></p>
+    </section>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if plan.skipped %}
+  <h2 class="gothic sec-title">Not today</h2>
+  <ul class="kit-skip">{% for s in plan.skipped %}<li>{{ s }}</li>{% endfor %}</ul>
+  {% endif %}
+  <script>
+  document.querySelectorAll("[data-copy]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var t = b.closest(".kit-card").querySelector("textarea");
+      (navigator.clipboard ? navigator.clipboard.writeText(t.value) : Promise.reject()).then(function () { b.textContent = "Copied"; }, function () { t.select(); document.execCommand("copy"); b.textContent = "Copied"; });
+      setTimeout(function () { b.textContent = "Copy caption"; }, 1600);
+    });
+  });
+  </script>
+{% endblock %}

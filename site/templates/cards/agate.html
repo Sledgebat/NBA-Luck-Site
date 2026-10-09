@@ -1,0 +1,15 @@
+{% extends "cards/base.html" %}
+{# Last night: every game as a newspaper box-score line, robberies first. #}
+{% block card %}
+<div class="card c-agate" data-card>
+  <div class="flow">
+    <div class="flag"><b>Last night</b><span>{{ day | short_date }} {{ day[:4] }}<br>{{ c.games | length }} game{{ "s" if c.games | length != 1 }}</span></div>
+    {% for g in c.games %}
+    <div class="row"><span class="g">{{ score_line(g) }}</span><span class="v {{ {'Robbery': 'rob', 'Coin flip': 'coin'}.get(g.label, 'earn') }}">{{ g.label }}<small>{{ chance_short(g.winner_chance) }}</small></span></div>
+    {% endfor %}
+    <div class="key">% = the winner's chance at both teams' true shooting.</div>
+    <div class="best"><b>{{ c.best_title }}</b>{{ c.best }}</div>
+  </div>
+  <div class="foot" data-floor><span>{{ SITE_NAME }}</span><span>Who earned it ★ Who got lucky</span></div>
+</div>
+{% endblock %}

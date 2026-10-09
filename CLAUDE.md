@@ -23,10 +23,12 @@ Independent fan site; the footer disclaimer stays on every page. Started 8 Oct 2
 - **Nightly:** `.github/workflows/update-site.yml` at 03:45, 06:30, 10:20 UTC (+ "Run workflow",
   with a "preseason" tick box for rehearsals). Steps: tests → download DB from the `data` release
   (or backfill 2024–2026 if missing) → `python -m bucketweights.update` → `python -m
-  bucketweights.site` → publish to Cloudflare (skipped without secrets) → save DB to the release →
-  keep-alive commit after 45 quiet days. Runner pinned to `ubuntu-24.04` (ubuntu-latest moves to a
+  bucketweights.site` → install Chromium → `python -m bucketweights.cards` (`continue-on-error`) →
+  publish to Cloudflare (skipped without secrets) → keep the card images as the `social-cards`
+  artifact (3 days) → save DB to the release → keep-alive commit after 45 quiet days. Runner pinned to `ubuntu-24.04` (ubuntu-latest moves to a
   new version from 19 Oct 2026). A run takes ~1 min (2.4 min the first time). Results show on the
-  run's summary page (readable without signing in); full logs need a GitHub sign-in.
+  run's summary page, but **only when signed in** (checked 9 Oct 2026: signed out, GitHub shows no
+  summary and no logs), so Josh has to read them out.
 - **Fails (GitHub emails Josh) only when:** ESPN unreachable, a game can't be read, or no new
   regular-season game for 8+ days mid-season. Box-score mismatches don't fail; the game is flagged
   (`games.check_status`) and re-read for 3 days.
@@ -42,8 +44,8 @@ Independent fan site; the footer disclaimer stays on every page. Started 8 Oct 2
 
 - **Live:** ESPN `site.api.espn.com` (fallback host `site.web.api.espn.com`): `/scoreboard?dates=`
   and `/summary?event=`. Works from GitHub's servers. cdn.nba.com returns 403 and stats.nba.com
-  times out from Josh's Mac; cdn.nba.com from GitHub is still unchecked (probe results now go to the
-  run summary; Josh needs to push to re-run it). No second provider is wired in yet.
+  times out from Josh's Mac; **cdn.nba.com is 403 from GitHub too** (probe, 9 Oct 2026: schedule
+  and scoreboard both 403). So there's no NBA fallback; ESPN is the only live source.
 - **History:** sportsdataverse's copies of the same ESPN feed (GitHub release `espn_nba_pbp`,
   `play_by_play_{season}.parquet`). DB holds 2023–2026 + this season. 2015-16 is broken (missing
   shots) and never used.
@@ -57,7 +59,7 @@ Independent fan site; the footer disclaimer stays on every page. Started 8 Oct 2
   ~95% of team-games).
 - Player's current team = team in his latest stored game (so off-season moves show from preseason).
 
-## Model v1 (`bucketweights/params.json`, method in `docs/methodology.md`, approved direction)
+## Model v1 (`bucketweights/params.json`, method in `docs/methodology.md`, approved by Josh 9 Oct 2026 "for now")
 
 - **True level** per kind: (faded makes over the last 3 seasons + this season + k·league) ÷ (same
   attempts + k). Fitted by held-out log loss: 3s k=150 w=0.8; FT k=20 w=0.5; 2s k=50 w=0.5.
@@ -84,10 +86,11 @@ Independent fan site; the footer disclaimer stays on every page. Started 8 Oct 2
 | `bucketweights/db.py` | SQLite schema (`games`, `shots`, `players`, `appearances`, `runs`), `write_game`, hashes |
 | `bucketweights/model.py` | levels, `shot_luck`, `game_verdicts`, `player_table`, `hot_cold`, calibration |
 | `bucketweights/update.py` | nightly fetch + checks + writes `build/data/*.json` (meta, players, hotcold, last_night, games, teams) |
+| `bucketweights/cards.py` | the day's social cards: plan → card pages (`/social/cards/<slug>/`) → Playwright screenshots → `/social/` kit page + `posts.json` |
 | `bucketweights/site.py` | Jinja build into `build/site` (home, players + `/players/{id}/`, games + `/games/{id}/`, teams + `/teams/{abbr}/`, guide, 404) |
 | `bucketweights/teams.json` | the 30 teams: ESPN id/abbrev, NBA abbrev, names, conference, division |
-| `site/templates/` | `base.html` (header, Teams dialog, bottom nav, footer), `macros.html`, one template per page |
-| `site/static/` | `site.css`, `site.js` (theme, Teams dialog, sortable tables, player filters), fonts, `icon.svg` |
+| `site/templates/` | `base.html` (header, Teams dialog, bottom nav, footer), `macros.html`, one template per page, `social.html` (kit), `cards/` (one per card) |
+| `site/static/` | `site.css`, `site.js` (theme, Teams dialog, sortable tables, player filters), `cards.css` (social cards), fonts, `icon.svg` |
 | `tests/test_pipeline.py` | exact maths, shot rules, ESPN fixture parse, idempotent writes |
 | `docs/` | `methodology.md`, `design-references.md`, `bucketweights-style-guide.html` (approved mock-up), `bucketweights-social-cards.html` (card concepts) |
 
@@ -129,9 +132,20 @@ avoids that.
 - **Inside pages are print:** agate tables with dot leaders, player pages as card backs, Guide as
   a letters page.
 - **No logos, headshots or team colours.** Players are their names set big; teams are names/abbrevs.
-- **Social cards (concepts approved, not built):** SLAM-cover style for nightly cards (tonight's
-  issue, robbery of the night); vintage for player/list cards (trading-card back, Street & Smith's
-  yearbook, newspaper agate). 1080 × 1350. HockeyWeights renders its cards with Playwright.
+- **Social cards (built 9 Oct 2026, `bucketweights/cards.py`; Josh posts by hand):** the five approved
+  looks at 1080 × 1350 (authored at that size, shot at 1×). After a night with games: **cover**
+  (tonight's issue in the issue colour; cover story = Defrost No. 1; coverlines = Heat check No. 1
+  and the night's robbery or closest game; the main line and its typeface rotate by issue,
+  `COVERLINES` / `.face-0`–`3`), **last night** (agate, every game, lowest winner's chance first;
+  fits 15 games), **robbery of the night** (black issue, only when there was one), **one card
+  back** (Defrost on odd issues, Heat check on even; the highest on that list without a card back
+  in the last 14 days, kept in the DB's `cards` table), and the **yearbook** top 5 (Heat check
+  Mondays, Defrost Thursdays, by the morning after). Nothing is made when the latest games are
+  older than yesterday. Before opening night the player cards use last season's lists (labelled
+  "Last season"). Long names/titles shrink to fit (`data-fit-width`); content that runs into the
+  footer gets tighter spacing (`data-fit`) and is flagged "CHECK". Images and captions at
+  `/social/` (noindex, not in the menus); until the site is live Josh downloads them from the run
+  page's `social-cards` artifact. Previews: `cards --any-date --all` after a `--season 2026` build.
 
 ### Vocabulary
 
@@ -145,14 +159,13 @@ avoids that.
 
 ## Next steps (as of 9 Oct 2026)
 
-1. Josh to push; then check the probe's run summary for cdn.nba.com from GitHub (a possible fallback).
-2. Josh to approve `docs/methodology.md` (draft; he has the plain-English section for the Guide).
-3. Social cards: build the five concepts as a nightly step (Playwright screenshots), modelled on
-   HockeyWeights' card pipeline, without touching HockeyWeights.
-4. Rehearse on GitHub with "preseason" ticked (preseason runs until ~16 Oct), and look at the
-   built site artifact or a local build.
-5. Polish: per-issue rotating coverline face, Open Graph images/meta for sharing, a sitemap, the
-   empty "Last night" date line before opening night, preseason games' pages.
-6. When Josh says go: Cloudflare secrets + domain (bucketweights.com?) → publish.
-7. Later in the season: playoff/Play-In odds on point differential (Cup games count except the
+1. Josh to push, then run "Update site" with **preseason** ticked and download the `social-cards`
+   artifact to look at the real cards (first run with Playwright on GitHub).
+2. Josh's review of the cards: which to post, the weekly days, the cover's main lines, the
+   Defrost yearbook's red stock (the approved mock only had Heat check).
+3. Polish: Open Graph images/meta for sharing (a card could double as the page's share image), a
+   sitemap, the empty "Last night" date line before opening night, preseason games' pages.
+4. When Josh says go: Cloudflare secrets + domain (bucketweights.com?) → publish. Change
+   `cards.SITE_NAME` if the domain differs.
+5. Later in the season: playoff/Play-In odds on point differential (Cup games count except the
    final), and the "what's at stake" swings; possibly the NBA Cup knockout placeholders.

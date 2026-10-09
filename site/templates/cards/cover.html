@@ -1,0 +1,16 @@
+{% extends "cards/base.html" %}
+{# Tonight's issue: a SLAM cover in the issue's colour. The cover story is Defrost No. 1. #}
+{% block card %}
+<div class="card c-issue issue-{{ c.colour }}" data-card>
+  <div class="flow">
+    <div class="strap"><span>The shooting-luck basketball daily</span><span>{{ c.issue_label }} <b>★</b> {{ day | short_date }}</span></div>
+    <div class="gothic logo">BucketWeights</div>
+    <div class="who">{{ "Last season" if c.season_note else "Cover story" }} · <b>{{ c.p.name }}</b>, {{ c.team }} · {{ c.who }}</div>
+    <div class="nums">{{ "%.1f" | format(c.p.ppg) }}<span>→</span>{{ "%.1f" | format(c.p.proj_ppg) }}</div>
+    <div class="cap">Points a game now → at his true shooting<br>Same shots &amp; minutes</div>
+    <div class="cl">{% for head, line in c.coverlines %}<div><b>{{ head }}</b><span>{{ line }}</span></div>{% endfor %}</div>
+  </div>
+  <div class="main face-{{ c.face }}" data-floor data-fit-width>{{ c.main }}</div>
+  <div class="foot" data-floor><span>{{ SITE_NAME }}</span><span>Free, every night</span></div>
+</div>
+{% endblock %}

@@ -73,6 +73,16 @@ jobs:
       - name: Build the site
         run: python -m bucketweights.site
 
+      - name: Install the browser for the social cards
+        run: python -m playwright install --with-deps --only-shell chromium
+
+      # The day's 1080 × 1350 images and captions, on the site at /social/. A problem with the cards
+      # never stops the site going out.
+      - name: Make the social cards
+        id: cards
+        continue-on-error: true
+        run: python -m bucketweights.cards
+
       # Skipped until the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets are added. Makes the
       # Pages project the first time. Only runs when the update worked, so a bad night never replaces
       # a good site.
@@ -92,6 +102,16 @@ jobs:
           gzip -c db/bucketweights.sqlite > bucketweights.sqlite.gz
           gh release view data > /dev/null 2>&1 || gh release create data --title "Stats database" --notes "Saved automatically by the Update site workflow. Don't delete: it holds every stored game."
           gh release upload data bucketweights.sqlite.gz --clobber
+
+      # The cards as a download on the run's page (sign in, scroll to Artifacts), until the site is live.
+      - name: Keep the social cards
+        if: steps.cards.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-cards
+          path: build/site/social/*/*.png
+          retention-days: 3
+          if-no-files-found: ignore
 
       # Only when something went wrong, for a few days, so there's something to look at without
       # filling GitHub's artifact storage (free and unlimited while the repo is public; 500 MB

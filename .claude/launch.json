@@ -6,6 +6,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "4100", "--directory", "docs"],
       "port": 4100
+    },
+    {
+      "name": "bucketweights-site",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["scripts/serve.py", "4200"],
+      "port": 4200
     }
   ]
 }

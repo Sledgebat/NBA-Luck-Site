@@ -224,3 +224,12 @@ footer { padding: 22px 0 40px; margin-top: 50px; font-size: .8rem; color: var(--
   .cb-top { grid-template-columns: auto 1fr; }
   .cb-team { grid-column: 1 / -1; text-align: left; }
 }
+
+/* ---------- the social kit (/social/, not in the menus) ---------- */
+.kit { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 28px 24px; margin: 18px 0 30px; }
+.kit-card h2 { font-size: 1.6rem; margin: 0 0 8px; }
+.kit-card img { display: block; width: 100%; height: auto; border: 2px solid var(--rule); background: var(--news); }
+.kit-card textarea { width: 100%; margin-top: 10px; font: 400 .85rem/1.4 "Libre Franklin", sans-serif; color: var(--ink); background: var(--news); border: 2px solid var(--rule); padding: 8px; resize: vertical; }
+.kit-card p { margin: 6px 0 0; font-size: .85rem; }
+.copy-btn { font: 700 .72rem/1 "Libre Franklin"; text-transform: uppercase; letter-spacing: .1em; background: var(--ink); color: var(--page); border: 0; padding: .55rem .8rem; cursor: pointer; }
+.kit-skip { font-size: .9rem; color: var(--ink-2); }

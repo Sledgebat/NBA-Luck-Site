@@ -130,6 +130,22 @@ def game_logs(con, season: int, rates: dict, shots: pd.DataFrame) -> pd.DataFram
     return pts.join(l3).join(lf).join(lk).fillna(0).reset_index()
 
 
+def carried_lists(con, season: int, n: int = 5) -> dict:
+    """Before the first regular-season game: last season's lists, so the cover isn't empty."""
+    prev_shots = model.load_shots(con, list(range(season - 1 - model.PARAMS["prior_seasons"], season)))
+    prev_rates = model.league_rates(prev_shots[prev_shots.season == season - 2])
+    apps = pd.read_sql("SELECT a.* FROM appearances a JOIN games g USING (game_id) WHERE g.season = ?", con, params=(season - 1,))
+    table = model.player_table(prev_shots, apps, season - 1, prev_rates)
+    hc = model.hot_cold(table, n=n)
+    who = update.names(con)
+    return {
+        "season": season - 1,
+        "season_label": f"{season - 2}-{str(season - 1)[2:]}",
+        "heat_check": [update.player_json(r, who) for r in hc["heat_check"].itertuples()],
+        "defrost": [update.player_json(r, who) for r in hc["defrost"].itertuples()],
+    }
+
+
 def last_shot(last_night: dict) -> dict | None:
     """The night's single most extreme three-point line, made vs expected."""
     best = None
@@ -158,20 +174,7 @@ def build(season: int | None = None) -> Path:
     logs = game_logs(con, season, rates, shots)
     check = dict(con.execute("SELECT game_id, check_status FROM games WHERE season = ?", (season,)).fetchall())
 
-    # Before the first regular-season game: last season's lists, so the cover isn't empty.
-    carried = None
-    if not hot["heat_check"] and not hot["defrost"]:
-        prev_shots = model.load_shots(con, list(range(season - 1 - model.PARAMS["prior_seasons"], season)))
-        prev_rates = model.league_rates(prev_shots[prev_shots.season == season - 2])
-        apps = pd.read_sql("SELECT a.* FROM appearances a JOIN games g USING (game_id) WHERE g.season = ?", con, params=(season - 1,))
-        table = model.player_table(prev_shots, apps, season - 1, prev_rates)
-        hc = model.hot_cold(table, n=5)
-        who = update.names(con)
-        carried = {
-            "season_label": f"{season - 2}-{str(season - 1)[2:]}",
-            "heat_check": [update.player_json(r, who) for r in hc["heat_check"].itertuples()],
-            "defrost": [update.player_json(r, who) for r in hc["defrost"].itertuples()],
-        }
+    carried = carried_lists(con, season) if not hot["heat_check"] and not hot["defrost"] else None
 
     issue = meta.get("issue") or 0
     colour = ISSUE_COLOURS[issue % len(ISSUE_COLOURS)] if issue else "yellow"
