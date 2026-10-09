@@ -1,0 +1,87 @@
+{
+  "home_vs_away_raw": {
+    "3": {
+      "home": 0.3665,
+      "away": 0.3589,
+      "n": 823247
+    },
+    "FT": {
+      "home": 0.7719,
+      "away": 0.7699,
+      "n": 594603
+    },
+    "2": {
+      "home": 0.5235,
+      "away": 0.5143,
+      "n": 1472999
+    }
+  },
+  "3": {
+    "k": 150,
+    "w": 0.8,
+    "logloss": 0.6548988259646693,
+    "baselines": {
+      "league average": 0.6558798333855594,
+      "player's raw rate this season": 0.72085074530036,
+      "player's raw rate, 4 seasons": 0.6710031704736581,
+      "this season only, shrunk (best k, w=0)": 0.6553691166120681,
+      "fitted (k, w)": 0.6548988259646693
+    },
+    "k_within_0.0001": [
+      60,
+      500
+    ],
+    "shots": 642905,
+    "adjustments": {
+      "base": 0.6548988259646693,
+      "zone shift": 0.6546248028945366,
+      "home shift": 0.6549101445583524,
+      "zone + home": 0.6546369624925422,
+      "home_logit_half_gap_by_season": {
+        "2018": 0.0413,
+        "2019": -0.0042,
+        "2020": 0.0162,
+        "2021": 0.0175,
+        "2022": 0.0127,
+        "2023": 0.0041,
+        "2024": 0.0242,
+        "2025": 0.0164
+      },
+      "shots": 642905
+    }
+  },
+  "FT": {
+    "k": 20,
+    "w": 0.5,
+    "logloss": 0.5163100172021757,
+    "baselines": {
+      "league average": 0.5325320259811179,
+      "player's raw rate this season": 0.6118097924593304,
+      "player's raw rate, 4 seasons": 0.5352618100841336,
+      "this season only, shrunk (best k, w=0)": 0.519448259521713,
+      "fitted (k, w)": 0.5163100172021757
+    },
+    "k_within_0.0001": [
+      15,
+      30
+    ],
+    "shots": 424397
+  },
+  "2": {
+    "k": 50,
+    "w": 0.5,
+    "logloss": 0.6862199120069663,
+    "baselines": {
+      "league average": 0.6910697723888303,
+      "player's raw rate this season": 0.7268336998082704,
+      "player's raw rate, 4 seasons": 0.6966498843669597,
+      "this season only, shrunk (best k, w=0)": 0.6872403685500905,
+      "fitted (k, w)": 0.6862199120069663
+    },
+    "k_within_0.0001": [
+      20,
+      100
+    ],
+    "shots": 1035739
+  }
+}

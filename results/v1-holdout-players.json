@@ -1,0 +1,60 @@
+{
+  "k_w": {
+    "2": [
+      50,
+      0.5
+    ],
+    "3": [
+      150,
+      0.8
+    ],
+    "FT": [
+      20,
+      0.5
+    ]
+  },
+  "player_cuts": 485,
+  "by_method": {
+    "naive": {
+      "ppg_rmse": 2.8296113527199824,
+      "pts_per_chance_rmse": 0.08513385265633064,
+      "slope": null,
+      "big_calls": 0,
+      "big_right_direction": null
+    },
+    "3s+FTs": {
+      "ppg_rmse": 2.8231578837572116,
+      "pts_per_chance_rmse": 0.07461446043521582,
+      "slope": 0.9490158235051035,
+      "big_calls": 3,
+      "big_right_direction": 1.0
+    },
+    "all shots": {
+      "ppg_rmse": 2.763727235084668,
+      "pts_per_chance_rmse": 0.0667325389474456,
+      "slope": 0.9575072685235153,
+      "big_calls": 21,
+      "big_right_direction": 0.6666666666666666
+    }
+  },
+  "coverage": {
+    "3": {
+      "players": 463,
+      "inside_80pct_range": 0.8272138228941684,
+      "below": 0.11879049676025918,
+      "above": 0.05399568034557235
+    },
+    "FT": {
+      "players": 473,
+      "inside_80pct_range": 0.7801268498942917,
+      "below": 0.10782241014799154,
+      "above": 0.11205073995771671
+    },
+    "2": {
+      "players": 485,
+      "inside_80pct_range": 0.8371134020618557,
+      "below": 0.07010309278350516,
+      "above": 0.09278350515463918
+    }
+  }
+}
