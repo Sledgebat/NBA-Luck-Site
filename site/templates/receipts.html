@@ -59,10 +59,11 @@
 
   {% if odds %}
   <h2 class="gothic sec-title">Game chances, checked <span class="star">★</span></h2>
-  <p class="dek">Every game's chance at both teams' true shooting{% if carried %} in {{ carried.season_label }}{% else %} this season{% endif %}, against what happened. If the numbers are honest, a team we made a 70% favourite wins about 70% of the time.</p>
+  <p class="dek">Every game's chance at both teams' true shooting{% if carried %} in {{ carried.season_label }}{% else %} this season{% endif %}, against what happened. If the numbers are honest, teams we give 70% win about 70% of the time.</p>
+  <p class="note"><b>These aren't predictions.</b> A game's chance is worked out after it's played: everything stays as it happened except whether the threes and free throws went in, which go in at each shooter's level instead. This checks that a Robbery really is one. It doesn't mean we can call games before tip-off; we don't try to.</p>
   <div class="scroll">
   <table class="register rc-odds">
-    <thead><tr><th class="l">We made the favourite</th><th>Games</th><th>On average</th><th>It won</th></tr></thead>
+    <thead><tr><th class="l">Chance at true shooting</th><th>Games</th><th>On average</th><th>Won</th></tr></thead>
     <tbody>
     {% for b in odds %}
       <tr><td class="l">{{ (100 * b.lo) | round | int }}–{{ (100 * b.hi) | round | int }}%</td><td>{{ b.games }}</td><td>{{ b.said | pct(0) }}</td><td><b>{{ b.won | pct(0) }}</b></td></tr>
