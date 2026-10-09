@@ -131,7 +131,12 @@ avoids that.
   players, unlinked.
 - **Inside pages are print:** agate tables with dot leaders, player pages as card backs, Guide as
   a letters page.
-- **No logos, headshots or team colours.** Players are their names set big; teams are names/abbrevs.
+- **No logos or headshots.** Players are their names set big; teams are names/abbrevs. **Team
+  colours only on the player social cards** (Josh, 9 Oct 2026): the cover and the card back are
+  printed in the featured player's team colours (`teams.json` `colours`: main, second; ESPN's
+  with Warriors, Knicks, 76ers and Heat corrected). `cards.team_inks` nudges a colour lighter or
+  darker (keeping its hue) until it reads, else white/ink; a test checks all 30 teams. The site,
+  the agate, the robbery and the yearbook keep their own colours.
 - **Social cards (built 9 Oct 2026, `bucketweights/cards.py`; Josh posts by hand):** the five approved
   looks at 1080 × 1350 (authored at that size, shot at 1×). After a night with games: **cover**
   (tonight's issue in the issue colour; cover story = Defrost No. 1; coverlines = Heat check No. 1

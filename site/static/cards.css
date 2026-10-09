@@ -62,28 +62,30 @@ html, body { margin: 0; background: #FAF8F2; }
 .c-rob[data-fit="tighter"] .pct b { font-size: 230px; }
 
 /* ---------- card back: vintage trading card, two inks on grey board ---------- */
-.c-back { background: #CFC8B8; }
-.c-back .inner { position: absolute; inset: 30px; border: 6px solid #1D3A6E; padding: 34px 36px; }
-.c-back .head { display: grid; grid-template-columns: 150px 1fr; gap: 30px; align-items: center; border-bottom: 8px solid #C8102E; padding-bottom: 24px; }
-.c-back .no { width: 150px; height: 150px; border-radius: 50%; background: #C8102E; color: #F2EFE6; display: grid; place-items: center; text-align: center; font: 400 38px/.95 "League Gothic"; text-transform: uppercase; }
-.c-back .nm { font: 400 132px/.84 "League Gothic"; text-transform: uppercase; color: #1D3A6E; white-space: nowrap; }
+.c-back { --ink1: #1D3A6E; --ink2: #C8102E; --ink2-text: #F2EFE6; --accent: #C8102E; background: #CFC8B8; }
+/* --ink1: the team's text ink (4.5:1 on the board); --ink2: its second colour, for the badge and the
+   thick rule; --accent: that colour where it's legible as text, else --ink1 (set by cards.team_inks) */
+.c-back .inner { position: absolute; inset: 30px; border: 6px solid var(--ink1); padding: 34px 36px; }
+.c-back .head { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 30px; align-items: center; border-bottom: 8px solid var(--ink2); padding-bottom: 24px; }
+.c-back .no { width: 150px; height: 150px; border-radius: 50%; background: var(--ink2); color: var(--ink2-text); display: grid; place-items: center; text-align: center; font: 400 38px/.95 "League Gothic"; text-transform: uppercase; }
+.c-back .nm { font: 400 132px/.84 "League Gothic"; text-transform: uppercase; color: var(--ink1); white-space: nowrap; }
 .c-back .bio { font: 400 30px/1.3 "Courier Prime"; margin-top: 10px; }
 .c-back table { width: 100%; border-collapse: collapse; margin-top: 26px; font: 400 36px/1.5 "Courier Prime"; }
-.c-back th { font: 900 22px/1 "Libre Franklin"; letter-spacing: .08em; text-transform: uppercase; color: #C8102E; text-align: right; padding: 8px 10px; border-bottom: 4px solid #1D3A6E; }
+.c-back th { font: 900 22px/1 "Libre Franklin"; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); text-align: right; padding: 8px 10px; border-bottom: 4px solid var(--ink1); }
 .c-back th:first-child, .c-back td:first-child { text-align: left; }
-.c-back td { text-align: right; padding: 6px 10px; border-bottom: 2px solid rgba(29,58,110,.25); }
+.c-back td { text-align: right; padding: 6px 10px; border-bottom: 2px solid color-mix(in srgb, var(--ink1) 25%, transparent); }
 .c-back tr.now td { font-weight: 700; }
 .c-back.defrost tr.now td { background: rgba(10,111,214,.16); }
 .c-back.heat_check tr.now td { background: rgba(232,65,12,.16); }
-.c-back tr.lvl td { font-weight: 700; color: #1D3A6E; border-top: 4px solid #1D3A6E; border-bottom: 0; }
+.c-back tr.lvl td { font-weight: 700; color: var(--ink1); border-top: 4px solid var(--ink1); border-bottom: 0; }
 .c-back .split { display: grid; grid-template-columns: 1fr 250px; gap: 22px; align-items: end; margin-top: 30px; }
 .c-back table.mini { margin-top: 0; font-size: 32px; }
-.c-back table.mini tr.key td { font-weight: 700; color: #C8102E; }
+.c-back table.mini tr.key td { font-weight: 700; color: var(--accent); }
 .c-back .gp { font: 400 28px/1.2 "Courier Prime"; text-align: right; padding-bottom: 6px; white-space: nowrap; }
-.c-back .gp b { display: block; font: 400 78px/.9 "League Gothic"; color: #1D3A6E; }
-.c-back .trivia { margin-top: 30px; border: 4px solid #1D3A6E; background: #FAF8F2; padding: 20px 24px; font: 500 32px/1.35 "Libre Franklin"; }
-.c-back .trivia b { display: block; font: 400 50px/1 "League Gothic"; text-transform: uppercase; color: #C8102E; margin-bottom: 6px; }
-.c-back .foot { position: absolute; left: 36px; right: 36px; bottom: 26px; display: flex; justify-content: space-between; font: 400 30px/1 "League Gothic"; text-transform: uppercase; letter-spacing: .05em; color: #1D3A6E; }
+.c-back .gp b { display: block; font: 400 78px/.9 "League Gothic"; color: var(--ink1); }
+.c-back .trivia { margin-top: 30px; border: 4px solid var(--ink1); background: #FAF8F2; padding: 20px 24px; font: 500 32px/1.35 "Libre Franklin"; }
+.c-back .trivia b { display: block; font: 400 50px/1 "League Gothic"; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.c-back .foot { position: absolute; left: 36px; right: 36px; bottom: 26px; display: flex; justify-content: space-between; font: 400 30px/1 "League Gothic"; text-transform: uppercase; letter-spacing: .05em; color: var(--ink1); }
 .c-back[data-fit] table { font-size: 32px; line-height: 1.35; }
 .c-back[data-fit="tighter"] .trivia { font-size: 28px; margin-top: 20px; }
 

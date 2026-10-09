@@ -21,6 +21,7 @@ Nothing is made when the latest games are older than yesterday (an off night).
 from __future__ import annotations
 
 import argparse
+import colorsys
 import functools
 import http.server
 import json
@@ -130,6 +131,80 @@ def night_story(g: dict) -> str:
     return f"{location(g[w])} shot {wm}-for-{wa} from three ({wx:.1f} expected) and won by {by_margin(margin)}."
 
 
+# ---------------------------------------------------------------- team colours
+# The player cards (cover, card back) are printed in the player's team colours (Josh, 9 Oct 2026).
+# Team pairs often clash, so a colour is lightened or darkened, keeping its hue, until it reads.
+
+BOARD, PAPER, INK, WHITE = "#CFC8B8", "#FAF8F2", "#141414", "#FFFFFF"
+
+
+def _rgb(h: str) -> tuple:
+    h = h.lstrip("#")
+    return tuple(int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
+
+
+def _hex(rgb) -> str:
+    return "#" + "".join(f"{round(max(0, min(1, v)) * 255):02X}" for v in rgb)
+
+
+def luminance(h: str) -> float:
+    lin = [v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4 for v in _rgb(h)]
+    return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2]
+
+
+def contrast(a: str, b: str) -> float:
+    la, lb = sorted((luminance(a), luminance(b)), reverse=True)
+    return (la + 0.05) / (lb + 0.05)
+
+
+def readable(colour: str, against: str, target: float, max_shift: float = 1.0, fallback: str | None = None) -> str:
+    """The colour, made lighter or darker (away from the background) until it reaches the contrast.
+    If that takes more than `max_shift` of lightness it would stop looking like itself: `fallback`
+    (else plain ink or white) instead."""
+    if contrast(colour, against) >= target:
+        return colour
+    h, l0, sat = colorsys.rgb_to_hls(*_rgb(colour))
+    step = 0.01 if luminance(colour) >= luminance(against) else -0.01
+    l = l0
+    while 0.0 < l < 1.0 and abs(l - l0) <= max_shift:
+        l = max(0.0, min(1.0, l + step))
+        c = _hex(colorsys.hls_to_rgb(h, l, sat))
+        if contrast(c, against) >= target:
+            return c
+    return fallback or max((INK, WHITE), key=lambda x: contrast(x, against))
+
+
+def is_grey(colour: str) -> bool:
+    r, g, b = _rgb(colour)
+    return max(r, g, b) - min(r, g, b) < 0.12
+
+
+def team_inks(abbrev: str) -> dict:
+    """CSS variables for a team's cover and card back."""
+    t = site.BY_ABBREV.get(abbrev)
+    if not t:
+        return {}
+    main, second = t["colours"]
+    ink = max((WHITE, INK), key=lambda x: contrast(x, main))
+    # cover: the second colour for the wordmark if it reads (3:1 for big type) with a small nudge, else the ink
+    logo = readable(second, main, 3.0, max_shift=0.12, fallback=ink)
+    # card back: the darker-reading colour prints the text, the other fills the badge and the thick rule.
+    # A coloured fill stays as it is (gold on grey board reads by its hue); only a grey one is shifted.
+    text, fill = sorted((main, second), key=lambda c: contrast(c, BOARD), reverse=True)
+    ink1 = readable(text, BOARD, 4.5)
+    ink2 = readable(fill, BOARD, 1.6) if is_grey(fill) else fill
+    return {
+        "cover": {"--issue": main, "--ink": ink, "--logo": logo},
+        "back": {"--ink1": ink1, "--ink2": ink2,
+                 "--ink2-text": max((ink1, WHITE, INK), key=lambda x: contrast(x, ink2)),
+                 "--accent": readable(fill, BOARD, 4.5, max_shift=0.15, fallback=ink1)},
+    }
+
+
+def style(vars_: dict | None) -> str:
+    return "; ".join(f"{k}: {v}" for k, v in (vars_ or {}).items())
+
+
 # ---------------------------------------------------------------- the plan
 
 
@@ -173,6 +248,7 @@ def card_back(con, lists: dict, which: str, season: int, day: str, lines) -> dic
     con.commit()
     title = f"{LISTS[which]} No. {rank}"
     return {
+        "style": style(team_inks(p["team"]).get("back")),
         "slug": f"back-{which.replace('_', '-')}", "template": "cards/back.html", "title": f"Card back · {title}: {p['name']}",
         "p": p, "rank": rank, "which": which, "list_title": LISTS[which], "kind": k, "label": label, "rows": rows,
         "bio": " · ".join(x for x in (POSITION.get(p["pos"], p["pos"]), team["name"] if team else p["team"]) if x).upper(),
@@ -233,6 +309,7 @@ def plan(con, any_date: bool = False, every: bool = False) -> dict:
         lines.append(("Robbery!", score_line(robbery)) if robbery else (games[0]["label"], score_line(games[0])))
         cards.append({
             "slug": "cover", "template": "cards/cover.html", "title": "The cover · tonight's issue",
+            "style": style(team_inks(star["team"]).get("cover")),
             "colour": colour, "issue_label": issue_label, "p": star, "team": nickname(star["team"]),
             "who": f"{KIND[k][0]} {pct(star[k]['pct'])}, his level {pct(star[k]['level'])}",
             "coverlines": lines, "main": COVERLINES[issue % len(COVERLINES)], "face": issue % FACES,

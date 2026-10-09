@@ -1,7 +1,7 @@
 {% extends "cards/base.html" %}
 {# Tonight's issue: a SLAM cover in the issue's colour. The cover story is Defrost No. 1. #}
 {% block card %}
-<div class="card c-issue issue-{{ c.colour }}" data-card>
+<div class="card c-issue issue-{{ c.colour }}" style="{{ c.style }}" data-card>
   <div class="flow">
     <div class="strap"><span>The shooting-luck basketball daily</span><span>{{ c.issue_label }} <b>★</b> {{ day | short_date }}</span></div>
     <div class="gothic logo">BucketWeights</div>

@@ -120,6 +120,19 @@ class CardWords(unittest.TestCase):
         self.assertEqual(cards.key_kind(p, 1), "3")    # Defrost: the threes are below his level
         self.assertEqual(cards.key_kind(p, -1), "2")   # Heat check: the twos are above it
 
+    def test_every_team_colour_card_is_readable(self):
+        from bucketweights import cards, site
+        for t in site.TEAM_LIST:
+            inks = cards.team_inks(t["abbrev"])
+            c, b = inks["cover"], inks["back"]
+            # the cover has no small type (26px bold and up): the large-text standard (3:1)
+            self.assertGreaterEqual(cards.contrast(c["--ink"], c["--issue"]), 3.0, t["abbrev"])
+            self.assertGreaterEqual(cards.contrast(c["--logo"], c["--issue"]), 3.0, t["abbrev"])
+            self.assertGreaterEqual(cards.contrast(b["--ink1"], cards.BOARD), 4.5, t["abbrev"])
+            self.assertGreaterEqual(cards.contrast(b["--accent"], cards.BOARD), 4.5, t["abbrev"])
+            # the badge: 38px type, so the large-text standard (3:1)
+            self.assertGreaterEqual(cards.contrast(b["--ink2-text"], b["--ink2"]), 3.0, t["abbrev"])
+
 
 if __name__ == "__main__":
     unittest.main()

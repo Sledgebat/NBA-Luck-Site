@@ -8,7 +8,11 @@
   "nickname": "Celtics",
   "location": "Boston",
   "conference": "East",
-  "division": "Atlantic"
+  "division": "Atlantic",
+  "colours": [
+   "#008348",
+   "#FFFFFF"
+  ]
  },
  {
   "espn_id": 17,
@@ -19,7 +23,11 @@
   "nickname": "Nets",
   "location": "Brooklyn",
   "conference": "East",
-  "division": "Atlantic"
+  "division": "Atlantic",
+  "colours": [
+   "#000000",
+   "#FFFFFF"
+  ]
  },
  {
   "espn_id": 18,
@@ -30,7 +38,11 @@
   "nickname": "Knicks",
   "location": "New York",
   "conference": "East",
-  "division": "Atlantic"
+  "division": "Atlantic",
+  "colours": [
+   "#006BB6",
+   "#F58426"
+  ]
  },
  {
   "espn_id": 20,
@@ -41,7 +53,11 @@
   "nickname": "76ers",
   "location": "Philadelphia",
   "conference": "East",
-  "division": "Atlantic"
+  "division": "Atlantic",
+  "colours": [
+   "#006BB6",
+   "#ED174C"
+  ]
  },
  {
   "espn_id": 28,
@@ -52,7 +68,11 @@
   "nickname": "Raptors",
   "location": "Toronto",
   "conference": "East",
-  "division": "Atlantic"
+  "division": "Atlantic",
+  "colours": [
+   "#D91244",
+   "#000000"
+  ]
  },
  {
   "espn_id": 4,
@@ -63,7 +83,11 @@
   "nickname": "Bulls",
   "location": "Chicago",
   "conference": "East",
-  "division": "Central"
+  "division": "Central",
+  "colours": [
+   "#CE1141",
+   "#000000"
+  ]
  },
  {
   "espn_id": 5,
@@ -74,7 +98,11 @@
   "nickname": "Cavaliers",
   "location": "Cleveland",
   "conference": "East",
-  "division": "Central"
+  "division": "Central",
+  "colours": [
+   "#860038",
+   "#BC945C"
+  ]
  },
  {
   "espn_id": 8,
@@ -85,7 +113,11 @@
   "nickname": "Pistons",
   "location": "Detroit",
   "conference": "East",
-  "division": "Central"
+  "division": "Central",
+  "colours": [
+   "#1D428A",
+   "#C8102E"
+  ]
  },
  {
   "espn_id": 11,
@@ -96,7 +128,11 @@
   "nickname": "Pacers",
   "location": "Indiana",
   "conference": "East",
-  "division": "Central"
+  "division": "Central",
+  "colours": [
+   "#0C2340",
+   "#FFD520"
+  ]
  },
  {
   "espn_id": 15,
@@ -107,7 +143,11 @@
   "nickname": "Bucks",
   "location": "Milwaukee",
   "conference": "East",
-  "division": "Central"
+  "division": "Central",
+  "colours": [
+   "#00471B",
+   "#EEE1C6"
+  ]
  },
  {
   "espn_id": 1,
@@ -118,7 +158,11 @@
   "nickname": "Hawks",
   "location": "Atlanta",
   "conference": "East",
-  "division": "Southeast"
+  "division": "Southeast",
+  "colours": [
+   "#C8102E",
+   "#FDB927"
+  ]
  },
  {
   "espn_id": 30,
@@ -129,7 +173,11 @@
   "nickname": "Hornets",
   "location": "Charlotte",
   "conference": "East",
-  "division": "Southeast"
+  "division": "Southeast",
+  "colours": [
+   "#008CA8",
+   "#1D1060"
+  ]
  },
  {
   "espn_id": 14,
@@ -140,7 +188,11 @@
   "nickname": "Heat",
   "location": "Miami",
   "conference": "East",
-  "division": "Southeast"
+  "division": "Southeast",
+  "colours": [
+   "#98002E",
+   "#F9A01B"
+  ]
  },
  {
   "espn_id": 19,
@@ -151,7 +203,11 @@
   "nickname": "Magic",
   "location": "Orlando",
   "conference": "East",
-  "division": "Southeast"
+  "division": "Southeast",
+  "colours": [
+   "#0150B5",
+   "#9CA0A3"
+  ]
  },
  {
   "espn_id": 27,
@@ -162,7 +218,11 @@
   "nickname": "Wizards",
   "location": "Washington",
   "conference": "East",
-  "division": "Southeast"
+  "division": "Southeast",
+  "colours": [
+   "#002B5C",
+   "#E31837"
+  ]
  },
  {
   "espn_id": 7,
@@ -173,7 +233,11 @@
   "nickname": "Nuggets",
   "location": "Denver",
   "conference": "West",
-  "division": "Northwest"
+  "division": "Northwest",
+  "colours": [
+   "#0E2240",
+   "#FEC524"
+  ]
  },
  {
   "espn_id": 16,
@@ -184,7 +248,11 @@
   "nickname": "Timberwolves",
   "location": "Minnesota",
   "conference": "West",
-  "division": "Northwest"
+  "division": "Northwest",
+  "colours": [
+   "#266092",
+   "#79BC43"
+  ]
  },
  {
   "espn_id": 25,
@@ -195,7 +263,11 @@
   "nickname": "Thunder",
   "location": "Oklahoma City",
   "conference": "West",
-  "division": "Northwest"
+  "division": "Northwest",
+  "colours": [
+   "#007AC1",
+   "#EF3B24"
+  ]
  },
  {
   "espn_id": 22,
@@ -206,7 +278,11 @@
   "nickname": "Trail Blazers",
   "location": "Portland",
   "conference": "West",
-  "division": "Northwest"
+  "division": "Northwest",
+  "colours": [
+   "#E03A3E",
+   "#000000"
+  ]
  },
  {
   "espn_id": 26,
@@ -217,7 +293,11 @@
   "nickname": "Jazz",
   "location": "Utah",
   "conference": "West",
-  "division": "Northwest"
+  "division": "Northwest",
+  "colours": [
+   "#4E008E",
+   "#79A3DC"
+  ]
  },
  {
   "espn_id": 9,
@@ -228,7 +308,11 @@
   "nickname": "Warriors",
   "location": "Golden State",
   "conference": "West",
-  "division": "Pacific"
+  "division": "Pacific",
+  "colours": [
+   "#1D428A",
+   "#FFC72C"
+  ]
  },
  {
   "espn_id": 12,
@@ -239,7 +323,11 @@
   "nickname": "Clippers",
   "location": "LA",
   "conference": "West",
-  "division": "Pacific"
+  "division": "Pacific",
+  "colours": [
+   "#12173F",
+   "#C8102E"
+  ]
  },
  {
   "espn_id": 13,
@@ -250,7 +338,11 @@
   "nickname": "Lakers",
   "location": "Los Angeles",
   "conference": "West",
-  "division": "Pacific"
+  "division": "Pacific",
+  "colours": [
+   "#552583",
+   "#FDB927"
+  ]
  },
  {
   "espn_id": 21,
@@ -261,7 +353,11 @@
   "nickname": "Suns",
   "location": "Phoenix",
   "conference": "West",
-  "division": "Pacific"
+  "division": "Pacific",
+  "colours": [
+   "#29127A",
+   "#E56020"
+  ]
  },
  {
   "espn_id": 23,
@@ -272,7 +368,11 @@
   "nickname": "Kings",
   "location": "Sacramento",
   "conference": "West",
-  "division": "Pacific"
+  "division": "Pacific",
+  "colours": [
+   "#5A2D81",
+   "#6A7A82"
+  ]
  },
  {
   "espn_id": 6,
@@ -283,7 +383,11 @@
   "nickname": "Mavericks",
   "location": "Dallas",
   "conference": "West",
-  "division": "Southwest"
+  "division": "Southwest",
+  "colours": [
+   "#0064B1",
+   "#BBC4CA"
+  ]
  },
  {
   "espn_id": 10,
@@ -294,7 +398,11 @@
   "nickname": "Rockets",
   "location": "Houston",
   "conference": "West",
-  "division": "Southwest"
+  "division": "Southwest",
+  "colours": [
+   "#CE0E2D",
+   "#000000"
+  ]
  },
  {
   "espn_id": 29,
@@ -305,7 +413,11 @@
   "nickname": "Grizzlies",
   "location": "Memphis",
   "conference": "West",
-  "division": "Southwest"
+  "division": "Southwest",
+  "colours": [
+   "#5D76A9",
+   "#12173F"
+  ]
  },
  {
   "espn_id": 3,
@@ -316,7 +428,11 @@
   "nickname": "Pelicans",
   "location": "New Orleans",
   "conference": "West",
-  "division": "Southwest"
+  "division": "Southwest",
+  "colours": [
+   "#0A2240",
+   "#B4975A"
+  ]
  },
  {
   "espn_id": 24,
@@ -327,6 +443,10 @@
   "nickname": "Spurs",
   "location": "San Antonio",
   "conference": "West",
-  "division": "Southwest"
+  "division": "Southwest",
+  "colours": [
+   "#000000",
+   "#C4CED4"
+  ]
  }
 ]
