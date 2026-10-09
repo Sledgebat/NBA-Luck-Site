@@ -1,0 +1,28 @@
+{
+ "version": "v1 (9 Oct 2026)",
+ "levels": {
+  "3": {
+   "k": 150,
+   "w": 0.8
+  },
+  "FT": {
+   "k": 20,
+   "w": 0.5
+  },
+  "2": {
+   "k": 50,
+   "w": 0.5
+  }
+ },
+ "prior_seasons": 3,
+ "recalibration": {
+  "a": 0.1863,
+  "b": 0.7269,
+  "note": "logit(home chance) = a + b * logit(raw home chance); fitted on 2017-2025 (research/v1/games.py)"
+ },
+ "labels": {
+  "robbery_below": 0.35,
+  "earned_from": 0.65
+ },
+ "range": 0.8
+}

@@ -1,0 +1,97 @@
+# Fetches last night's NBA games from ESPN, updates the stats database and rebuilds the site's data.
+# Three runs a night, like HockeyWeights. Times are UTC (Eastern is 4 hours behind until early
+# November, then 5):
+#
+#   UTC     Eastern (Oct)   Eastern (Nov to mid-Mar)   Why
+#   03:45   11:45 p.m.      10:45 p.m.                 after the East's games
+#   06:30    2:30 a.m.       1:30 a.m.                 after the West's games
+#   10:20    6:20 a.m.       5:20 a.m.                 morning pass: ESPN's overnight corrections
+#
+# If ESPN can't be reached, a game can't be read, or games stop arriving mid-season, the run
+# fails and GitHub emails you. Nothing else alerts.
+name: Update site
+
+on:
+  schedule:
+    - cron: "45 3 * * *"
+    - cron: "30 6 * * *"
+    - cron: "20 10 * * *"
+  workflow_dispatch:
+    inputs:
+      preseason:
+        description: "Also take preseason games (rehearsal)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write # save the stats database between runs
+
+concurrency:
+  group: update-site
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Tests
+        run: python -m unittest discover tests
+
+      - name: Download the saved stats database
+        run: |
+          mkdir -p db
+          if gh release download data --pattern bucketweights.sqlite.gz --dir db --clobber; then
+            gunzip -f db/bucketweights.sqlite.gz
+            echo "Using the saved database."
+          else
+            echo "No saved database yet: loading the last three seasons (a few minutes)."
+            python -m bucketweights.backfill 2024 2025 2026
+          fi
+
+      - name: Add new games and rebuild the data
+        id: update
+        run: |
+          if [ "${{ inputs.preseason }}" = "true" ]; then
+            python -m bucketweights.update --preseason
+          else
+            python -m bucketweights.update
+          fi
+
+      # Saved even when the update reports a problem, so stored games are never fetched twice.
+      - name: Save the stats database
+        if: always() && hashFiles('db/bucketweights.sqlite') != ''
+        run: |
+          gzip -c db/bucketweights.sqlite > bucketweights.sqlite.gz
+          gh release view data > /dev/null 2>&1 || gh release create data --title "Stats database" --notes "Saved automatically by the Update site workflow. Don't delete: it holds every stored game."
+          gh release upload data bucketweights.sqlite.gz --clobber
+
+      - name: Keep the site data from this run
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-data
+          path: build/data/
+          retention-days: 7
+
+      # GitHub pauses scheduled runs in repositories with no commits for 60 days.
+      - name: Keep scheduled updates switched on
+        run: |
+          last=$(git log -1 --format=%ct)
+          if [ $(( $(date +%s) - last )) -gt $(( 45 * 86400 )) ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit --allow-empty -m "Keep scheduled site updates running"
+            git push
+          fi
