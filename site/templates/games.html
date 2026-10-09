@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% from "macros.html" import agate_game %}
+{% block title %}Games · BucketWeights{% endblock %}
+{% block content %}
+  <h1 class="gothic page-title">Games</h1>
+  <p class="dek">Every game this season, newest first: who earned it and who got lucky.</p>
+  {% for d, gs in by_date.items() %}
+  <div class="runhead"><span>{{ d | long_date }}</span><span>{{ gs | length }} game{{ "s" if gs | length != 1 }}</span></div>
+  <div class="agate" style="margin-top:10px">{% for g in gs | sort(attribute="winner_chance") %}{{ agate_game(g, root) }}{% endfor %}</div>
+  {% else %}
+  <p>No games yet. Opening night is Tuesday 20 October.</p>
+  {% endfor %}
+{% endblock %}

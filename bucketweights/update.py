@@ -51,6 +51,8 @@ def fetch(con, start: date, end: date, preseason: bool) -> dict:
         for ev in espn.scoreboard(d.strftime("%Y%m%d")):
             if not ev["final"] or ev["season_type"] not in types:
                 continue
+            if not all(t in TEAMS for t in ev["team_ids"]):
+                continue  # All-Star games and other exhibitions
             stats["finals_seen"] += 1
             have = db.stored_hash(con, ev["game_id"])
             if have and d < recheck_from:
@@ -228,6 +230,7 @@ def main(argv=None) -> int:
     ap.add_argument("--no-fetch", action="store_true")
     args = ap.parse_args(argv)
     con = db.connect()
+    db.drop_non_nba_games(con, set(TEAMS))
     run_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
     stats = {"new": 0, "changed": 0, "problems": [], "finals_seen": 0}
     failed = False

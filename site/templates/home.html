@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% from "macros.html" import agate_game, stack_item %}
+{% block title %}BucketWeights · NBA shooting luck, every night{% endblock %}
+
+{% block cover %}
+<section class="cover" aria-label="Tonight's issue">
+  <div class="mast">
+    <h1 class="wordmark">BucketWeights</h1>
+    <div class="stars" aria-hidden="true"><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+  </div>
+  <div class="dateline">
+    <span>{% if meta.issue %}No. {{ meta.issue }} <span class="star">★</span> {{ meta.data_through | long_date }}{% else %}Preseason issue <span class="star">★</span> {{ meta.season_label }}{% endif %}</span>
+    <span>{% if last_night.games %}{{ last_night.games | length }} game{{ "s" if last_night.games | length != 1 }} last night <span class="star">★</span> {{ last_night.games | selectattr("label", "equalto", "Robbery") | list | length }} robber{{ "y" if (last_night.games | selectattr("label", "equalto", "Robbery") | list | length) == 1 else "ies" }}{% else %}Shooting luck, weighed nightly{% endif %}</span>
+  </div>
+
+  <div class="duo">
+    {% set heat = carried.heat_check if carried else hot.heat_check[:5] %}
+    {% set cold = carried.defrost if carried else hot.defrost[:5] %}
+    <section class="stack hot" aria-labelledby="hot-h">
+      <h2 id="hot-h" class="gothic">Heat check</h2>
+      <p class="sub">{% if carried %}Shot above their level in {{ carried.season_label }}. Don't expect a repeat.{% else %}Shooting above their level. Expect a cool-off.{% endif %}</p>
+      <div class="stripes"></div>
+      {% if heat %}<ol>{% for p in heat %}{{ stack_item(p, root, carried) }}{% endfor %}</ol>{% else %}<p class="empty">Not enough games yet.</p>{% endif %}
+      <div class="stripes"></div>
+    </section>
+    <section class="stack cold" aria-labelledby="cold-h">
+      <h2 id="cold-h" class="gothic">Defrost</h2>
+      <p class="sub">{% if carried %}Shot below their level in {{ carried.season_label }}. Expect better.{% else %}Shooting below their level. Expect a bounce-back.{% endif %}</p>
+      <div class="stripes"></div>
+      {% if cold %}<ol>{% for p in cold %}{{ stack_item(p, root, carried) }}{% endfor %}</ol>{% else %}<p class="empty">Not enough games yet.</p>{% endif %}
+      <div class="stripes"></div>
+    </section>
+  </div>
+  <p class="cover-note">{% if carried %}Before tip-off: last season's numbers. From opening night these lists follow this season.{% endif %}
+  PPG now → at his true shooting, with the same shots and minutes. <a href="{{ root }}players/">Every player →</a></p>
+</section>
+{% endblock %}
+
+{% block content %}
+  <div class="runhead"><span>BucketWeights ★ Last night</span><span>{{ last_night.date | long_date }}</span></div>
+  <h2 class="gothic sec-title">Last night <span class="star">★</span></h2>
+  <p class="dek">Every game, and whether the winner earned it or got bailed out by shooting luck. Robberies first.</p>
+  {% if last_night.games %}
+  <div class="agate">{% for g in last_night.games %}{{ agate_game(g, root) }}{% endfor %}</div>
+  <p class="note"><b class="v-robbery">Robbery</b>: the winner had under a 35% chance at both teams' true shooting · <b class="v-coin">Coin flip</b>: 35–65% · <b>Earned it</b>: 65% or more. <a href="{{ root }}games/">All games →</a></p>
+  {% else %}
+  <p>No games yet. Opening night is Tuesday 20 October.</p>
+  {% endif %}
+{% endblock %}
+
+{% block after %}
+{% if shot %}
+<section class="lastshot" aria-label="Last shot">
+  <div class="big tab">{{ shot.m }}-{{ shot.a }}</div>
+  <div><div class="lbl">Last shot ★</div>
+  <p>{{ shot.team | team_name(False) }} from three last night, against {{ "%.1f" | format(shot.x) }} expected at their shooters' levels. They {{ "won" if shot.won else "lost" }} {{ shot.score }}. <a href="{{ root }}games/{{ shot.game_id }}/" style="color:#FFD200">The game →</a></p></div>
+</section>
+{% endif %}
+{% endblock %}

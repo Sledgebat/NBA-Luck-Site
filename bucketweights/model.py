@@ -142,8 +142,9 @@ def label(winner_chance: float) -> str:
     return "Earned it"
 
 
-def game_verdicts(shots: pd.DataFrame, games: pd.DataFrame, season: int, rates: dict) -> list[dict]:
-    """Verdicts for every finished game of `season` in `games` (one row per game)."""
+def shot_luck(shots: pd.DataFrame, season: int, rates: dict) -> pd.DataFrame:
+    """Every 3 and free throw of `season` with its make chance (shooter's level before the game)
+    and its luck in points (made minus expected, times its value)."""
     s = shots[shots.season == season].copy()
     lv3 = levels_before_games(shots, season, "3", rates["3"])
     lvft = levels_before_games(shots, season, "FT", rates["FT"])
@@ -156,6 +157,12 @@ def game_verdicts(shots: pd.DataFrame, games: pd.DataFrame, season: int, rates: 
     s = s[s.p.notna()]
     s["v"] = s.kind.map(VALUE)
     s["luck"] = (s.made - s.p) * s.v
+    return s
+
+
+def game_verdicts(shots: pd.DataFrame, games: pd.DataFrame, season: int, rates: dict) -> list[dict]:
+    """Verdicts for every finished game of `season` in `games` (one row per game)."""
+    s = shot_luck(shots, season, rates)
     by_game = dict(tuple(s.groupby("game_id")))
     out = []
     for g in games.itertuples():

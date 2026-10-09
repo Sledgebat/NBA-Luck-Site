@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% from "macros.html" import level_meter %}
+{% block title %}{{ p.name }} · BucketWeights{% endblock %}
+{% block description %}{{ p.name }} is averaging {{ "%.1f" | format(p.ppg) }} points. At his true shooting, with the same shots and minutes: {{ "%.1f" | format(p.proj_ppg) }}.{% endblock %}
+{% block content %}
+  <p class="kicker" style="margin-top:24px">{{ p.team | team_name(False) }}{% if p.pos %} · {{ p.pos }}{% endif %}</p>
+  <div class="headline-proj">
+    <div class="big tab">{{ "%.1f" | format(p.ppg) }}<span class="to">→</span>{{ "%.1f" | format(p.proj_ppg) }}</div>
+    <p>Points a game now → at his true shooting, with the same shots and minutes.
+    {% set gap = p.proj_ppg - p.ppg %}
+    {% if gap >= 0.3 %}He's shooting below his level: <span class="cold-t">expect a bounce-back</span>, not because he's due, but because his level is better than this.
+    {% elif gap <= -0.3 %}He's shooting above his level: <span class="hot-t">expect a cool-off</span>.
+    {% else %}Right about where his level says.{% endif %}</p>
+  </div>
+
+  <article class="cardback" aria-label="{{ p.name }} card back">
+    <div class="cb-top">
+      <div class="cb-no">{{ p.gp }}<span class="sr"> games</span></div>
+      <div><h1 class="cb-name">{{ p.name }}</h1><div class="cb-bio">{{ meta.season_label }} · {{ p.gp }} GAMES · {{ "%.1f" | format(p.fga_pg) }} SHOTS A GAME</div></div>
+      <a class="cb-team" href="{{ root }}teams/{{ p.team | lower }}/">{{ (p.team | team_name(False)) | upper | replace(" ", "<br>") | safe }}</a>
+    </div>
+    <div class="levels">
+      {% for k, label in (("3", "Threes"), ("FT", "Free throws"), ("2", "Twos")) %}
+      {% set d = p[k] %}
+      <div class="lvl-box">
+        <h3>{{ label }}</h3>
+        <div class="nums tab">{{ d.pct | pct }}<span class="to"> → </span>{{ d.level | pct }}</div>
+        {{ level_meter(label, d) }}
+        <p>{{ d.m }} of {{ d.a }} this season. Level likely {{ d.lo | pct }}–{{ d.hi | pct }}.</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% if lines %}
+    <div class="scroll">
+    <table class="cb-table">
+      <thead><tr><th>Season</th><th>Team</th><th>GP</th><th>PPG</th><th>3PT</th><th>3PT%</th><th>FT</th><th>FT%</th><th>2PT%</th></tr></thead>
+      <tbody>
+      {% for r in lines %}
+        {% set now = r.season == meta.season %}
+        <tr class="{{ 'now' if now }}"><td>{{ r.season - 1 }}-{{ (r.season | string)[2:] }}{{ "*" if now }}</td><td>{{ BY_ESPN[r.team_id | int].abbrev if (r.team_id | int) in BY_ESPN else "" }}</td>
+          <td>{{ r.gp | int }}</td><td>{{ "%.1f" | format(r.pts / r.gp) if r.gp else "—" }}</td>
+          <td>{{ r.m3 | int }}-{{ r.a3 | int }}</td><td>{{ (r.m3 / r.a3) | pct_bare if r.a3 else "—" }}</td>
+          <td>{{ r.mFT | int }}-{{ r.aFT | int }}</td><td>{{ (r.mFT / r.aFT) | pct_bare if r.aFT else "—" }}</td>
+          <td>{{ (r.m2 / r.a2) | pct_bare if r.a2 else "—" }}</td></tr>
+      {% endfor %}
+        <tr class="lvl"><td colspan="3">His level now</td><td>{{ "%.1f" | format(p.proj_ppg) }}</td><td></td><td>{{ p["3"].level | pct_bare }}</td><td></td><td>{{ p["FT"].level | pct_bare }}</td><td>{{ p["2"].level | pct_bare }}</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note">*This season so far. Regular season only, from ESPN's play-by-play; older seasons can differ from official totals by an attempt or two.</p>
+    {% endif %}
+  </article>
+
+  {% if log %}
+  <div class="runhead"><span>Game by game</span><span>{{ log | length }} games</span></div>
+  <div class="scroll">
+  <table class="register">
+    <thead><tr><th class="l">Date</th><th class="l">Game</th><th>PTS</th><th>3PT</th><th>Exp. 3s made</th><th>FT</th><th>Shooting luck</th></tr></thead>
+    <tbody>
+    {% for r in log %}
+      {% set home = r.team_id == r.home_id %}
+      {% set opp = BY_ESPN[(r.away_id if home else r.home_id) | int] %}
+      <tr><td class="l">{{ r.date | short_date }}</td><td class="l"><a href="{{ root }}games/{{ r.game_id }}/">{{ "vs" if home else "@" }} {{ opp.abbrev }}</a></td>
+        <td>{{ r.pts | int }}</td><td>{{ r.m3 | int }}-{{ r.a3 | int }}</td><td>{{ "%.1f" | format(r.x3) }}</td><td>{{ r.mf | int }}-{{ r.af | int }}</td>
+        <td class="{{ 'hot-t' if r.luck > 0.5 else 'cold-t' if r.luck < -0.5 }}">{{ r.luck | signed }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <p class="note">Shooting luck: points from 3s and free throws above (+) or below (−) what his level before that game expected.</p>
+  {% endif %}
+{% endblock %}

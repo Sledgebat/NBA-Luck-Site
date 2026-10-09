@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% set hw = g.home_pts > g.away_pts %}
+{% set win, lose = (("home", "away") if hw else ("away", "home")) %}
+{% block title %}{{ g[win] | team_name }} {{ g[win + "_pts"] }}, {{ g[lose] | team_name }} {{ g[lose + "_pts"] }}: {{ g.label }} · BucketWeights{% endblock %}
+{% block description %}{{ g[win] | team_name(False) }} had a {{ (100 * g.winner_chance) | round | int }}% chance of winning at both teams' true shooting.{% endblock %}
+{% block content %}
+  <p class="kicker" style="margin-top:24px">{{ g.date | long_date }}{% if g.season_type == 1 %} · Preseason{% elif g.season_type == 5 %} · Play-In{% elif g.season_type == 3 %} · Playoffs{% elif g.competition_type == "CC" %} · NBA Cup final{% endif %}</p>
+  <div class="score-line">
+    <a href="{{ root }}teams/{{ g[win] | lower }}/">{{ g[win] | team_name(False) }}</a><span class="tab">{{ g[win + "_pts"] }}</span>
+    <a class="l" href="{{ root }}teams/{{ g[lose] | lower }}/">{{ g[lose] | team_name(False) }}</a><span class="l tab">{{ g[lose + "_pts"] }}</span>
+  </div>
+  {% if g.periods > 4 %}<p class="note">After {{ "overtime" if g.periods == 5 else (g.periods - 4) ~ " overtimes" }}.</p>{% endif %}
+  <div class="big-verdict"><span class="verdict {{ g.label | verdict_class }}">{{ g.label }}</span><span class="pct tab">{{ (100 * g.winner_chance) | round | int }}%</span></div>
+  <p class="dek">The {{ g[win] | team_name }}' chance of winning if every three and free throw had gone in at each shooter's true level, with everything else as it happened.</p>
+
+  <div class="scroll">
+  <table class="register" style="max-width:720px">
+    <thead><tr><th class="l">Team</th><th>3PT</th><th>Expected 3s</th><th>FT</th><th>Expected FTs</th><th>Shooting luck</th></tr></thead>
+    <tbody>
+    {% for side in (win, lose) %}
+      {% set t = g.teams[side] %}
+      <tr><td class="l name">{{ g[side] | team_name(False) }}</td><td>{{ t.three[0] }}-{{ t.three[1] }}</td><td>{{ "%.1f" | format(t.three[2]) }}</td>
+        <td>{{ t.ft[0] }}-{{ t.ft[1] }}</td><td>{{ "%.1f" | format(t.ft[2]) }}</td>
+        <td class="{{ 'hot-t' if t.luck_pts > 0.5 else 'cold-t' if t.luck_pts < -0.5 }}">{{ t.luck_pts | signed }} pts</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+
+  {% if g.swing %}
+  <div class="runhead"><span>Who swung it</span><span>Shooting luck, 3s and free throws</span></div>
+  <ul style="list-style:none;padding:0;margin:10px 0">
+  {% for s in g.swing %}
+    <li style="padding:6px 0;border-bottom:1px solid color-mix(in srgb, var(--ink) 18%, transparent)"><a href="{{ root }}players/{{ s.player_id }}/" style="font-weight:800">{{ s.name }}</a> ({{ s.team }}): {{ s.three[0] }}-for-{{ s.three[1] }} from three, <span class="{{ 'hot-t' if s.luck_pts > 0 else 'cold-t' }}">{{ s.luck_pts | signed }} points</span> against his level.</li>
+  {% endfor %}
+  </ul>
+  {% endif %}
+  {% if g.check and g.check != "ok" %}<p class="flag">ESPN's play-by-play for this game doesn't fully match its box score yet ({{ g.check }}). We re-read it for three days in case ESPN corrects it.</p>{% endif %}
+  <p class="note">Robbery: winner under 35% · Coin flip: 35–65% · Earned it: 65% or more. Chances are calibrated against seven past seasons. <a href="{{ root }}guide/">How it works</a>.</p>
+{% endblock %}

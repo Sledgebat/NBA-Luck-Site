@@ -8,7 +8,9 @@ seasons before the current one for every player's level.
 from __future__ import annotations
 
 import io
+import json
 import sys
+from pathlib import Path
 from datetime import datetime, timezone
 
 import numpy as np
@@ -21,6 +23,7 @@ from . import shots as S
 URL = "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_pbp/play_by_play_{season}.parquet"
 # NBA Cup finals don't count in regular-season stats; the history files don't mark them.
 CUP_FINALS = {401607495, 401734908, 401809839}
+NBA_TEAMS = {t["espn_id"] for t in json.loads((Path(__file__).with_name("teams.json")).read_text())}
 
 
 def load_parquet(season: int) -> pd.DataFrame:
@@ -41,6 +44,8 @@ def backfill(season: int, con=None) -> int:
     n = 0
     for gid, g in df.groupby("game_id", sort=False):
         first = g.iloc[0]
+        if int(first.home_team_id) not in NBA_TEAMS or int(first.away_team_id) not in NBA_TEAMS:
+            continue  # All-Star games and other exhibitions
         reg = g[g.period_number <= 4]
         game = {
             "game_id": int(gid), "season": season, "season_type": 2,

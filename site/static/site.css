@@ -1,0 +1,226 @@
+/* =====================================================================
+   BucketWeights. "The type is the photo" (docs/design-references.md).
+   Loud cover in tonight's issue colour; calm print inside: agate, card
+   backs, letters. Stars and stripe rules are the only ornaments.
+   ===================================================================== */
+@font-face { font-family: "League Gothic"; src: url("fonts/league-gothic-latin-400-normal.woff2") format("woff2"); font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2199, U+2212, U+2215, U+2605; }
+@font-face { font-family: "League Gothic"; src: url("fonts/league-gothic-latin-ext-400-normal.woff2") format("woff2"); font-display: swap; unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Libre Franklin"; src: url("fonts/libre-franklin-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2199, U+2212, U+2215; }
+@font-face { font-family: "Libre Franklin"; src: url("fonts/libre-franklin-latin-ext-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Libre Franklin"; src: url("fonts/libre-franklin-latin-wght-italic.woff2") format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "Courier Prime"; src: url("fonts/courier-prime-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Courier Prime"; src: url("fonts/courier-prime-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Big Shoulders Stencil Display"; src: url("fonts/big-shoulders-stencil-display-latin-900-normal.woff2") format("woff2"); font-weight: 900; font-display: swap; }
+
+:root {
+  color-scheme: light;
+  --page: #FAF8F2; --news: #EFEADB; --board: #CFC8B8;
+  --ink: #141414; --ink-2: #57524A;
+  --red: #E2231A; --red-ink: #C11B14;
+  --hot: #E8410C; --cold: #0A6FD6; --hot-ink: #B33200; --cold-ink: #0A5BB0;
+  --rule: #141414;
+  /* tonight's issue: set per page from the issue number (yellow by default) */
+  --issue: #FFD200; --issue-ink: #141414; --issue-logo: #E2231A; --issue-star: #E2231A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #131313; --news: #1C1B19; --board: #2A2824;
+    --ink: #F2EFE6; --ink-2: #B5AFA3;
+    --red: #FF3B30; --red-ink: #FF6B5F;
+    --hot: #F2541B; --cold: #2A9BE8; --hot-ink: #FF7A45; --cold-ink: #5CB8FF;
+    --rule: #F2EFE6;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #131313; --news: #1C1B19; --board: #2A2824;
+  --ink: #F2EFE6; --ink-2: #B5AFA3;
+  --red: #FF3B30; --red-ink: #FF6B5F;
+  --hot: #F2541B; --cold: #2A9BE8; --hot-ink: #FF7A45; --cold-ink: #5CB8FF;
+  --rule: #F2EFE6;
+}
+/* issue colours, one per night in turn (always printed: same in both editions) */
+.issue-yellow { --issue: #FFD200; }
+.issue-white  { --issue: #FFFFFF; }
+.issue-cyan   { --issue: #00A3E0; }
+.issue-black  { --issue: #141414; --issue-ink: #F2EFE6; --issue-logo: #FF3B30; --issue-star: #FFD200; }
+.issue-orange { --issue: #F26B1D; --issue-logo: #141414; --issue-star: #141414; }
+.issue-stone  { --issue: #C9C2B2; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 400 1rem/1.5 "Libre Franklin", system-ui, sans-serif; overflow-x: hidden; }
+a { color: inherit; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+.gothic { font-family: "League Gothic", "Oswald", sans-serif; font-weight: 400; text-transform: uppercase; line-height: .86; letter-spacing: .005em; }
+.type { font-family: "Courier Prime", monospace; }
+.tab { font-variant-numeric: tabular-nums; }
+.star { color: var(--red); }
+.note { font-size: .82rem; color: var(--ink-2); }
+.hot-t { color: var(--hot-ink); } .cold-t { color: var(--cold-ink); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.stripes { height: 14px; background: repeating-linear-gradient(to bottom, var(--rule) 0 3px, transparent 3px 5.5px); }
+
+/* ---------- header: Teams menu left, main menu right, sticky ---------- */
+.strap { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 10px 16px; background: var(--issue); color: var(--issue-ink); padding: 10px clamp(14px, 3vw, 34px) 8px; border-bottom: 3px solid var(--issue-ink); font-family: "League Gothic"; text-transform: uppercase; letter-spacing: .05em; }
+.strap .home { font-size: 1.6rem; color: var(--issue-logo); text-decoration: none; line-height: 1; }
+.strap .star { color: var(--issue-star); font-size: .8em; }
+.teams-btn { font: 400 1.3rem/1 "League Gothic"; text-transform: uppercase; letter-spacing: .05em; background: var(--issue-ink); color: var(--issue); border: 0; padding: .38rem .6rem .3rem; cursor: pointer; }
+.mainnav { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.mainnav a { text-decoration: none; font-size: 1.3rem; padding: 2px 0 1px; border-bottom: 3px solid transparent; }
+.mainnav a[aria-current] { border-color: var(--issue-logo); }
+.mainnav a:hover { border-color: var(--issue-ink); }
+.theme-btn { font: 700 .72rem/1 "Libre Franklin"; text-transform: uppercase; letter-spacing: .1em; background: none; color: var(--issue-ink); border: 2px solid var(--issue-ink); padding: .5rem .7rem; cursor: pointer; }
+.strap .theme-btn { margin-left: 4px; }
+
+/* ---------- the cover ---------- */
+.cover { position: relative; background: var(--issue); color: var(--issue-ink); overflow: clip; padding: 14px clamp(14px, 3vw, 34px) 28px; }
+.mast { display: flex; align-items: flex-start; margin-top: 6px; }
+.wordmark { font-family: "League Gothic"; font-weight: 400; text-transform: uppercase; color: var(--issue-logo); font-size: min(15.2rem, calc((100vw - 64px - 2.6rem) / 4.6)); line-height: .78; letter-spacing: -.005em; margin: 0; white-space: nowrap; }
+.mast .stars { display: flex; flex-direction: column; gap: .12em; font-size: clamp(1.4rem, 3.2vw, 2.6rem); line-height: 1; margin: .25em 0 0 .18em; }
+.dateline { display: flex; justify-content: space-between; gap: 6px 16px; flex-wrap: wrap; border-top: 3px solid var(--issue-ink); border-bottom: 3px solid var(--issue-ink); margin-top: 12px; padding: 6px 0 5px; font-family: "League Gothic"; text-transform: uppercase; font-size: clamp(1.1rem, 2vw, 1.45rem); letter-spacing: .05em; }
+.dateline .star { color: var(--issue-star); }
+.cover-note { font-weight: 600; font-size: .92rem; margin: 14px 0 0; max-width: 56em; }
+
+/* ---------- heat check / defrost: SLAM's flush-right stacked name lists ---------- */
+.duo { display: grid; grid-template-columns: 1fr 1fr; margin-top: 18px; }
+.stack { padding: 20px 22px 18px; color: #fff; }
+.stack.hot { background: #B32A0C; }
+.stack.cold { background: #0A4FA0; }
+.stack h2 { margin: 0 0 4px; font-size: clamp(2.8rem, 6vw, 4.4rem); line-height: .85; }
+.stack .sub { font-weight: 700; font-size: .9rem; margin: 0 0 10px; }
+.stack .stripes { background: repeating-linear-gradient(to bottom, #fff 0 3px, transparent 3px 5.5px); }
+.stack ol { list-style: none; margin: 10px 0; padding: 0; text-align: right; }
+.stack li { padding: 4px 0; }
+.stack li a { text-decoration: none; }
+.stack li a:hover .n { text-decoration: underline; text-decoration-thickness: 3px; }
+.stack li .n { font-family: "League Gothic"; text-transform: uppercase; font-size: clamp(1.9rem, 3.6vw, 2.6rem); line-height: .95; display: block; }
+.stack li .n small { font-size: .55em; letter-spacing: .05em; margin-left: .3em; opacity: .9; }
+.stack li .s { font-size: .84rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stack li .s b { font-weight: 900; background: #fff; padding: 0 .3em; }
+.stack.hot li .s b { color: #8F2209; } .stack.cold li .s b { color: #0A4FA0; }
+.stack .empty { text-align: right; font-weight: 700; margin: 14px 0; }
+
+/* ---------- inside pages ---------- */
+.runhead { display: flex; justify-content: space-between; gap: 10px; font-family: "League Gothic"; text-transform: uppercase; font-size: 1.05rem; letter-spacing: .06em; border-bottom: 2px solid var(--rule); padding: 30px 0 4px; }
+.sec-title { font-size: clamp(3.2rem, 9vw, 6.4rem); margin: 14px 0 4px; }
+.sec-title .star { font-size: .5em; vertical-align: .6em; }
+.dek { font-weight: 700; font-size: 1.05rem; margin: 0 0 16px; max-width: 46em; }
+.page-title { font-size: clamp(3.6rem, 11vw, 7.4rem); margin: 22px 0 6px; }
+.kicker { font-weight: 900; text-transform: uppercase; letter-spacing: .1em; font-size: .78rem; color: var(--red-ink); }
+
+/* ---------- last night: newspaper agate ---------- */
+.agate { background: var(--news); padding: 16px 18px; columns: 3 260px; column-gap: 26px; column-rule: 1px solid color-mix(in srgb, var(--ink) 30%, transparent); }
+.game { break-inside: avoid; margin: 0 0 18px; font-size: .86rem; line-height: 1.38; }
+.game h3 { margin: 0; font-weight: 900; font-size: 1rem; text-transform: uppercase; }
+.game h3 a { text-decoration: none; }
+.game h3 a:hover { text-decoration: underline; }
+.verdict { display: inline-block; font-family: "League Gothic"; text-transform: uppercase; font-size: 1.45rem; letter-spacing: .03em; line-height: 1; margin: 4px 0 2px; }
+.v-robbery { color: var(--red-ink); } .v-coin { color: var(--cold-ink); } .v-earned { color: var(--ink); }
+.game p { margin: 2px 0; }
+.game b { font-weight: 800; }
+.dots { display: flex; gap: 4px; align-items: baseline; }
+.dots::after { content: ""; order: 1; flex: 1; border-bottom: 1px dotted var(--ink-2); transform: translateY(-3px); }
+.dots span:last-child { order: 2; font-variant-numeric: tabular-nums; }
+.flag { font-size: .76rem; color: var(--ink-2); font-style: italic; }
+
+/* ---------- last shot ---------- */
+.lastshot { background: #141414; color: #fff; padding: 24px clamp(16px, 4vw, 40px) 26px; display: grid; grid-template-columns: auto 1fr; gap: 26px; align-items: end; margin-top: 50px; }
+.lastshot .big { font-family: "League Gothic"; font-size: clamp(6rem, 22vw, 14rem); line-height: .78; color: #FFD200; }
+.lastshot .lbl { font-family: "League Gothic"; font-size: 1.6rem; text-transform: uppercase; letter-spacing: .05em; color: #FF3B30; }
+.lastshot p { margin: 4px 0 0; font-weight: 700; font-size: 1.15rem; max-width: 30em; }
+
+/* ---------- tables (agate register) ---------- */
+.register { width: 100%; border-collapse: collapse; font-size: .88rem; font-variant-numeric: tabular-nums; }
+.register th { text-align: right; font-weight: 900; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; border-bottom: 2px solid var(--ink); padding: 6px 6px; white-space: nowrap; vertical-align: bottom; }
+.register td { text-align: right; padding: 5px 6px; border-bottom: 1px solid color-mix(in srgb, var(--ink) 18%, transparent); white-space: nowrap; }
+.register th.l, .register td.l { text-align: left; }
+.register td.name { font-weight: 800; white-space: normal; min-width: 9em; }
+.register td.name a { text-decoration: none; }
+.register td.name a:hover { text-decoration: underline; }
+.register th button { all: unset; cursor: pointer; }
+.register th[aria-sort] button::after { content: " ▾"; }
+.register th[aria-sort="ascending"] button::after { content: " ▴"; }
+.scroll { overflow-x: auto; }
+.filters { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 0 0 12px; font-weight: 700; font-size: .9rem; }
+.filters select, .filters input { font: inherit; font-weight: 600; background: var(--page); color: var(--ink); border: 2px solid var(--ink); padding: .35rem .5rem; }
+
+/* ---------- the card back ---------- */
+.cardback { background: var(--board); color: var(--ink); border: 2px solid var(--ink); padding: 16px 18px 14px; }
+.cb-top { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; border-bottom: 3px solid var(--red-ink); padding-bottom: 10px; }
+.cb-no { width: 64px; height: 64px; border-radius: 50%; background: var(--red-ink); color: #F2EFE6; display: grid; place-items: center; font-family: "League Gothic"; font-size: 1.7rem; line-height: 1; }
+.cb-name { font-family: "League Gothic"; text-transform: uppercase; font-size: clamp(2.4rem, 7vw, 4rem); line-height: .85; margin: 0; font-weight: 400; }
+.cb-bio { font-family: "Courier Prime"; font-size: .84rem; line-height: 1.35; }
+.cb-team { font-family: "League Gothic"; font-size: 1.7rem; color: var(--red-ink); text-align: right; line-height: .9; text-decoration: none; }
+.cb-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-family: "Courier Prime"; font-size: .86rem; }
+.cb-table th { font-family: "Libre Franklin"; font-weight: 900; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--red-ink); text-align: right; padding: 3px 6px; border-bottom: 2px solid var(--ink); }
+.cb-table th:first-child, .cb-table td:first-child, .cb-table th:nth-child(2), .cb-table td:nth-child(2) { text-align: left; }
+.cb-table td { text-align: right; padding: 2px 6px; border-bottom: 1px solid color-mix(in srgb, var(--ink) 18%, transparent); white-space: nowrap; }
+.cb-table tr.now td { font-weight: 700; }
+.cb-table tr.lvl td { font-weight: 700; border-top: 2px solid var(--ink); border-bottom: 0; }
+.levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 14px 0 6px; }
+.lvl-box { border: 2px solid var(--ink); background: var(--page); padding: 10px 12px; }
+.lvl-box h3 { margin: 0; font-family: "League Gothic"; font-weight: 400; text-transform: uppercase; font-size: 1.5rem; }
+.lvl-box .nums { font-family: "League Gothic"; font-size: 2.6rem; line-height: .9; margin: 4px 0; }
+.lvl-box .nums .to { color: var(--red); font-size: .6em; vertical-align: .25em; }
+.lvl-box svg { width: 100%; max-width: 340px; height: auto; display: block; color: var(--ink); }
+.lvl-box svg text { font: 700 10px "Libre Franklin"; fill: var(--ink); }
+.lvl-box p { margin: 4px 0 0; font-size: .8rem; color: var(--ink-2); }
+.headline-proj { display: grid; grid-template-columns: auto 1fr; gap: 6px 20px; align-items: end; margin: 18px 0 8px; }
+.headline-proj .big { font-family: "League Gothic"; font-size: clamp(4.4rem, 14vw, 8rem); line-height: .8; }
+.headline-proj .big .to { color: var(--red); font-size: .55em; vertical-align: .3em; margin: 0 .05em; }
+.headline-proj p { margin: 0; font-weight: 700; max-width: 26em; }
+
+/* ---------- game page ---------- */
+.score-line { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; align-items: baseline; font-family: "League Gothic"; text-transform: uppercase; font-size: clamp(2.6rem, 8vw, 4.6rem); line-height: .95; margin: 16px 0 6px; }
+.score-line .l { color: var(--ink-2); }
+.score-line a { text-decoration: none; }
+.big-verdict { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin: 12px 0; }
+.big-verdict .verdict { font-size: clamp(3rem, 9vw, 5rem); }
+.big-verdict .pct { font-family: "League Gothic"; font-size: clamp(3rem, 9vw, 5rem); line-height: 1; }
+
+/* ---------- letters / guide ---------- */
+.letters { columns: 2 300px; column-gap: 30px; column-rule: 2px solid var(--rule); }
+.letter { break-inside: avoid; margin: 0 0 20px; }
+.letter .q { font-weight: 900; text-transform: uppercase; font-size: 1.05rem; margin: 0 0 4px; }
+.letter .a { margin: 0; }
+.letter .a::first-letter { font-family: "League Gothic"; font-size: 2.6em; float: left; line-height: .8; margin: .06em .08em 0 0; color: var(--red-ink); }
+
+/* ---------- team table of contents (dialog) ---------- */
+.toc { width: min(760px, calc(100vw - 24px)); max-height: calc(100vh - 40px); border: 3px solid var(--ink); background: var(--page); color: var(--ink); padding: 18px 22px 22px; }
+.toc::backdrop { background: rgba(20, 20, 20, .55); }
+.toc-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--ink); padding-bottom: 6px; }
+.toc-head h2 { margin: 0; font-size: 2.6rem; }
+.toc-x { background: none; border: 2px solid var(--ink); color: var(--ink); width: 40px; height: 40px; font-size: 1.1rem; cursor: pointer; }
+.toc-sec { margin: 12px 0 4px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; font-size: .85rem; }
+.toc-sec b { font-family: "League Gothic"; font-weight: 400; font-size: 2rem; color: var(--red); margin-right: .2em; vertical-align: -.15em; }
+.toc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 30px; }
+.toc-conf { font-size: 1.6rem; margin: 12px 0 0; border-bottom: 2px solid var(--ink); padding-bottom: 2px; }
+.toc-div { margin: 10px 0 2px; font-weight: 900; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--red-ink); }
+.toc a { display: flex; gap: 6px; align-items: baseline; text-decoration: none; padding: 4px 0; font-weight: 700; font-size: .95rem; }
+.toc a::after { content: ""; order: 1; flex: 1; border-bottom: 1px dotted var(--ink-2); transform: translateY(-4px); }
+.toc a i { order: 2; font-style: normal; font-family: "Courier Prime"; font-weight: 700; font-size: .85rem; }
+.toc a:hover span { text-decoration: underline; text-decoration-thickness: 2px; }
+
+/* ---------- phone menu ---------- */
+.bottomnav { display: none; }
+footer { padding: 22px 0 40px; margin-top: 50px; font-size: .8rem; color: var(--ink-2); border-top: 2px solid var(--rule); }
+@media (max-width: 860px) {
+  .mainnav { display: none; }
+  .strap .theme-btn { margin-left: auto; }
+  body { padding-bottom: 66px; }
+  .bottomnav { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--page); border-top: 3px solid var(--ink); padding-bottom: env(safe-area-inset-bottom); }
+  .bottomnav a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 0 6px; text-decoration: none; font: 400 .95rem/1 "League Gothic"; text-transform: uppercase; letter-spacing: .05em; }
+  .bottomnav svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .bottomnav a[aria-current] { color: var(--red-ink); }
+  .duo { grid-template-columns: 1fr; }
+  .lastshot { grid-template-columns: 1fr; gap: 6px; }
+  .levels { grid-template-columns: 1fr; }
+  .headline-proj { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .toc-cols { grid-template-columns: 1fr; }
+  .cb-top { grid-template-columns: auto 1fr; }
+  .cb-team { grid-column: 1 / -1; text-align: left; }
+}

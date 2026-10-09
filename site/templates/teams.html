@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Teams · BucketWeights{% endblock %}
+{% block content %}
+  <h1 class="gothic page-title">Teams</h1>
+  <p class="dek">Points each team has gained or lost to shooting luck, and its robberies. This is what happened, not a forecast: over a season, some of what looks like luck is shot quality we can't see.</p>
+  {% if teams %}
+  <div class="scroll">
+  <table class="register sortable">
+    <thead><tr><th class="l"><button>Team</button></th><th><button>GP</button></th><th><button>W-L</button></th>
+      <th aria-sort="descending"><button>Shooting luck, pts</button></th><th><button>Per game</button></th><th><button>Robbery wins</button></th><th><button>Robbed</button></th></tr></thead>
+    <tbody>
+    {% for t in teams %}
+      <tr><td class="l name"><a href="{{ root }}teams/{{ t.team | lower }}/">{{ t.team | team_name(False) }}</a></td><td>{{ t.gp }}</td><td data-v="{{ t.w }}">{{ t.w }}-{{ t.l }}</td>
+        <td class="{{ 'hot-t' if t.luck_pts > 0 else 'cold-t' if t.luck_pts < 0 }}" data-v="{{ t.luck_pts }}">{{ t.luck_pts | signed }}</td><td data-v="{{ t.luck_ppg }}">{{ t.luck_ppg | signed(2) }}</td>
+        <td>{{ t.robbery_wins }}</td><td>{{ t.robbed }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <p class="note">Shooting luck: points from 3s and free throws above (+) or below (−) what the shooters' levels expected. Robbery wins: games it won with under a 35% chance; robbed: games it lost with over 65%.</p>
+  {% else %}
+  <p>The season hasn't started. Opening night is Tuesday 20 October.</p>
+  {% endif %}
+{% endblock %}

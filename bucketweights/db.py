@@ -107,3 +107,14 @@ def write_game(con: sqlite3.Connection, game: dict, shots: list[dict], players: 
                 "INSERT OR REPLACE INTO appearances (game_id, player_id, team_id, minutes, did_not_play) VALUES (?, ?, ?, ?, ?)",
                 (game["game_id"], p["player_id"], p["team_id"], p.get("minutes"), int(bool(p.get("did_not_play")))),
             )
+
+
+def drop_non_nba_games(con: sqlite3.Connection, team_ids: set[int]) -> int:
+    """Remove All-Star games and other exhibitions (teams outside the 30) from older databases."""
+    ids = ",".join(str(int(t)) for t in team_ids)
+    bad = [r[0] for r in con.execute(f"SELECT game_id FROM games WHERE home_id NOT IN ({ids}) OR away_id NOT IN ({ids})")]
+    with con:
+        for gid in bad:
+            for table in ("shots", "appearances", "games"):
+                con.execute(f"DELETE FROM {table} WHERE game_id = ?", (gid,))
+    return len(bad)

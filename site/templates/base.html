@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}BucketWeights{% endblock %}</title>
+<meta name="description" content="{% block description %}Every NBA game and every shooter, weighed for shooting luck. Who earned it, who got lucky, and who's due to bounce back. Updated every night.{% endblock %}">
+<script>try { var t = localStorage.getItem("bw-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+<link rel="preload" href="{{ root }}static/fonts/league-gothic-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{{ root }}static/site.css">
+<link rel="icon" href="{{ root }}static/icon.svg" type="image/svg+xml">
+</head>
+<body class="issue-{{ issue_colour }}">
+
+<header class="strap">
+  <button class="teams-btn" type="button" id="teamsBtn" aria-haspopup="dialog">30 Teams <span aria-hidden="true">▾</span></button>
+  {% if nav != "home" %}<a class="home" href="{{ root }}">BucketWeights</a>{% endif %}
+  <nav class="mainnav" aria-label="Main">
+    {% for key, label, href in [("home", "Home", ""), ("players", "Players", "players/"), ("games", "Games", "games/"), ("teams", "Teams", "teams/"), ("guide", "Guide", "guide/")] %}
+    {% if not loop.first %}<span class="star" aria-hidden="true">★</span>{% endif %}<a href="{{ root }}{{ href }}"{% if nav == key %} aria-current="page"{% endif %}>{{ label }}</a>
+    {% endfor %}
+  </nav>
+  <button class="theme-btn" id="themeBtn" type="button">Blacktop</button>
+</header>
+
+{% block cover %}{% endblock %}
+
+<main class="wrap">
+{% block content %}{% endblock %}
+</main>
+
+{% block after %}{% endblock %}
+
+<div class="wrap"><footer>
+  <p><b>BucketWeights</b> is an independent fan site, not affiliated with the NBA or its teams. Data from ESPN's public feeds.
+  Updated {{ built }}{% if meta.data_through %}, games through {{ meta.data_through | long_date }}{% endif %}. Model {{ meta.model }} · <a href="{{ root }}guide/">How it works</a>.</p>
+</footer></div>
+
+<dialog class="toc" id="teamsDlg" aria-labelledby="toc-h">
+  <div class="toc-head"><h2 id="toc-h" class="gothic">Table of contents</h2><button type="button" class="toc-x" id="teamsClose" aria-label="Close">✕</button></div>
+  <p class="toc-sec"><b>30</b> Teams <small>· shooting luck, shooters, every game</small></p>
+  <div class="toc-cols">
+    {% for conf in ("East", "West") %}
+    <div>
+      <p class="toc-conf gothic">{{ "Eastern" if conf == "East" else "Western" }} Conference</p>
+      {% for div in (["Atlantic", "Central", "Southeast"] if conf == "East" else ["Northwest", "Pacific", "Southwest"]) %}
+      <p class="toc-div">{{ div }}</p>
+      {% for t in TEAMS if t.division == div %}<a href="{{ root }}teams/{{ t.abbrev | lower }}/"><span>{{ t.name }}</span><i>{{ t.abbrev }}</i></a>{% endfor %}
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+</dialog>
+
+<nav class="bottomnav" aria-label="Main">
+  <a href="{{ root }}"{% if nav == "home" %} aria-current="page"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/></svg>Home</a>
+  <a href="{{ root }}players/"{% if nav == "players" %} aria-current="page"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.8 3.2-6 6.5-6s5.9 2.2 6.5 6"/><circle cx="17" cy="9" r="2.6"/><path d="M16 14.2c2.9.1 4.9 2 5.5 5.3"/></svg>Players</a>
+  <a href="{{ root }}games/"{% if nav == "games" %} aria-current="page"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M12 5v14M3 12h18"/></svg>Games</a>
+  <a href="{{ root }}teams/"{% if nav == "teams" %} aria-current="page"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 7.8 8 9 4.6-1.2 8-4.5 8-9V6z"/></svg>Teams</a>
+  <a href="{{ root }}guide/"{% if nav == "guide" %} aria-current="page"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"/></svg>Guide</a>
+</nav>
+
+<script src="{{ root }}static/site.js" defer></script>
+</body>
+</html>

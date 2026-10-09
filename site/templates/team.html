@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% from "macros.html" import agate_game %}
+{% block title %}{{ t.name }} · BucketWeights{% endblock %}
+{% block content %}
+  <p class="kicker" style="margin-top:24px">{{ t.conference }}ern Conference · {{ t.division }} Division</p>
+  <h1 class="gothic page-title">{{ t.name }}</h1>
+  {% if row %}
+  <p class="dek">{{ row.w }}-{{ row.l }} · shooting luck <span class="{{ 'hot-t' if row.luck_pts > 0 else 'cold-t' if row.luck_pts < 0 }}">{{ row.luck_pts | signed }} points</span> ({{ row.luck_ppg | signed(2) }} a game) · {{ row.robbery_wins }} robbery win{{ "s" if row.robbery_wins != 1 }}, robbed {{ row.robbed }} time{{ "s" if row.robbed != 1 }}</p>
+  {% else %}
+  <p class="dek">No games yet this season.</p>
+  {% endif %}
+
+  {% if roster %}
+  <div class="runhead"><span>The shooters</span><span>{{ roster | length }} players</span></div>
+  <div class="scroll">
+  <table class="register">
+    <thead><tr><th class="l">Player</th><th>GP</th><th>PPG</th><th>At level</th><th>3PT%</th><th>3PT level</th><th>FT%</th><th>FT level</th></tr></thead>
+    <tbody>
+    {% for p in roster %}
+      <tr><td class="l name"><a href="{{ root }}players/{{ p.id }}/">{{ p.name }}</a></td><td>{{ p.gp }}</td><td>{{ "%.1f" | format(p.ppg) }}</td>
+        <td class="{{ 'cold-t' if p.proj_ppg > p.ppg + 0.3 else 'hot-t' if p.proj_ppg < p.ppg - 0.3 }}">{{ "%.1f" | format(p.proj_ppg) }}</td>
+        <td>{{ p["3"].pct | pct_bare }}</td><td>{{ p["3"].level | pct_bare }}</td><td>{{ p["FT"].pct | pct_bare }}</td><td>{{ p["FT"].level | pct_bare }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% endif %}
+
+  {% if games %}
+  <div class="runhead"><span>Every game</span><span>{{ games | length }}</span></div>
+  <div class="agate" style="margin-top:10px">{% for g in games %}{{ agate_game(g, root) }}{% endfor %}</div>
+  {% endif %}
+{% endblock %}

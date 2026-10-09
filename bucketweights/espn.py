@@ -49,6 +49,7 @@ def scoreboard(date_yyyymmdd: str) -> list[dict]:
             "competition_type": (c.get("type") or {}).get("abbreviation", ""),
             "notes": "; ".join(n.get("headline", "") for n in c.get("notes", [])),
             "final": bool(e["status"]["type"].get("completed")),
+            "team_ids": [int(x["team"]["id"]) for x in c.get("competitors", [])],
             "start": e.get("date"),
         })
     return out

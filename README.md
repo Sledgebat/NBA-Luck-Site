@@ -1,13 +1,30 @@
-# NBA Luck Site (research stage)
+# BucketWeights
 
-Was each NBA result deserved, or decided by shooting luck? Methodology research first; the site
-comes only after the method is approved. Separate from HockeyWeights (nothing here touches it).
+NBA shooting luck, every night: each player's true shooting level and what he'd score at it, and
+whether each game's winner earned it or got lucky. Runs itself: GitHub Actions fetches ESPN's
+play-by-play three times a night, updates the stats database, rebuilds the site and publishes it to
+Cloudflare Pages. Separate from HockeyWeights (nothing here touches it). Method: `docs/methodology.md`.
 
-## Setup (once)
+## Commands
+
+| Command | What it does |
+| --- | --- |
+| `.venv/bin/python -m bucketweights.update` | Fetch new games from ESPN, store them, write `build/data/*.json` |
+| `.venv/bin/python -m bucketweights.update --preseason` | Same, including preseason games (rehearsal) |
+| `.venv/bin/python -m bucketweights.site` | Build the site into `build/site` |
+| `python3 scripts/serve.py` | Look at the built site at http://localhost:4200 |
+| `.venv/bin/python -m bucketweights.backfill 2024 2025 2026` | Load past seasons (the nightly run does this itself if the database is missing) |
+| `.venv/bin/python -m unittest discover tests` | Tests |
+
+The stats database lives between runs on the repository's `data` release (`bucketweights.sqlite.gz`).
+Don't delete it; if it's lost, the next run rebuilds it from history in a few minutes, but this
+season's games would have to be fetched again.
+
+## Setup (once, on a Mac)
 
 ```bash
 python3 -m venv .venv
-.venv/bin/pip install pandas numpy pyarrow scipy requests
+.venv/bin/pip install -r requirements.txt
 ```
 
 ## What's here

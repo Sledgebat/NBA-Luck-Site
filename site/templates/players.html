@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Players · BucketWeights{% endblock %}
+{% block content %}
+  <h1 class="gothic page-title">Players</h1>
+  <p class="dek">Every player this season: points a game now, and at his true shooting with the same shots and minutes. "Level" is our estimate of his real make rate.</p>
+  {% if players %}
+  <div class="filters">
+    <label>Team <select id="teamFilter"><option value="">All 30</option>{% for t in TEAMS | sort(attribute="name") %}<option value="{{ t.abbrev }}">{{ t.name }}</option>{% endfor %}</select></label>
+    <label>Find <input id="nameFilter" type="search" placeholder="Player name" autocomplete="off"></label>
+    <label><input id="regulars" type="checkbox" checked> Regulars only (8+ shots a game)</label>
+  </div>
+  <div class="scroll">
+  <table class="register sortable" id="playerTable">
+    <thead><tr>
+      <th class="l"><button>Player</button></th><th class="l"><button>Tm</button></th><th><button>GP</button></th>
+      <th aria-sort="descending"><button>PPG</button></th><th><button>At level</button></th><th><button>Gap</button></th>
+      <th><button>3PT</button></th><th><button>3PT%</button></th><th><button>3PT level</button></th>
+      <th><button>FT%</button></th><th><button>FT level</button></th><th><button>2PT%</button></th><th><button>2PT level</button></th>
+    </tr></thead>
+    <tbody>
+    {% for p in players %}
+      <tr data-team="{{ p.team }}" data-fga="{{ p.fga_pg }}" data-name="{{ p.name | lower }}">
+        <td class="l name"><a href="{{ root }}players/{{ p.id }}/">{{ p.name }}</a></td><td class="l">{{ p.team }}</td><td>{{ p.gp }}</td>
+        <td>{{ "%.1f" | format(p.ppg) }}</td><td>{{ "%.1f" | format(p.proj_ppg) }}</td>
+        <td class="{{ 'cold-t' if p.proj_ppg > p.ppg else 'hot-t' if p.proj_ppg < p.ppg }}" data-v="{{ p.proj_ppg - p.ppg }}">{{ (p.proj_ppg - p.ppg) | signed }}</td>
+        <td data-v="{{ p['3'].a }}">{{ p["3"].m }}-{{ p["3"].a }}</td><td data-v="{{ p['3'].pct or 0 }}">{{ p["3"].pct | pct_bare }}</td><td>{{ p["3"].level | pct_bare }}</td>
+        <td data-v="{{ p['FT'].pct or 0 }}">{{ p["FT"].pct | pct_bare }}</td><td>{{ p["FT"].level | pct_bare }}</td>
+        <td data-v="{{ p['2'].pct or 0 }}">{{ p["2"].pct | pct_bare }}</td><td>{{ p["2"].level | pct_bare }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <p class="note">Gap: points a game he'd gain (cold, blue) or give back (hot, red) at his true shooting. Tap a heading to sort.</p>
+  {% else %}
+  <p>The season hasn't started. Players appear after opening night, Tuesday 20 October; until then, the home page shows who shot above and below their level last season.</p>
+  {% endif %}
+{% endblock %}
