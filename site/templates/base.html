@@ -46,7 +46,7 @@
       <p class="toc-conf gothic">{{ "Eastern" if conf == "East" else "Western" }} Conference</p>
       {% for div in (["Atlantic", "Central", "Southeast"] if conf == "East" else ["Northwest", "Pacific", "Southwest"]) %}
       <p class="toc-div">{{ div }}</p>
-      {% for t in TEAMS if t.division == div %}<a href="{{ root }}teams/{{ t.abbrev | lower }}/"><span>{{ t.name }}</span><i>{{ t.abbrev }}</i></a>{% endfor %}
+      {% for t in TEAMS if t.division == div %}<a href="{{ root }}players/?team={{ t.abbrev }}"><span>{{ t.name }}</span><i>{{ t.abbrev }}</i></a>{% endfor %}
       {% endfor %}
     </div>
     {% endfor %}

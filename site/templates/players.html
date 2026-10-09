@@ -9,6 +9,11 @@
     <label>Find <input id="nameFilter" type="search" placeholder="Player name" autocomplete="off"></label>
     <label><input id="regulars" type="checkbox" checked> Regulars only (8+ shots a game)</label>
   </div>
+  {% for t in teams %}
+  <p class="team-line" data-team="{{ t.team }}" hidden><b>{{ t.team | team_name(False) }}</b> · {{ t.w }}-{{ t.l }} · shooting luck
+    <span class="{{ 'hot-t' if t.luck_pts > 0 else 'cold-t' if t.luck_pts < 0 }}">{{ t.luck_pts | signed }} points</span> ({{ t.luck_ppg | signed(2) }} a game) ·
+    {{ t.robbery_wins }} robbery win{{ "s" if t.robbery_wins != 1 }}, robbed {{ t.robbed }} time{{ "s" if t.robbed != 1 }} · <a href="{{ root }}teams/">All teams</a></p>
+  {% endfor %}
   <div class="scroll">
   <table class="register sortable" id="playerTable">
     <thead><tr>

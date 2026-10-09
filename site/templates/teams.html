@@ -10,14 +10,14 @@
       <th aria-sort="descending"><button>Shooting luck, pts</button></th><th><button>Per game</button></th><th><button>Robbery wins</button></th><th><button>Robbed</button></th></tr></thead>
     <tbody>
     {% for t in teams %}
-      <tr><td class="l name"><a href="{{ root }}teams/{{ t.team | lower }}/">{{ t.team | team_name(False) }}</a></td><td>{{ t.gp }}</td><td data-v="{{ t.w }}">{{ t.w }}-{{ t.l }}</td>
+      <tr><td class="l name"><a href="{{ root }}players/?team={{ t.team }}">{{ t.team | team_name(False) }}</a></td><td>{{ t.gp }}</td><td data-v="{{ t.w }}">{{ t.w }}-{{ t.l }}</td>
         <td class="{{ 'hot-t' if t.luck_pts > 0 else 'cold-t' if t.luck_pts < 0 }}" data-v="{{ t.luck_pts }}">{{ t.luck_pts | signed }}</td><td data-v="{{ t.luck_ppg }}">{{ t.luck_ppg | signed(2) }}</td>
         <td>{{ t.robbery_wins }}</td><td>{{ t.robbed }}</td></tr>
     {% endfor %}
     </tbody>
   </table>
   </div>
-  <p class="note">Shooting luck: points from 3s and free throws above (+) or below (−) what the shooters' levels expected. Robbery wins: games it won with under a 35% chance; robbed: games it lost with over 65%.</p>
+  <p class="note">Tap a team for its players. Shooting luck: points from 3s and free throws above (+) or below (−) what the shooters' levels expected. Robbery wins: games it won with under a 35% chance; robbed: games it lost with over 65%.</p>
   {% else %}
   <p>The season hasn't started. Opening night is Tuesday 20 October.</p>
   {% endif %}

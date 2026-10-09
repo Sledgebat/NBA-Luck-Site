@@ -87,7 +87,7 @@ Independent fan site; the footer disclaimer stays on every page. Started 8 Oct 2
 | `bucketweights/model.py` | levels, `shot_luck`, `game_verdicts`, `player_table`, `hot_cold`, calibration |
 | `bucketweights/update.py` | nightly fetch + checks + writes `build/data/*.json` (meta, players, hotcold, last_night, games, teams) |
 | `bucketweights/cards.py` | the day's social cards: plan → card pages (`/social/cards/<slug>/`) → Playwright screenshots → `/social/` kit page + `posts.json` |
-| `bucketweights/site.py` | Jinja build into `build/site` (home, players + `/players/{id}/`, games + `/games/{id}/`, teams + `/teams/{abbr}/`, guide, 404) |
+| `bucketweights/site.py` | Jinja build into `build/site` (home, players + `/players/{id}/`, games + `/games/{id}/`, one Teams table (no per-team pages: Josh, 9 Oct 2026), guide, 404) |
 | `bucketweights/teams.json` | the 30 teams: ESPN id/abbrev, NBA abbrev, names, conference, division |
 | `site/templates/` | `base.html` (header, Teams dialog, bottom nav, footer), `macros.html`, one template per page, `social.html` (kit), `cards/` (one per card) |
 | `site/static/` | `site.css`, `site.js` (theme, Teams dialog, sortable tables, player filters), `cards.css` (social cards), fonts, `icon.svg` |
@@ -125,6 +125,8 @@ avoids that.
 - **Header (like HockeyWeights):** sticky strap in the issue colour: "30 Teams ▾" (table of
   contents dialog by conference/division) on the left; main menu Home ★ Players ★ Games ★ Teams ★
   Guide on the right; on phones a bottom icon bar instead.
+  Each team in it opens the Players page filtered to that team (`players/?team=BOS`: whole roster,
+  with the team's line from the Teams table on top); there are no team pages.
 - **Home:** cover = logo (no player name over it: Josh removed that) + dateline, then **Heat Check
   / Defrost first** (Josh: hottest and coldest players at the top), then **Last night** (agate,
   robberies first), then **Last Shot**. Before opening night the lists show last season's

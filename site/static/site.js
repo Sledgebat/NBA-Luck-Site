@@ -60,7 +60,18 @@
         row.hidden = !ok;
       });
     };
+    const lines = document.querySelectorAll(".team-line");
+    const showLine = () => lines.forEach((l) => { l.hidden = l.dataset.team !== team.value; });
+    const wanted = new URLSearchParams(location.search).get("team");
+    if (wanted && [...team.options].some((o) => o.value === wanted)) { team.value = wanted; reg.checked = false; }
+    team.addEventListener("input", () => {
+      const u = new URL(location.href);
+      if (team.value) u.searchParams.set("team", team.value); else u.searchParams.delete("team");
+      history.replaceState(null, "", u);
+      showLine();
+    });
     [team, name, reg].forEach((el) => el.addEventListener("input", apply));
     apply();
+    showLine();
   }
 })();

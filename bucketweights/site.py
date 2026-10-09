@@ -201,7 +201,7 @@ def build(season: int | None = None) -> Path:
          shot=last_shot(last_night))
 
     # players
-    page("players/index.html", "players.html", 1, nav="players", players=sorted(players, key=lambda p: -p["ppg"]))
+    page("players/index.html", "players.html", 1, nav="players", players=sorted(players, key=lambda p: -p["ppg"]), teams=teams)
     for p in players:
         mine = lines[lines.player_id == p["id"]].sort_values("season")
         log = logs[logs.shooter == p["id"]].sort_values("date", ascending=False)
@@ -216,14 +216,9 @@ def build(season: int | None = None) -> Path:
     for g in games_sorted:
         page(f"games/{g['game_id']}/index.html", "game.html", 2, nav="games", g=g, by_id=by_id)
 
-    # teams
+    # teams: one league table. A team's players are the Players page filtered to it (?team=BOS),
+    # where the "30 Teams" menu sends you; separate team pages only repeated that (Josh, 9 Oct 2026).
     page("teams/index.html", "teams.html", 1, nav="teams", teams=sorted(teams, key=lambda t: -t["luck_pts"]))
-    for t in TEAM_LIST:
-        ab = t["abbrev"]
-        roster = sorted([p for p in players if p["team"] == ab], key=lambda p: -p["ppg"])
-        tg = [g for g in games_sorted if ab in (g["home"], g["away"])]
-        row = next((x for x in teams if x["team"] == ab), None)
-        page(f"teams/{ab.lower()}/index.html", "team.html", 2, nav="teams", t=t, row=row, roster=roster, games=tg)
 
     page("guide/index.html", "guide.html", 1, nav="guide")
     page("404.html", "404.html", 0, nav="")

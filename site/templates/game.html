@@ -6,8 +6,8 @@
 {% block content %}
   <p class="kicker" style="margin-top:24px">{{ g.date | long_date }}{% if g.season_type == 1 %} · Preseason{% elif g.season_type == 5 %} · Play-In{% elif g.season_type == 3 %} · Playoffs{% elif g.competition_type == "CC" %} · NBA Cup final{% endif %}</p>
   <div class="score-line">
-    <a href="{{ root }}teams/{{ g[win] | lower }}/">{{ g[win] | team_name(False) }}</a><span class="tab">{{ g[win + "_pts"] }}</span>
-    <a class="l" href="{{ root }}teams/{{ g[lose] | lower }}/">{{ g[lose] | team_name(False) }}</a><span class="l tab">{{ g[lose + "_pts"] }}</span>
+    <a href="{{ root }}players/?team={{ g[win] }}">{{ g[win] | team_name(False) }}</a><span class="tab">{{ g[win + "_pts"] }}</span>
+    <a class="l" href="{{ root }}players/?team={{ g[lose] }}">{{ g[lose] | team_name(False) }}</a><span class="l tab">{{ g[lose + "_pts"] }}</span>
   </div>
   {% if g.periods > 4 %}<p class="note">After {{ "overtime" if g.periods == 5 else (g.periods - 4) ~ " overtimes" }}.</p>{% endif %}
   <div class="big-verdict"><span class="verdict {{ g.label | verdict_class }}">{{ g.label }}</span><span class="pct tab">{{ (100 * g.winner_chance) | round | int }}%</span></div>

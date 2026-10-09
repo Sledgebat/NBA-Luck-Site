@@ -17,7 +17,7 @@
     <div class="cb-top">
       <div class="cb-no">{{ p.gp }}<span class="sr"> games</span></div>
       <div><h1 class="cb-name">{{ p.name }}</h1><div class="cb-bio">{{ meta.season_label }} · {{ p.gp }} GAMES · {{ "%.1f" | format(p.fga_pg) }} SHOTS A GAME</div></div>
-      <a class="cb-team" href="{{ root }}teams/{{ p.team | lower }}/">{{ (p.team | team_name(False)) | upper | replace(" ", "<br>") | safe }}</a>
+      <a class="cb-team" href="{{ root }}players/?team={{ p.team }}">{{ (p.team | team_name(False)) | upper | replace(" ", "<br>") | safe }}</a>
     </div>
     <div class="levels">
       {% for k, label in (("3", "Threes"), ("FT", "Free throws"), ("2", "Twos")) %}

@@ -233,3 +233,7 @@ footer { padding: 22px 0 40px; margin-top: 50px; font-size: .8rem; color: var(--
 .kit-card p { margin: 6px 0 0; font-size: .85rem; }
 .copy-btn { font: 700 .72rem/1 "Libre Franklin"; text-transform: uppercase; letter-spacing: .1em; background: var(--ink); color: var(--page); border: 0; padding: .55rem .8rem; cursor: pointer; }
 .kit-skip { font-size: .9rem; color: var(--ink-2); }
+
+/* players page: the chosen team's line, from the Teams table (shown by site.js) */
+.team-line { margin: 4px 0 14px; font-size: .95rem; }
+.team-line b { font-family: "League Gothic"; font-weight: 400; text-transform: uppercase; font-size: 1.5rem; letter-spacing: .02em; }
