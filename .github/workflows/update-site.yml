@@ -93,13 +93,16 @@ jobs:
           gh release view data > /dev/null 2>&1 || gh release create data --title "Stats database" --notes "Saved automatically by the Update site workflow. Don't delete: it holds every stored game."
           gh release upload data bucketweights.sqlite.gz --clobber
 
-      - name: Keep the site from this run
-        if: always()
+      # Only when something went wrong, for a few days, so there's something to look at without
+      # filling GitHub's artifact storage (free and unlimited while the repo is public; 500 MB
+      # shared with HockeyWeights if it ever goes private).
+      - name: Keep the site from a failed run
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: site
           path: build/
-          retention-days: 7
+          retention-days: 3
 
       # GitHub pauses scheduled runs in repositories with no commits for 60 days.
       - name: Keep scheduled updates switched on
