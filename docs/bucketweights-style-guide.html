@@ -70,16 +70,23 @@ body { margin: 0; background: var(--page); color: var(--ink); font: 400 1rem/1.5
 .bar nav { display: flex; gap: 18px; flex-wrap: wrap; }
 .bar nav a { font-family: "League Gothic"; text-transform: uppercase; font-size: 1.35rem; letter-spacing: .03em; text-decoration: none; color: var(--ink); padding-bottom: 2px; border-bottom: 3px solid transparent; }
 .bar nav a[aria-current] { border-color: var(--red); }
-.theme-btn { margin-left: auto; font: 700 .72rem/1 "Libre Franklin"; text-transform: uppercase; letter-spacing: .1em; background: none; color: var(--ink); border: 2px solid var(--ink); padding: .5rem .7rem; cursor: pointer; }
+.theme-btn { font: 700 .72rem/1 "Libre Franklin"; text-transform: uppercase; letter-spacing: .1em; background: none; color: var(--ink); border: 2px solid var(--ink); padding: .5rem .7rem; cursor: pointer; }
 
 /* =====================================================================
    THE COVER. One flat issue colour; logo across the top; the cover
    star's name overlapping it; coverline stack; one big main line.
    It is always printed: same colours in both editions.
    ===================================================================== */
-.cover { position: relative; background: var(--issue); color: #141414; overflow: hidden; padding: 14px clamp(14px, 3vw, 34px) 26px; }
-.strap { display: flex; justify-content: space-between; gap: 4px 12px; flex-wrap: wrap; font-family: "League Gothic"; text-transform: uppercase; font-size: clamp(.95rem, 1.6vw, 1.25rem); letter-spacing: .05em; border-bottom: 3px solid #141414; padding-bottom: 6px; }
-.strap .star { color: #E2231A; }
+.cover { position: relative; background: var(--issue); color: #141414; overflow: clip; padding: 14px clamp(14px, 3vw, 34px) 26px; }
+/* the strap is the header: Teams menu left, main menu right (HockeyWeights' layout), sticky */
+.strap { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 10px 16px; background: var(--issue); padding: 10px clamp(14px, 3vw, 34px) 8px; border-bottom: 3px solid #141414; font-family: "League Gothic"; text-transform: uppercase; letter-spacing: .05em; }
+.strap .star { color: #E2231A; font-size: .8em; }
+.teams-btn { font: 400 1.3rem/1 "League Gothic"; text-transform: uppercase; letter-spacing: .05em; background: #141414; color: var(--issue); border: 0; padding: .38rem .6rem .3rem; cursor: pointer; }
+.mainnav { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.mainnav a { color: #141414; text-decoration: none; font-size: 1.3rem; padding: 2px 0 1px; border-bottom: 3px solid transparent; }
+.mainnav a[aria-current] { border-color: #E2231A; }
+.mainnav a:hover { border-color: #141414; }
+.strap .theme-btn { margin-left: 4px; color: #141414; border-color: #141414; }
 .mast { position: relative; display: flex; align-items: flex-start; margin-top: 6px; }
 .wordmark { font-family: "League Gothic"; font-weight: 400; font-variation-settings: "wdth" 100; text-transform: uppercase; color: #E2231A; font-size: min(15.2rem, calc((100vw - 64px - 2.6rem) / 4.6)); line-height: .78; white-space: nowrap; letter-spacing: -.005em; margin: 0; }
 .mast .stars { display: flex; flex-direction: column; gap: .12em; font-size: clamp(1.4rem, 3.2vw, 2.6rem); line-height: 1; color: #141414; margin: .25em 0 0 .18em; }
@@ -87,7 +94,7 @@ body { margin: 0; background: var(--page); color: var(--ink); font: 400 1rem/1.5
 .surname { position: relative; z-index: 2; margin: clamp(-5.4rem, -9.5vw, -2.4rem) 0 0 auto; width: max-content; max-width: 100%; text-align: right; }
 .surname span { display: block; font-family: "Libre Franklin"; font-weight: 900; font-style: italic; text-transform: uppercase; color: #FFFFFF; font-size: clamp(3.6rem, 13vw, 10.5rem); line-height: .82; letter-spacing: -.03em; text-shadow: .045em .045em 0 #141414; -webkit-text-stroke: .012em #141414; }
 .surname small { display: block; font-family: "League Gothic"; text-transform: uppercase; font-size: clamp(1.2rem, 2.4vw, 1.9rem); letter-spacing: .04em; margin-top: .15em; }
-.cover-body { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 26px; margin-top: 16px; align-items: end; }
+.cover-body { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 26px; margin-top: 22px; align-items: end; border-top: 3px solid #141414; padding-top: 6px; }
 .lines { list-style: none; margin: 0; padding: 0; }
 .lines li { padding: 10px 0; border-top: 3px solid #141414; }
 .lines li:first-child { border-top: 0; }
@@ -96,6 +103,8 @@ body { margin: 0; background: var(--page); color: var(--ink); font: 400 1rem/1.5
 .lines .d { display: block; font-weight: 800; font-size: clamp(.95rem, 1.5vw, 1.12rem); line-height: 1.2; margin-top: 4px; }
 .lines .pg { font-family: "League Gothic"; font-weight: 400; font-size: 1.1rem; letter-spacing: .05em; margin-left: .35em; }
 .numbers { text-align: right; }
+.numbers .who { font-family: "League Gothic"; text-transform: uppercase; font-size: clamp(1.4rem, 2.6vw, 2rem); letter-spacing: .03em; margin-bottom: 6px; }
+.numbers .who .pg { font-size: .7em; margin-left: .3em; }
 .numbers .big { font-family: "League Gothic"; font-size: clamp(5.2rem, 13vw, 10rem); line-height: .8; letter-spacing: -.01em; }
 .numbers .big .to { color: #E2231A; font-size: .55em; vertical-align: .32em; margin: 0 .06em; }
 .numbers .cap { font-weight: 800; text-transform: uppercase; letter-spacing: .08em; font-size: .78rem; margin-top: 6px; }
@@ -203,6 +212,36 @@ body { margin: 0; background: var(--page); color: var(--ink); font: 400 1rem/1.5
 .vocab th { font-weight: 900; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; border-bottom: 2px solid var(--ink); }
 footer { padding: 20px 0 40px; font-size: .8rem; color: var(--ink-2); border-top: 2px solid var(--rule); }
 
+/* ---------- team table of contents (HockeyWeights' Clubs menu) ---------- */
+.toc { width: min(760px, calc(100vw - 24px)); max-height: calc(100vh - 40px); border: 3px solid var(--ink); background: var(--page); color: var(--ink); padding: 18px 22px 22px; }
+.toc::backdrop { background: rgba(20, 20, 20, .55); }
+.toc-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--ink); padding-bottom: 6px; }
+.toc-head h2 { margin: 0; font-size: 2.6rem; }
+.toc-x { background: none; border: 2px solid var(--ink); color: var(--ink); width: 40px; height: 40px; font-size: 1.1rem; cursor: pointer; }
+.toc-sec { margin: 12px 0 4px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; font-size: .85rem; }
+.toc-sec b { font-size: 2rem; color: var(--red); margin-right: .2em; vertical-align: -.15em; }
+.toc-sec small { font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--ink-2); }
+.toc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 30px; }
+.toc-conf { font-size: 1.6rem; margin: 12px 0 0; border-bottom: 2px solid var(--ink); padding-bottom: 2px; }
+.toc-div { margin: 10px 0 2px; font-weight: 900; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--red-ink); }
+.toc a { display: flex; gap: 6px; align-items: baseline; text-decoration: none; color: var(--ink); padding: 4px 0; font-weight: 700; font-size: .95rem; }
+.toc a::after { content: ""; order: 1; flex: 1; border-bottom: 1px dotted var(--ink-2); transform: translateY(-4px); }
+.toc a i { order: 2; font-style: normal; font-family: "Courier Prime"; font-weight: 700; font-size: .85rem; }
+.toc a:hover span { text-decoration: underline; text-decoration-thickness: 2px; }
+
+/* ---------- phone menu: a bar pinned to the bottom (HockeyWeights' layout) ---------- */
+.bottomnav { display: none; }
+@media (max-width: 860px) {
+  .mainnav { display: none; }
+  .strap .theme-btn { margin-left: auto; }
+  body { padding-bottom: 66px; }
+  .bottomnav { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--page); border-top: 3px solid var(--ink); padding-bottom: env(safe-area-inset-bottom); }
+  .bottomnav a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 0 6px; text-decoration: none; color: var(--ink); font: 400 .95rem/1 "League Gothic"; text-transform: uppercase; letter-spacing: .05em; }
+  .bottomnav svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .bottomnav a[aria-current] { color: var(--red-ink); }
+  .bottomnav a[aria-current] svg { stroke-width: 2.6; }
+}
+@media (max-width: 560px) { .toc-cols { grid-template-columns: 1fr; } }
 @media (max-width: 860px) {
   .cover-body, .duo { grid-template-columns: 1fr; }
   .numbers { text-align: left; }
@@ -219,22 +258,21 @@ footer { padding: 20px 0 40px; font-size: .8rem; color: var(--ink-2); border-top
 </head>
 <body>
 
-<div class="wrap">
-  <div class="bar">
-    <span class="gothic mini">BucketWeights</span>
-    <nav aria-label="Sections"><a href="#" aria-current="page">Tonight's issue</a><a href="#">Players</a><a href="#">Games</a><a href="#">Teams</a><a href="#">About the model</a></nav>
-    <button class="theme-btn" id="themeBtn" type="button">Blacktop edition</button>
-  </div>
-</div>
 
 <!-- ======================= THE COVER ======================= -->
-<header class="cover" aria-label="Tonight's issue">
-  <div class="strap"><span>The shooting-luck basketball daily</span><span>Jokić <span class="star">★</span> George <span class="star">★</span> Maxey <span class="star">★</span> Vučević <span class="star">★</span> The receipts</span></div>
+<header class="strap">
+  <button class="teams-btn" type="button" id="teamsBtn" aria-haspopup="dialog">30 Teams <span aria-hidden="true">▾</span></button>
+  <nav class="mainnav" aria-label="Main">
+    <a href="#" aria-current="page">Home</a><span class="star" aria-hidden="true">★</span><a href="#">Players</a><span class="star" aria-hidden="true">★</span><a href="#">Games</a><span class="star" aria-hidden="true">★</span><a href="#">Teams</a><span class="star" aria-hidden="true">★</span><a href="#">Guide</a>
+  </nav>
+  <button class="theme-btn" id="themeBtn" type="button">Blacktop</button>
+</header>
+
+<section class="cover" aria-label="Tonight's issue">
   <div class="mast">
     <h1 class="wordmark">BucketWeights</h1>
     <div class="stars" aria-hidden="true"><span>★</span><span>★</span><span>★</span></div>
   </div>
-  <div class="surname"><span>George</span><small>Paul George, 76ers · cover story · pg. 4</small></div>
 
   <div class="cover-body">
     <ul class="lines">
@@ -243,6 +281,7 @@ footer { padding: 20px 0 40px; font-size: .8rem; color: var(--ink-2); border-top
       <li><span class="k">The receipts</span><span class="d">Last season's calls, misses included. <span class="pg">PG. 5</span></span></li>
     </ul>
     <div class="numbers">
+      <div class="who">Cover story · Paul George, 76ers <span class="pg">PG. 4</span></div>
       <div class="big tab">15.4<span class="to">→</span>16.9</div>
       <div class="cap">Points a game now → at his true shooting, same shots &amp; minutes</div>
     </div>
@@ -254,7 +293,7 @@ footer { padding: 20px 0 40px; font-size: .8rem; color: var(--ink-2); border-top
     <p>Paul George is shooting 32.0% from three. His true level is 38.5%. Mock-up with real numbers, as of 1 January 2025.</p>
     <div class="barcode" aria-hidden="true"><i></i><span>No. 79<br>Wed 1 Jan 2025<br>Free, every night</span></div>
   </div>
-</header>
+</section>
 
 <div class="wrap">
   <!-- ======================= PG 2: LAST NIGHT ======================= -->
@@ -457,6 +496,39 @@ footer { padding: 20px 0 40px; font-size: .8rem; color: var(--ink-2); border-top
   </div>
 </section>
 
+<dialog class="toc" id="teamsDlg" aria-labelledby="toc-h">
+  <div class="toc-head"><h2 id="toc-h" class="gothic">Table of contents</h2><button type="button" class="toc-x" id="teamsClose" aria-label="Close">✕</button></div>
+  <p class="toc-sec"><b class="gothic">30</b> Teams <small>· luck, shooters, every game</small></p>
+  <div class="toc-cols">
+    <div>
+      <p class="toc-conf gothic">Eastern Conference</p>
+      <p class="toc-div">Atlantic</p>
+      <a href="#"><span>Boston Celtics</span><i>BOS</i></a><a href="#"><span>Brooklyn Nets</span><i>BKN</i></a><a href="#"><span>New York Knicks</span><i>NYK</i></a><a href="#"><span>Philadelphia 76ers</span><i>PHI</i></a><a href="#"><span>Toronto Raptors</span><i>TOR</i></a>
+      <p class="toc-div">Central</p>
+      <a href="#"><span>Chicago Bulls</span><i>CHI</i></a><a href="#"><span>Cleveland Cavaliers</span><i>CLE</i></a><a href="#"><span>Detroit Pistons</span><i>DET</i></a><a href="#"><span>Indiana Pacers</span><i>IND</i></a><a href="#"><span>Milwaukee Bucks</span><i>MIL</i></a>
+      <p class="toc-div">Southeast</p>
+      <a href="#"><span>Atlanta Hawks</span><i>ATL</i></a><a href="#"><span>Charlotte Hornets</span><i>CHA</i></a><a href="#"><span>Miami Heat</span><i>MIA</i></a><a href="#"><span>Orlando Magic</span><i>ORL</i></a><a href="#"><span>Washington Wizards</span><i>WAS</i></a>
+    </div>
+    <div>
+      <p class="toc-conf gothic">Western Conference</p>
+      <p class="toc-div">Northwest</p>
+      <a href="#"><span>Denver Nuggets</span><i>DEN</i></a><a href="#"><span>Minnesota Timberwolves</span><i>MIN</i></a><a href="#"><span>Oklahoma City Thunder</span><i>OKC</i></a><a href="#"><span>Portland Trail Blazers</span><i>POR</i></a><a href="#"><span>Utah Jazz</span><i>UTA</i></a>
+      <p class="toc-div">Pacific</p>
+      <a href="#"><span>Golden State Warriors</span><i>GSW</i></a><a href="#"><span>LA Clippers</span><i>LAC</i></a><a href="#"><span>Los Angeles Lakers</span><i>LAL</i></a><a href="#"><span>Phoenix Suns</span><i>PHX</i></a><a href="#"><span>Sacramento Kings</span><i>SAC</i></a>
+      <p class="toc-div">Southwest</p>
+      <a href="#"><span>Dallas Mavericks</span><i>DAL</i></a><a href="#"><span>Houston Rockets</span><i>HOU</i></a><a href="#"><span>Memphis Grizzlies</span><i>MEM</i></a><a href="#"><span>New Orleans Pelicans</span><i>NOP</i></a><a href="#"><span>San Antonio Spurs</span><i>SAS</i></a>
+    </div>
+  </div>
+</dialog>
+
+<nav class="bottomnav" aria-label="Main">
+  <a href="#" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/></svg>Home</a>
+  <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.8 3.2-6 6.5-6s5.9 2.2 6.5 6"/><circle cx="17" cy="9" r="2.6"/><path d="M16 14.2c2.9.1 4.9 2 5.5 5.3"/></svg>Players</a>
+  <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M12 5v14M3 12h18"/></svg>Games</a>
+  <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 7.8 8 9 4.6-1.2 8-4.5 8-9V6z"/></svg>Teams</a>
+  <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"/></svg>Guide</a>
+</nav>
+
 <div class="wrap"><footer>BucketWeights is an independent fan site, not affiliated with the NBA or its teams. Data from ESPN's public feeds. Mock-up, October 2026; every number is real, from the 2024-25 season.</footer></div>
 
 <script>
@@ -466,13 +538,20 @@ footer { padding: 20px 0 40px; font-size: .8rem; color: var(--ink-2); border-top
     try { saved = localStorage.getItem("bw-theme"); } catch (e) {}
     if (saved) root.dataset.theme = saved;
     const isDark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-    const label = () => { btn.textContent = isDark() ? "Paper edition" : "Blacktop edition"; };
+    const label = () => { btn.textContent = isDark() ? "Paper" : "Blacktop"; };
     label();
     btn.addEventListener("click", () => {
       root.dataset.theme = isDark() ? "light" : "dark";
       try { localStorage.setItem("bw-theme", root.dataset.theme); } catch (e) {}
       label();
     });
+  })();
+  // the Teams button opens the table of contents
+  (function () {
+    const dlg = document.getElementById("teamsDlg");
+    document.getElementById("teamsBtn").addEventListener("click", () => dlg.showModal());
+    document.getElementById("teamsClose").addEventListener("click", () => dlg.close());
+    dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
   })();
 </script>
 </body>
