@@ -86,7 +86,7 @@ Independent fan site; the footer disclaimer stays on every page. Started 8 Oct 2
 | `bucketweights/db.py` | SQLite schema (`games`, `shots`, `players`, `appearances`, `runs`), `write_game`, hashes |
 | `bucketweights/model.py` | levels, `shot_luck`, `game_verdicts`, `player_table`, `hot_cold`, calibration |
 | `bucketweights/update.py` | nightly fetch + checks + writes `build/data/*.json` (meta, players, hotcold, last_night, games, teams) |
-| `bucketweights/cards.py` | the day's social cards: plan → card pages (`/social/cards/<slug>/`) → Playwright screenshots → `/social/` kit page + `posts.json` |
+| `bucketweights/cards.py` | also draws `static/share.png` (1200 × 630 link preview, every run, games or not; a default copy is committed in `site/static/`) · the day's social cards: plan → card pages (`/social/cards/<slug>/`) → Playwright screenshots → `/social/` kit page + `posts.json` |
 | `bucketweights/site.py` | Jinja build into `build/site` (home, players + `/players/{id}/`, games + `/games/{id}/`, one Teams table (no per-team pages: Josh, 9 Oct 2026), guide, 404) |
 | `bucketweights/teams.json` | the 30 teams: ESPN id/abbrev, NBA abbrev, names, conference, division |
 | `site/templates/` | `base.html` (header, Teams dialog, bottom nav, footer), `macros.html`, one template per page, `social.html` (kit), `cards/` (one per card) |
@@ -143,6 +143,9 @@ avoids that.
   with Warriors, Knicks, 76ers and Heat corrected). `cards.team_inks` nudges a colour lighter or
   darker (keeping its hue) until it reads, else white/ink; a test checks all 30 teams. The site,
   the agate and the yearbook keep their own colours.
+- **Link previews:** every page has Open Graph / Twitter tags (its own title and description) and the
+  day's `static/share.png?v=<date>`: a 1200 × 630 SLAM cover in the issue colour with the night's
+  headline (robbery, else the night, else a default line). Addresses from `site.SITE_URL`.
 - **Social cards (built 9 Oct 2026, `bucketweights/cards.py`; Josh posts by hand):** the five approved
   looks at 1080 × 1350 (authored at that size, shot at 1×). After a night with games: **cover**
   (tonight's issue in the issue colour; cover story = Defrost No. 1; coverlines = Heat check No. 1
@@ -174,9 +177,8 @@ avoids that.
    artifact to look at the real cards (first run with Playwright on GitHub).
 2. Josh's review of the cards: which to post, the weekly days, the cover's main lines, the
    yearbooks: Heat check on red stock, Defrost on navy (swapped at Josh's request, 9 Oct).
-3. Polish: Open Graph images/meta for sharing (a card could double as the page's share image), a
-   sitemap.
+3. Polish: a sitemap; possibly per-player link-preview images (each player page uses the site image).
 4. When Josh says go: Cloudflare secrets + domain (bucketweights.com?) → publish. Change
-   `cards.SITE_NAME` if the domain differs.
+   `site.SITE_URL` if the domain differs (link previews, canonical links and the cards use it).
 5. Later in the season: playoff/Play-In odds on point differential (Cup games count except the
    final), and the "what's at stake" swings; possibly the NBA Cup knockout placeholders.

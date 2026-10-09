@@ -35,7 +35,7 @@ from pathlib import Path
 
 from . import db, model, site, update
 
-SITE_NAME = "bucketweights.com"  # until the domain is set
+SITE_NAME = site.SITE_URL.split("//", 1)[1]  # the address printed on the cards
 OUT = site.OUT / "social"
 CARD_W, CARD_H = 1080, 1350
 REPEAT_DAYS = 14
@@ -382,6 +382,29 @@ def plan(con, any_date: bool = False, every: bool = False) -> dict:
 # ---------------------------------------------------------------- pages and images
 
 
+def share_card() -> dict:
+    """The link-preview image every page points to (static/share.png): tonight's issue and headline."""
+    meta, ln = site.read("meta.json"), site.read("last_night.json")
+    issue = meta.get("issue") or 0
+    games = sorted(ln.get("games") or [], key=lambda g: g["winner_chance"])
+    if games and games[0]["label"] == "Robbery":
+        g = games[0]
+        head, line = "Robbery!", f"{score_line(g)}. The {nickname(g[sides(g)[0]])} won with {site.a_pct(g['winner_chance'])} chance at true shooting."
+    elif games:
+        n = len(games)
+        head, line = "Last night", f"{n} game{'s' if n != 1 else ''} weighed for shooting luck. Who earned it, who got lucky."
+    else:
+        head, line = "Shooting luck, weighed", "Every NBA game and every shooter, every night. Free."
+    return {
+        "slug": "share", "template": "cards/share.html", "title": "Link preview", "size": site.SHARE_SIZE,
+        "image": "../static/share.png", "caption": "",
+        "colour": site.ISSUE_COLOURS[issue % len(site.ISSUE_COLOURS)] if issue else "yellow",
+        "issue_line": f"No. {issue} ★ {site.short_date(meta['data_through'])}" if issue else f"{meta['season_label']} ★ {SITE_NAME}",
+        "head": head, "line": line,
+    }
+
+
+
 def write_pages(p: dict, built: str) -> None:
     if OUT.exists():
         shutil.rmtree(OUT)
@@ -391,7 +414,7 @@ def write_pages(p: dict, built: str) -> None:
     e.globals.update(score_line=score_line, chance_short=chance_short)
     common = {"meta": site.read("meta.json"), "issue_colour": p.get("colour", "yellow"), "built": built,
               "SITE_NAME": SITE_NAME, "day": p["date"], "plan": p}
-    for c in p["cards"]:
+    for c in p["cards"] + p.get("extra", []):
         f = OUT / "cards" / c["slug"] / "index.html"
         f.parent.mkdir(parents=True, exist_ok=True)
         f.write_text(e.get_template(c["template"]).render(root="../../../", c=c, **common))
@@ -422,7 +445,9 @@ def shoot(p: dict) -> tuple[list[str], list[str]]:
         with sync_playwright() as pw:
             browser = pw.chromium.launch()
             page = browser.new_page(viewport={"width": CARD_W, "height": CARD_H}, device_scale_factor=1, color_scheme="light")
-            for c in p["cards"]:
+            for c in p["cards"] + p.get("extra", []):
+                w, h = c.get("size", (CARD_W, CARD_H))
+                page.set_viewport_size({"width": w, "height": h})
                 page.goto(f"{origin}/{OUT.relative_to(site.OUT).as_posix()}/cards/{c['slug']}/", wait_until="networkidle")
                 page.evaluate("document.fonts.ready.then(() => window.fitWidths && window.fitWidths())")
                 card = page.locator("[data-card]")
@@ -458,8 +483,9 @@ def main(argv=None) -> int:
     con = db.connect()
     p = plan(con, args.any_date, args.all)
     built = datetime.now(update.ET).strftime("%-d %b %Y, %-I:%M %p ET")
+    p["extra"] = [share_card()]  # made every run, games or not: every page's link preview uses it
     write_pages(p, built)
-    made, check = ([], []) if args.no_images or not p["cards"] else shoot(p)
+    made, check = ([], []) if args.no_images else shoot(p)
     (OUT / "posts.json").write_text(json.dumps(
         {"date": p["date"], "cards": [{k: c[k] for k in ("slug", "title", "image", "caption")} for c in p["cards"]],
          "skipped": p["skipped"], "check": check}, indent=1, ensure_ascii=False))

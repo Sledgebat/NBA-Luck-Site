@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "macros.html" import level_meter %}
 {% block title %}{{ p.name }} · BucketWeights{% endblock %}
-{% block description %}{{ p.name }} is averaging {{ "%.1f" | format(p.ppg) }} points. At his true shooting, with the same shots and minutes: {{ "%.1f" | format(p.proj_ppg) }}.{% endblock %}
+{% block description %}{{ p.name }} {{ "averaged" if carried else "is averaging" }} {{ "%.1f" | format(p.ppg) }} points{{ " in " ~ carried.season_label if carried }}. At his true shooting, with the same shots and minutes: {{ "%.1f" | format(p.proj_ppg) }}.{% endblock %}
 {% block content %}
   <p class="kicker" style="margin-top:24px">{{ p.team | team_name(False) }}{% if p.pos %} · {{ p.pos }}{% endif %}</p>
   <div class="headline-proj">

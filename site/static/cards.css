@@ -131,3 +131,17 @@ html, body { margin: 0; background: #FAF8F2; }
 .c-agate[data-fit="tighter"] .row .g { font-size: 31px; }
 .c-agate[data-fit="tighter"] .row .v { font-size: 36px; }
 .c-agate[data-fit="tighter"] .row .v small { font-size: 26px; }
+
+/* ---------- link-preview image (1200 × 630), in tonight's issue colour ---------- */
+.card.c-share { width: 1200px; height: 630px; --issue: #FFD200; --ink: #141414; --logo: #E2231A; background: var(--issue); color: var(--ink); padding: 34px 52px; }
+.c-share.issue-white  { --issue: #FFFFFF; }
+.c-share.issue-cyan   { --issue: #00A3E0; }
+.c-share.issue-black  { --issue: #141414; --ink: #F2EFE6; --logo: #FF3B30; }
+.c-share.issue-orange { --issue: #F26B1D; --logo: #141414; }
+.c-share.issue-stone  { --issue: #C9C2B2; }
+.c-share .strap { display: flex; justify-content: space-between; font: 400 36px/1 "League Gothic"; text-transform: uppercase; letter-spacing: .04em; border-bottom: 6px solid var(--ink); padding-bottom: 14px; }
+.c-share .logo { font-size: 262px; color: var(--logo); margin-top: 22px; white-space: nowrap; letter-spacing: -.005em; }
+.c-share .bottom { position: absolute; left: 52px; right: 52px; bottom: 40px; display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; border-top: 6px solid var(--ink); padding-top: 18px; }
+.c-share .head { font: 800 32px/1.2 "Libre Franklin"; }
+.c-share .head b { display: block; font: 400 64px/.9 "League Gothic"; text-transform: uppercase; color: var(--logo); margin-bottom: 6px; }
+.c-share .stars { font: 400 46px/1 "League Gothic"; color: var(--logo); white-space: nowrap; }

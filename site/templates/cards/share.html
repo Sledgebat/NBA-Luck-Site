@@ -1,0 +1,9 @@
+{% extends "cards/base.html" %}
+{# The link-preview image (1200 × 630): a small SLAM cover in tonight's issue colour. #}
+{% block card %}
+<div class="card c-share issue-{{ c.colour }}" data-card>
+  <div class="strap"><span>The shooting-luck basketball daily</span><span>{{ c.issue_line }}</span></div>
+  <div class="gothic logo" data-fit-width>BucketWeights</div>
+  <div class="bottom"><div class="head"><b>{{ c.head }}</b>{{ c.line }}</div><span class="stars">★ ★ ★</span></div>
+</div>
+{% endblock %}

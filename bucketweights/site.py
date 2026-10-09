@@ -27,6 +27,8 @@ TEAM_LIST = json.loads((Path(__file__).with_name("teams.json")).read_text())
 BY_ABBREV = {t["abbrev"]: t for t in TEAM_LIST}
 BY_ESPN = {t["espn_id"]: t for t in TEAM_LIST}
 REPO = "https://github.com/Sledgebat/NBA-Luck-Site"
+SITE_URL = "https://bucketweights.com"  # until the domain is set; link previews and the cards use it
+SHARE_SIZE = (1200, 630)  # link-preview image (X, iMessage, Facebook, Slack): static/share.png
 
 
 # ---------------------------------------------------------------- small helpers for templates
@@ -198,7 +200,11 @@ def build(season: int | None = None) -> Path:
     issue = meta.get("issue") or 0
     colour = ISSUE_COLOURS[issue % len(ISSUE_COLOURS)] if issue else "yellow"
     now_et = datetime.now(ZoneInfo("America/New_York"))
-    common = {"meta": meta, "issue_colour": colour, "built": now_et.strftime("%-d %b %Y, %-I:%M %p ET"), "carried": carried,
+    # the link-preview image: a default copy ships in static/, the nightly cards step redraws it;
+    # ?v= changes daily so X and iMessage don't keep showing yesterday's
+    version = meta.get("data_through") or now_et.date().isoformat()
+    common = {"meta": meta, "issue_colour": colour, "SITE_URL": SITE_URL,
+              "share_image": f"{SITE_URL}/static/share.png?v={version}", "built": now_et.strftime("%-d %b %Y, %-I:%M %p ET"), "carried": carried,
               "season_word": f"in {carried['season_label']}" if carried else "this season"}
 
     if OUT.exists():
@@ -209,7 +215,8 @@ def build(season: int | None = None) -> Path:
     def page(path: str, template: str, depth: int, **ctx):
         f = OUT / path
         f.parent.mkdir(parents=True, exist_ok=True)
-        f.write_text(e.get_template(template).render(root="../" * depth, **common, **ctx))
+        url = f"{SITE_URL}/{path.removesuffix('index.html')}" if path != "404.html" else SITE_URL + "/"
+        f.write_text(e.get_template(template).render(root="../" * depth, page_url=url, **common, **ctx))
 
     by_id = {p["id"]: p for p in players}
     games_sorted = sorted(games, key=lambda g: (g["date"], g["game_id"]), reverse=True)
