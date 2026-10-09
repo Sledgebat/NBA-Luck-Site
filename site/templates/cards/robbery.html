@@ -2,13 +2,13 @@
 {# Robbery of the night: the black issue. Only when a winner had under 35%. #}
 {% block card %}
 {% set g, w, l = c.g, c.w, c.l %}
-<div class="card c-rob" data-card>
+<div class="card c-rob" style="{{ c.style }}" data-card>
   <div class="flow">
     <div class="strap"><span>Last night</span><span>{{ day | short_date }}</span></div>
     <div class="gothic logo">BucketWeights</div>
     <div class="big">Robbery!</div>
     <div class="score" data-fit-width>{{ c.score }}</div>
-    <div class="pct"><b>{{ c.chance }}</b><span>{{ c.winner_place }}'s chance of winning<br>at both teams' true shooting</span></div>
+    <div class="pct"><b>{{ c.chance }}</b><span>{{ c.winner_whose }} chance of winning at both teams' true shooting</span></div>
     <div class="lines">From three: {{ g[w] | team_name }} <i>{{ g.teams[w].three[0] }}-{{ g.teams[w].three[1] }}</i> (expected {{ "%.1f" | format(g.teams[w].three[2]) }}) · {{ g[l] | team_name }} <i>{{ g.teams[l].three[0] }}-{{ g.teams[l].three[1] }}</i> (expected {{ "%.1f" | format(g.teams[l].three[2]) }})
     {% if c.hero %}<br>Swung it: {{ c.hero.name }}, <i>{{ c.hero.three[0] }}-for-{{ c.hero.three[1] }}</i> from deep{% endif %}
     {% if c.goat %}<br>Ice cold: {{ c.goat.name }}, <i>{{ c.goat.three[0] }}-for-{{ c.goat.three[1] }}</i>{% endif %}</div>

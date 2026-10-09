@@ -74,9 +74,10 @@ def nickname(abbrev: str) -> str:
     return site.team_name(abbrev)
 
 
-def location(abbrev: str) -> str:
-    t = site.BY_ABBREV.get(abbrev)
-    return t["location"] if t else abbrev
+def possessive(abbrev: str) -> str:
+    """"the Lakers'", "the Heat's" """
+    n = nickname(abbrev)
+    return f"the {n}'" if n.endswith("s") else f"the {n}'s"
 
 
 def by_margin(n: int) -> str:
@@ -127,8 +128,8 @@ def night_story(g: dict) -> str:
     wm, wa, wx = g["teams"][w]["three"]
     lm, la, lx = g["teams"][l]["three"]
     if (lx - lm) >= (wm - wx):
-        return f"{location(g[l])} shot {lm}-for-{la} from three ({lx:.1f} expected) and lost by {by_margin(margin)}."
-    return f"{location(g[w])} shot {wm}-for-{wa} from three ({wx:.1f} expected) and won by {by_margin(margin)}."
+        return f"The {nickname(g[l])} shot {lm}-for-{la} from three ({lx:.1f} expected) and lost by {by_margin(margin)}."
+    return f"The {nickname(g[w])} shot {wm}-for-{wa} from three ({wx:.1f} expected) and won by {by_margin(margin)}."
 
 
 # ---------------------------------------------------------------- team colours
@@ -195,6 +196,7 @@ def team_inks(abbrev: str) -> dict:
     ink2 = readable(fill, BOARD, 1.6) if is_grey(fill) else fill
     return {
         "cover": {"--issue": main, "--ink": ink, "--logo": logo},
+        "robbery": {"--bg": main, "--ink": ink, "--mark": ink, "--big": logo, "--hi": logo},
         "back": {"--ink1": ink1, "--ink2": ink2,
                  "--ink2-text": max((ink1, WHITE, INK), key=lambda x: contrast(x, ink2)),
                  "--accent": readable(fill, BOARD, 4.5, max_shift=0.15, fallback=ink1)},
@@ -341,8 +343,9 @@ def plan(con, any_date: bool = False, every: bool = False) -> dict:
                    key=lambda s: s["luck_pts"], default=None)
         cards.append({
             "slug": "robbery", "template": "cards/robbery.html", "title": "Robbery of the night",
+            "style": style(team_inks(best[w]).get("robbery")),
             "g": best, "w": w, "l": l, "score": score_line(best), "chance": chance_short(best["winner_chance"]),
-            "winner_place": location(best[w]), "hero": hero, "goat": goat,
+            "winner_whose": "T" + possessive(best[w])[1:], "hero": hero, "goat": goat,
             "caption": (f"Robbery! {score_line(best)}. At both teams' true shooting, the {nickname(best[w])} win this "
                         f"{chance(best['winner_chance'])} of the time. {night_story(best)} {SITE_NAME}"),
         })

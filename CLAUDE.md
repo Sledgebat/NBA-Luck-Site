@@ -132,17 +132,17 @@ avoids that.
 - **Inside pages are print:** agate tables with dot leaders, player pages as card backs, Guide as
   a letters page.
 - **No logos or headshots.** Players are their names set big; teams are names/abbrevs. **Team
-  colours only on the player social cards** (Josh, 9 Oct 2026): the cover and the card back are
-  printed in the featured player's team colours (`teams.json` `colours`: main, second; ESPN's
+  colours only on the social cards about one player or one game** (Josh, 9 Oct 2026): the cover
+  and the card back in the featured player's team colours, the robbery card in the winning team's (`teams.json` `colours`: main, second; ESPN's
   with Warriors, Knicks, 76ers and Heat corrected). `cards.team_inks` nudges a colour lighter or
   darker (keeping its hue) until it reads, else white/ink; a test checks all 30 teams. The site,
-  the agate, the robbery and the yearbook keep their own colours.
+  the agate and the yearbook keep their own colours.
 - **Social cards (built 9 Oct 2026, `bucketweights/cards.py`; Josh posts by hand):** the five approved
   looks at 1080 × 1350 (authored at that size, shot at 1×). After a night with games: **cover**
   (tonight's issue in the issue colour; cover story = Defrost No. 1; coverlines = Heat check No. 1
   and the night's robbery or closest game; the main line and its typeface rotate by issue,
   `COVERLINES` / `.face-0`–`3`), **last night** (agate, every game, lowest winner's chance first;
-  fits 15 games), **robbery of the night** (black issue, only when there was one), **one card
+  fits 15 games), **robbery of the night** (winner's colours, only when there was one), **one card
   back** (Defrost on odd issues, Heat check on even; the highest on that list without a card back
   in the last 14 days, kept in the DB's `cards` table), and the **yearbook** top 5 (Heat check
   Mondays, Defrost Thursdays, by the morning after). Nothing is made when the latest games are

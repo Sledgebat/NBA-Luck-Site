@@ -45,17 +45,18 @@ html, body { margin: 0; background: #FAF8F2; }
 .c-issue[data-fit="tighter"] .cl b { font-size: 54px; }
 
 /* ---------- robbery of the night: the black issue ---------- */
-.c-rob { background: #141414; color: #fff; padding: 34px 48px; }
-.c-rob .strap { display: flex; justify-content: space-between; font: 400 34px/1 "League Gothic"; text-transform: uppercase; letter-spacing: .04em; border-bottom: 6px solid #fff; padding-bottom: 12px; }
-.c-rob .logo { font-size: 120px; color: #FF3B30; margin-top: 14px; }
-.c-rob .big { font: 900 250px/.82 "Big Shoulders Stencil Display"; text-transform: uppercase; color: #FFD200; margin-top: 40px; letter-spacing: -.01em; }
+.c-rob { --bg: #141414; --ink: #FFFFFF; --mark: #FF3B30; --big: #FFD200; --hi: #FFD200; background: var(--bg); color: var(--ink); padding: 34px 48px; }
+/* in the winning team's colours (cards.team_inks): --bg main, --big/--hi their second colour, --mark the ink */
+.c-rob .strap { display: flex; justify-content: space-between; font: 400 34px/1 "League Gothic"; text-transform: uppercase; letter-spacing: .04em; border-bottom: 6px solid var(--ink); padding-bottom: 12px; }
+.c-rob .logo { font-size: 120px; color: var(--mark); margin-top: 14px; }
+.c-rob .big { font: 900 250px/.82 "Big Shoulders Stencil Display"; text-transform: uppercase; color: var(--big); margin-top: 40px; letter-spacing: -.01em; }
 .c-rob .score { font: 400 120px/.9 "League Gothic"; text-transform: uppercase; margin-top: 30px; white-space: nowrap; }
 .c-rob .pct { display: flex; align-items: flex-end; gap: 28px; margin-top: 40px; }
-.c-rob .pct b { font: 400 280px/.78 "League Gothic"; color: #FF3B30; white-space: nowrap; }
+.c-rob .pct b { font: 400 280px/.78 "League Gothic"; color: var(--mark); white-space: nowrap; }
 .c-rob .pct span { font: 800 46px/1.15 "Libre Franklin"; padding-bottom: 14px; }
-.c-rob .lines { margin-top: 46px; border-top: 4px solid #fff; padding-top: 22px; font: 700 38px/1.45 "Libre Franklin"; }
-.c-rob .lines i { font-style: normal; color: #FFD200; white-space: nowrap; }
-.c-rob .foot { position: absolute; left: 48px; right: 48px; bottom: 34px; font: 400 32px/1 "League Gothic"; text-transform: uppercase; letter-spacing: .05em; color: #B5AFA3; display: flex; justify-content: space-between; }
+.c-rob .lines { margin-top: 46px; border-top: 4px solid var(--ink); padding-top: 22px; font: 700 38px/1.45 "Libre Franklin"; }
+.c-rob .lines i { font-style: normal; color: var(--hi); white-space: nowrap; }
+.c-rob .foot { position: absolute; left: 48px; right: 48px; bottom: 34px; font: 400 32px/1 "League Gothic"; text-transform: uppercase; letter-spacing: .05em; color: color-mix(in srgb, var(--ink) 72%, var(--bg)); display: flex; justify-content: space-between; }
 .c-rob[data-fit] .big { margin-top: 24px; font-size: 220px; }
 .c-rob[data-fit] .score { font-size: 100px; }
 .c-rob[data-fit] .lines { margin-top: 30px; font-size: 34px; }
